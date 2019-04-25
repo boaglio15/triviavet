@@ -16,21 +16,22 @@ import java.util.Map;
 
 public class App
 {
-    public static void main( String[] args )
-    {
-      before((request, response) -> {
-        Base.open();
+    public static void main( String[] args ) {
+      /*before((request, response) -> {
+        Base.open("com.mysql.jdbc.driverr","jdbc:mysql://localhost:3306/trivia","root","root");
       });
 
       after((request, response) -> {
         Base.close();
-      });
+    });*/
+
+      Base.open("com.mysql.jdbc.Driverr","jdbc:mysql://localhost:3306/trivia","root","root");
 
       get("/hello/:name", (req, res) -> {
         return "hello" + req.params(":name");
       });
 
-      post("/users", (req, res) -> {
+      /*post("/users", (req, res) -> {
         Map<String, Object> bodyParams = new Gson().fromJson(req.body(), Map.class);
 
         User user = new User();
@@ -41,6 +42,7 @@ public class App
         res.type("application/json");
 
         return user.toJson(true);
-      });
+    })*/
+      Base.close();
     }
 }
