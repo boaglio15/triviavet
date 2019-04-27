@@ -16,18 +16,18 @@ import java.util.Map;
 
 public class App
 {
-    public static void main( String[] args ) {
-      /*before((request, response) -> {
-        Base.open("com.mysql.jdbc.driverr","jdbc:mysql://localhost:3306/trivia","root","root");
+    public static void main( String[] args )
+    {
+      before((request, response) -> {
+        Base.open();
       });
 
       after((request, response) -> {
         Base.close();
-    });*/
-
-      Base.open("com.mysql.jdbc.Driverr","jdbc:mysql://localhost:3306/trivia","root","root");
+      });
 
       get("/hello/:name", (req, res) -> {
+          //System.out.println("hola mundo");
         return "hello" + req.params(":name");
       });
 
@@ -42,7 +42,6 @@ public class App
         res.type("application/json");
 
         return user.toJson(true);
-    })*/
-      Base.close();
+    });*/
     }
 }
