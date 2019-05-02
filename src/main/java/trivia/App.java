@@ -22,9 +22,14 @@ public class App
       //before((request, response) -> {
         //Base.open();
       //});
-      Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/trivia", "root", "root");
+      Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/trivia", "root", "root");
 
-
+      User u1 = new User();
+      u1.set("nom","Agustin");
+      u1.set("ape","Boaglio");
+      u1.set("dni","37875774");
+      u1.set("pass","abc123");
+      u1.saveIt();
 
       get("/hello/:name", (req, res) -> {
           //System.out.println("hola mundo");
@@ -43,6 +48,8 @@ public class App
 
           return newUser.toJson(true);
       });*/
+
+
 
       get("/users", (req, res) -> {
             res.type("application/json");

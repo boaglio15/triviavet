@@ -2,7 +2,7 @@ create database trivia;
 create database trivia_test;
 use trivia;
 
-create table USERS (
+create table users (
 		id int auto_increment,
     	nom varchar(255) not null,
     	ape varchar(255) not null,
@@ -12,51 +12,51 @@ create table USERS (
 		nivel int,
     	primary key (id)
 );
-create table AREAS (
+create table areas (
     	nombreArea varchar(255),
     	primary key(nombreArea)
 );
-create table QUESTIONS(
+create table questions(
 		id int auto_increment,
     	preg text,
     	areaNombre varchar(255),
-    	foreign key (areaNombre) references AREAS(nombreArea), 
+    	foreign key (areaNombre) references areas(nombreArea), 
     	primary key (id)
 );
-create table ANSWERS(
+create table answers(
 		id int auto_increment,
     	resp varchar(255),
     	tipo enum('CORRECTA','INCORRECTA'),
     	pregId int,
-    	foreign key (pregId) references QUESTIONS(id),
+    	foreign key (pregId) references questions(id),
     	primary key (id,pregId)
 );
-create table GAMES(
+create table games(
 		id int auto_increment,
 		userId int,
 		fecha date,
-		foreign key (userId) references USERS(id),
+		foreign key (userId) references users(id),
 		primary key (id)		 
 );
-create table QUESTIONS_GAMES(
+create table questiongames(
 		questionId int,
 		gameId int,
-		foreign key (questionId) references QUESTIONS(id),
-		foreign key (gameId) references GAMES(id),
+		foreign key (questionId) references questions(id),
+		foreign key (gameId) references games(id),
 		primary key (questionId,gameId)
 );
-create table ANSWERS_GAMES(
+create table answersgames(
 		answerId int,
 		gameId int,
-		foreign key (answerId) references ANSWERS(id),
-		foreign key (gameId) references GAMES(id),
+		foreign key (answerId) references answers(id),
+		foreign key (gameId) references games(id),
 		primary key (answerId,gameId)
 );
-create table STATS(
+create table stats(
 		id int auto_increment,
 		userId int,
 		cantCorrectas int,
 		cantIncorrectas int,
-		foreign key (userId) references USERS(id),
+		foreign key (userId) references users(id),
 		primary key (id)
 );
