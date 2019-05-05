@@ -1,76 +1,98 @@
 package trivia;
 
-import static spark.Spark.get;
-import static spark.Spark.post;
+import static spark.Spark.*;
 
-import static spark.Spark.before;
-import static spark.Spark.after;
+import com.google.gson.Gson;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import org.javalite.activejdbc.Base;
-import org.javalite.activejdbc.DB;
 
 import trivia.User;
 
-import com.google.gson.Gson;
-import java.util.Map;
-import java.util.*;
+public class App {
 
-public class App
-{
-    public static void main( String[] args )
-    {
-      //before((request, response) -> {
-        //Base.open();
-      //});
-      Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/trivia", "root", "root");
+    public static void main(String[] args) {
 
-      User u1 = new User();
-      u1.set("nom","Agustin");
-      u1.set("ape","Boaglio");
-      u1.set("dni","37875774");
-      u1.set("pass","abc123");
-      u1.saveIt();
+        before((request, response) -> {
+            Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://127.0.0.1/trivia?nullNamePatternMatchesAll=true", "root", "root");
+        });
 
-      get("/hello/:name", (req, res) -> {
-          //System.out.println("hola mundo");
-        return "hello" + req.params(":name");
-    });
+        after((request, response) -> {
+            Base.close();
+        });
 
-      /*post("/users", (req,res) -> {
-          User newUser = new User();
-          newUser.set("nom", "Agustin");
-          newUser.set("ape", "Boaglio");
-          newUser.set("dni", "37875774");
-          newUser.set("tipo", "ADMIN");
-          newUser.saveIt();
-
-          res.type("application/json");
-
-          return newUser.toJson(true);
-      });*/
-
-
-
-      get("/users", (req, res) -> {
+        // returns a User by id
+        get("/users/:id", (req, res) -> {
             res.type("application/json");
-            List<User> r = User.findAll();
-            return new Gson().toJson(r);
-      });
+            String id = req.params(":id"); // req.params -> indica que un parámetro de método debe estar vinculado a un PARAMETRO de solicitud web.
+            User l = User.findById(id);
+            String j = l.getNom(); //hay que hacer que retorne todo el registro
+            return new Gson().toJson(j);
 
-      //after((request, response) -> {
-        Base.close();
-      //});
-      /*post("/users", (req, res) -> {
-        Map<String, Object> bodyParams = new Gson().fromJson(req.body(), Map.class);
+        });
 
-        User user = new User();
-        user.set("username", bodyParams.get("username"));
-        user.set("password", bodyParams.get("password"));
-        user.saveIt();
+        //returns all users
+        get("/users", (req, res) -> {
+            res.type("application/json");
+            List<User> r = new ArrayList<User>();
+            r = User.findAll();
+            String j = r.get(0).getNom(); //hay que hacer que retorne todos los datos de los registros
+            return new Gson().toJson(j);
+        });
 
-        res.type("application/json");
+        //delete a User by id
+        delete("/users/:id", (req, res) -> {
+            res.type("application/json");
+            String id = req.params(":id");
+            User l = User.findById(id);
+            l.delete();
+            return new Gson().toJson(true);
+        });
 
-        return user.toJson(true);
-    });*/
+        //Add User (post es usado para crear)
+        post("/users", (req, res) -> {
+            Map<String, Object> bodyParams = new Gson().fromJson(req.body(), Map.class); //req.body -> indica que un parámetro del método debe estar vinculado al CUERPO de la solicitud web.
+            String nombre = (String) bodyParams.get("nom");
+            String apellido = (String) bodyParams.get("ape");
+            String dni = (String) bodyParams.get("dni");
+            String password = (String) bodyParams.get("pass");
+            int tipo = Integer.parseInt((String) bodyParams.get("tipoUser"));
+            int nivel = Integer.parseInt((String) bodyParams.get("nivel"));
+            User user = new User(nombre, apellido, dni, password, tipo, nivel);
+            user.saveIt();
+            res.type("application/json");
+            return user.toJson(true);
+        });
+
+        //Edit a User (put es usado para crear o editar)
+        put("/users/:id", (req, res) -> {
+            Map<String, Object> bodyParams = new Gson().fromJson(req.body(), Map.class);
+            res.type("application/json");
+            String id = req.params(":id");
+            String nombre = (String) bodyParams.get("nom");
+            String apellido = (String) bodyParams.get("ape");
+            String dni = (String) bodyParams.get("dni");
+            String password = (String) bodyParams.get("pass");
+            int tipo = Integer.parseInt((String) bodyParams.get("tipoUser"));
+            int nivel = Integer.parseInt((String) bodyParams.get("nivel"));
+            User toUser = User.findById(id);
+            System.out.println("toUser");
+            if (toUser != null) {
+                toUser.set("nom", nombre);
+                toUser.set("ape", apellido);
+                toUser.set("dni", dni);
+                toUser.set("pass", password);
+                toUser.set("tipoUser", tipo);
+                toUser.set("nivel", nivel);
+                toUser.saveIt();
+                //System.out.println(toUser);
+                return new Gson().toJson(true);
+            } else {
+                return new Gson().toJson(false);
+            }
+        });
     }
 }

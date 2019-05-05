@@ -1,5 +1,5 @@
-create database trivia;
-create database trivia_test;
+create database if not exists trivia;
+create database if not exists trivia_test;
 use trivia;
 
 create table users (
@@ -7,7 +7,7 @@ create table users (
     	nom varchar(255) not null,
     	ape varchar(255) not null,
     	dni varchar(255) not null,
-    	tipo set('ADMIN','PLAYER'),
+    	tipoUser int,
 		pass varchar(8),
 		nivel int,
     	primary key (id)
@@ -20,13 +20,15 @@ create table questions(
 		id int auto_increment,
     	preg text,
     	areaNombre varchar(255),
+        userId int,
     	foreign key (areaNombre) references areas(nombreArea), 
-    	primary key (id)
+    	foreign key (userId) references users(id),
+        primary key (id)
 );
 create table answers(
 		id int auto_increment,
     	resp varchar(255),
-    	tipo enum('CORRECTA','INCORRECTA'),
+    	tipoAnswer int, 
     	pregId int,
     	foreign key (pregId) references questions(id),
     	primary key (id,pregId)
@@ -38,14 +40,15 @@ create table games(
 		foreign key (userId) references users(id),
 		primary key (id)		 
 );
-create table questiongames(
+create table questions_games(
 		questionId int,
 		gameId int,
 		foreign key (questionId) references questions(id),
 		foreign key (gameId) references games(id),
 		primary key (questionId,gameId)
 );
-create table answersgames(
+
+create table answers_games(
 		answerId int,
 		gameId int,
 		foreign key (answerId) references answers(id),
