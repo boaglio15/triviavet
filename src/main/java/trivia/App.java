@@ -4,9 +4,7 @@ import static spark.Spark.*;
 
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.javalite.activejdbc.Base;
 
@@ -23,7 +21,7 @@ public class App {
         after((request, response) -> {
             Base.close();
         });
-        
+
         // returns a User by id
         get("/users/:id", (req, res) -> {
             res.type("application/json");
@@ -93,6 +91,27 @@ public class App {
             } else {
                 return new Gson().toJson(false);
             }
+        });
+
+        //return todos los Games.
+        get("/games", (req, res) -> {
+            res.type("application/json");
+            List<Game> r = new ArrayList<Game>();
+            r = Game.findAll();
+            List<Map> rm = new ArrayList<Map>();
+            for (Game game:r) {rm.add(game.getCompleteGame());}
+            return new Gson().toJson(rm);
+        });
+
+        //return un game de un usuario.
+        get("/games/:idUser", (req, res) -> {
+            res.type("aplication/json");
+            String usuario = req.params(":idUser");
+            int us = Integer.parseInt(usuario);
+            List<Game> gameUser = Game.where("userId = '1'");
+            Game g = gameUser.get(0);
+            Map m = g.getCompleteGame();
+            return new Gson().toJson(m);
         });
     }
 }

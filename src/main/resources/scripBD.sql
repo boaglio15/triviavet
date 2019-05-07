@@ -22,7 +22,7 @@ create table areas (
 create table questions(
 		id int auto_increment,
     	preg varchar(255),
-    	areaId varchar(255),
+    	areaId int,
         userId int,
         correcta int,
     	foreign key (areaId) references areas(id), 
