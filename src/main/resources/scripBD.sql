@@ -13,15 +13,19 @@ create table users (
     	primary key (id)
 );
 create table areas (
-    	nombreArea varchar(255),
-    	primary key(nombreArea)
+        id int auto_increment,	
+        nombreArea varchar(255),
+        userId int,    
+    	primary key(id),
+        foreign key (userId) references users(id)
 );
 create table questions(
 		id int auto_increment,
-    	preg text,
-    	areaNombre varchar(255),
+    	preg varchar(255),
+    	areaId varchar(255),
         userId int,
-    	foreign key (areaNombre) references areas(nombreArea), 
+        correcta int,
+    	foreign key (areaId) references areas(id), 
     	foreign key (userId) references users(id),
         primary key (id)
 );

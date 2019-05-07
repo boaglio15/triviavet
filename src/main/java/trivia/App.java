@@ -23,14 +23,14 @@ public class App {
         after((request, response) -> {
             Base.close();
         });
-
+        
         // returns a User by id
         get("/users/:id", (req, res) -> {
             res.type("application/json");
             String id = req.params(":id"); // req.params -> indica que un parámetro de método debe estar vinculado a un PARAMETRO de solicitud web.
             User l = User.findById(id);
-            String j = l.getNom(); //hay que hacer que retorne todo el registro
-            return new Gson().toJson(j);
+            Map m = l.getCompleteUser();
+            return new Gson().toJson(m);
 
         });
 
@@ -39,8 +39,9 @@ public class App {
             res.type("application/json");
             List<User> r = new ArrayList<User>();
             r = User.findAll();
-            String j = r.get(0).getNom(); //hay que hacer que retorne todos los datos de los registros
-            return new Gson().toJson(j);
+            List<Map> rm = new ArrayList<Map>();
+            for (User user:r) {rm.add(user.getCompleteUser());}
+            return new Gson().toJson(rm);
         });
 
         //delete a User by id
@@ -59,8 +60,8 @@ public class App {
             String apellido = (String) bodyParams.get("ape");
             String dni = (String) bodyParams.get("dni");
             String password = (String) bodyParams.get("pass");
-            int tipo = Integer.parseInt((String) bodyParams.get("tipoUser"));
-            int nivel = Integer.parseInt((String) bodyParams.get("nivel"));
+            Integer tipo = Integer.parseInt((String) bodyParams.get("tipoUser"));
+            Integer nivel = Integer.parseInt((String) bodyParams.get("nivel"));
             User user = new User(nombre, apellido, dni, password, tipo, nivel);
             user.saveIt();
             res.type("application/json");
@@ -76,8 +77,8 @@ public class App {
             String apellido = (String) bodyParams.get("ape");
             String dni = (String) bodyParams.get("dni");
             String password = (String) bodyParams.get("pass");
-            int tipo = Integer.parseInt((String) bodyParams.get("tipoUser"));
-            int nivel = Integer.parseInt((String) bodyParams.get("nivel"));
+            Integer tipo = Integer.parseInt((String) bodyParams.get("tipoUser"));
+            Integer nivel = Integer.parseInt((String) bodyParams.get("nivel"));
             User toUser = User.findById(id);
             System.out.println("toUser");
             if (toUser != null) {
@@ -88,7 +89,6 @@ public class App {
                 toUser.set("tipoUser", tipo);
                 toUser.set("nivel", nivel);
                 toUser.saveIt();
-                //System.out.println(toUser);
                 return new Gson().toJson(true);
             } else {
                 return new Gson().toJson(false);
