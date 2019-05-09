@@ -24,8 +24,37 @@ INSERT INTO questions (preg,areaId,correcta) VALUES
 	("¿Fuiste a futbol?",1,0),
 	("¿Venis a comer?",1,0)
 
+INSERT INTO answers (resp,tipoAnswer,pregId) VALUES
+	("Universidad",1,2),
+	("Futbol",0,2),
+	("Casa",0,2),
+	("Parque",0,2)
+	("Mal",0,1),
+	("Bien",0,1),
+	("Excelente",1,1),
+	("Muy mal",0,1),
+	("Si",1,4),
+	("No",0,4),
+	("Que",0,4),
+	("Por",0,4),
+
 INSERT INTO questions_games (questionId,gameId) VALUES
 	(1,2),
 	(2,2),
 	(3,2),
 	(4,2)
+
+INSERT INTO answers_games (answerId,gameId) VALUES
+	(1,2)
+
+
+
+
+
+
+
+
+
+
+
+

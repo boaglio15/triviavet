@@ -167,5 +167,39 @@ public class App {
             res.type("application/json");
             return new Gson().toJson(true);
         });
+
+        //Listar todas las respuestas de un determinado Game
+        get("/answers_games/:gameId", (req, res) -> {
+            res.type("application/json");
+            String idGame = req.params(":gameId");
+            List<AnswerGame> aGames = AnswerGame.where("gameId = ?", idGame);
+            List<Map> aMapGames = new ArrayList<Map>();
+            for(AnswerGame answ:aGames){
+                aMapGames.add(answ.getCompleteAnswerGame());
+            }
+            return new Gson().toJson(aMapGames);
+        });
+
+        //Listar todas las respuestas de todos los games.
+        /*get("/answers_games", (req, res) -> {
+            res.type("application/json");
+            List<AnswerGame> aGames = AnswerGame.findAll();
+            List<Map> aMapGames = new ArrayList<Map>();
+            for(AnswerGame answ:aGames){
+                aMapGames.add(answ.getCompleteAnswerGame());
+            }
+            return new Gson().toJson(aMapGames);
+        });*/
+
+        //Agregar un nuevo AnswerGame en la base.
+        post("/answers_games", (req, res) -> {
+            Map<String,Object> bodyParams = new Gson().fromJson(req.body(), Map.class);
+            Integer answId = Integer.parseInt((String) bodyParams.get("answerId"));
+            Integer idGame = Integer.parseInt((String) bodyParams.get("gameId"));
+            AnswerGame aGame = new AnswerGame(answId, idGame);
+            aGame.saveIt();
+            res.type("application/json");
+            return new Gson().toJson(true);
+        });
     }
 }
