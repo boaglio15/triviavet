@@ -5,6 +5,7 @@ import static spark.Spark.*;
 import com.google.gson.Gson;
 
 import java.util.*;
+import java.text.SimpleDateFormat;
 
 import org.javalite.activejdbc.Base;
 
@@ -29,7 +30,6 @@ public class App {
             User l = User.findById(id);
             Map m = l.getCompleteUser();
             return new Gson().toJson(m);
-
         });
 
         //returns all users
@@ -104,14 +104,68 @@ public class App {
         });
 
         //return un game de un usuario.
-        get("/games/:idUser", (req, res) -> {
-            res.type("aplication/json");
-            String usuario = req.params(":idUser");
-            int us = Integer.parseInt(usuario);
-            List<Game> gameUser = Game.where("userId = '1'");
-            Game g = gameUser.get(0);
-            Map m = g.getCompleteGame();
+        get("/games/:userId", (req, res) -> {
+            res.type("application/json");
+            String user = req.params(":userId");
+            List<Game> gameUser = Game.where("userId = ?", user);
+            Map m = gameUser.get(0).getCompleteGame();
             return new Gson().toJson(m);
+        });
+
+        //agregar un nuevo game.
+        post("/games", (req, res) -> {
+            Map<String,Object> bodyParams = new Gson().fromJson(req.body(), Map.class);
+            Integer usuarioId = Integer.parseInt((String) bodyParams.get("userId"));
+            String f = (String) bodyParams.get("fecha");
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
+            Date gameFecha = formatter.parse(f);
+            Game game = new Game(usuarioId, gameFecha);
+            game.saveIt();
+            res.type("application/json");
+            return new Gson().toJson(true);
+        });
+
+        //borrar un game por id
+        /*delete("/games/:id", (req, res) -> {
+            res.type("application/json");
+            String id = req.params(":id");
+            Game g = Game.findById(id);
+            g.delete();
+            return new Gson().toJson(true);
+        });*/
+
+        //listar todas las preguntas de un usuario.
+        get("/questions_games/:idGame", (req, res) -> {
+            res.type("application/json");
+            String idGame = req.params(":idGame");
+            List<QuestionGame> qGames = QuestionGame.where("gameId = ?", idGame);
+            List<Map> qMapGames = new ArrayList<Map>();
+            for(QuestionGame quest:qGames){
+                qMapGames.add(quest.getCompleteQuestionGame());
+            }
+            return new Gson().toJson(qMapGames);
+        });
+
+        //listar todos las preguntas de todos los games.
+        /*get("/questions_games", (req, res) -> {
+            res.type("application/json");
+            List<QuestionGame> qGames = QuestionGame.findAll();
+            List<Map> qMapGames = new ArrayList<Map>();
+            for(QuestionGame quest:qGames){
+                qMapGames.add(quest.getCompleteQuestionGame());
+            }
+            return new Gson().toJson(qMapGames);
+        });*/
+
+        //agregar un nuevo QuestionGame.
+        post("/questions_games", (req, res) -> {
+            Map<String,Object> bodyParams = new Gson().fromJson(req.body(), Map.class);
+            Integer questId = Integer.parseInt((String) bodyParams.get("questionId"));
+            Integer idGame = Integer.parseInt((String) bodyParams.get("gameId"));
+            QuestionGame qGame = new QuestionGame(questId, idGame);
+            qGame.saveIt();
+            res.type("application/json");
+            return new Gson().toJson(true);
         });
     }
 }

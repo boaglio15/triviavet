@@ -21,7 +21,7 @@ create table areas (
 );
 create table questions(
 		id int auto_increment,
-    	preg varchar(255),
+    	preg text,
     	areaId int,
         userId int,
         correcta int,
