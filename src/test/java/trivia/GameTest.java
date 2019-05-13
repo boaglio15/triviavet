@@ -10,7 +10,7 @@ public class GameTest {
 	
 	@before
 	public void before(){
-    	Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://127.0.0.1/prode_test?nullNamePatternMatchesAll=true", "root", "root");
+    	Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://127.0.0.1/trivia_test?nullNamePatternMatchesAll=true", "root", "root");
     	System.out.println("GameTest setup");
     	Base.openTransaction();
   	}
