@@ -4,32 +4,47 @@ import org.javalite.activejdbc.Model;
 import java.util.*;
 
 public class Area extends Model {
-	
-	private int nombreArea;
-    private int userId;
 
-    public Area(){
+    private int nomArea;
+
+    public Area() {
 
     }
 
-    public Area(String area, int idUsuario){
-        set("nombreArea", area);
-        set("userId", idUsuario);
+    public Area(int nomArea) {
+        set("area", nomArea);
     }
 
-    public int getNombreArea(){
-        return this.getInteger("userId");
+    public int getNomArea() {
+        return this.getInteger("nomArea");
     }
 
-    public int getUserId(){
-        return this.getString("nombreArea");
-    }
 
-    public Map getCompleteArea(){
+    public Map getCompleteArea() {
         Map m = new HashMap();
         m.put("id", this.getId());
-        m.put("nombreArea", this.getNombreArea());
-        m.put("userId", this.getUserId());
+        m.put("nomArea", this.getNomArea());
         return m;
+    }
+    
+    public static List<Map> getAllArea() {
+        List<Area> r = new ArrayList<Area>();
+        r = Area.findAll();
+        List<Map> rm = new ArrayList<Map>();
+        for (Area area : r) {
+            rm.add(area.getCompleteArea());
+        }
+        return rm;
+    }
+
+    public static Area getArea(int  areaId) {
+        Area a = Area.findById(areaId); 
+        return a; 
+    }
+
+   
+    public static void createArea(int nombreArea) {
+        Area area = new Area(nombreArea);
+        area.saveIt();
     }
 }

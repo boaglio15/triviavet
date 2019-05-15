@@ -1,8 +1,9 @@
 package trivia;
 
+import java.util.HashMap;
+import java.util.Map;
 import org.javalite.activejdbc.Model;
 import org.javalite.activejdbc.annotations.Table;
-import java.util.*;
 
 @Table("answers_games")
 public class AnswerGame extends Model {
@@ -33,5 +34,5 @@ public class AnswerGame extends Model {
         m.put("answerId", this.getAnswerId());
         m.put("gameId", this.getGameId());
         return m;
-    }
+}
 }

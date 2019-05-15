@@ -6,10 +6,7 @@ import com.google.gson.Gson;
 
 import java.util.*;
 import java.text.SimpleDateFormat;
-
 import org.javalite.activejdbc.Base;
-
-import trivia.User;
 
 public class App {
 
@@ -23,31 +20,55 @@ public class App {
             Base.close();
         });
 
+
+        //supongo que el usuario se loguea por primera vez y esto automaticamente crea un juego
+        //(si ya esta loguado y quiere jugar nuevamente hay que buscar su juego iniciado)
+        // inicio juego
+        
+        //devuelve datos de la ultima partida del usuario (nivel y area)
+        get("/newGame/:userId", (req, res) -> {
+            res.type("application/json");
+            //String userId = req.params(":userId"); //req.params -> indica que un parámetro de método debe estar vinculado a un PARAMETRO de solicitud web.
+            return new Gson().toJson(Game.newGame(req.params(":userId")));
+        });//FUNCIONA
+
+        
+        //selecciona una pregunta del area en que esta para hacer (no considera las preguntas ya hechas)
+        get("/newQuestion/:gameId/:areaId", (req, res) -> {
+            res.type("application/json");
+            //String gameId = req.params(":gameId"); //lo pongo asi para probar
+            //String areaId = req.params(":areaId");
+            //como hago para pasar los dos parametros gameId, areaId necesarios para det la preg a hacer?????
+            List<Integer> pregHechas = Question.getAllQuestionGameArea(req.params(":gameId"), req.params(":areaId")); //(gameId, areaId)//devuelve las preguntas hechas en el area que jugo por ultima vez
+            List<Integer> pregEnArea = Question.allQuestionArea(req.params(":areaId"));
+            //String pregSelec = Question.selectQuestion(pregHechas);
+            return new Gson().toJson(pregHechas);
+        });//NO FUNCIONA REVISAR
+        
+        get("/newAnswer/:pregId", (req, res) -> {
+            res.type("application/json");
+            return new Gson().toJson(Answer.selecAnswer(req.params(":pregId")));
+        });//FUNCIONA
+
+        //fin juego
+        
+        //-----------------------------------------USER---------------------//       
         // returns a User by id
         get("/users/:id", (req, res) -> {
             res.type("application/json");
-            String id = req.params(":id"); // req.params -> indica que un parámetro de método debe estar vinculado a un PARAMETRO de solicitud web.
-            User l = User.findById(id);
-            Map m = l.getCompleteUser();
-            return new Gson().toJson(m);
+            return new Gson().toJson(User.getUser(req.params(":id")).getCompleteUser());
         });
 
         //returns all users
         get("/users", (req, res) -> {
             res.type("application/json");
-            List<User> r = new ArrayList<User>();
-            r = User.findAll();
-            List<Map> rm = new ArrayList<Map>();
-            for (User user:r) {rm.add(user.getCompleteUser());}
-            return new Gson().toJson(rm);
+            return new Gson().toJson(User.getAllUser());
         });
 
         //delete a User by id
         delete("/users/:id", (req, res) -> {
             res.type("application/json");
-            String id = req.params(":id");
-            User l = User.findById(id);
-            l.delete();
+            User.deleteUser(req.params(":id"));
             return new Gson().toJson(true);
         });
 
@@ -58,12 +79,12 @@ public class App {
             String apellido = (String) bodyParams.get("ape");
             String dni = (String) bodyParams.get("dni");
             String password = (String) bodyParams.get("pass");
-            Integer tipo = Integer.parseInt((String) bodyParams.get("tipoUser"));
-            Integer nivel = Integer.parseInt((String) bodyParams.get("nivel"));
-            User user = new User(nombre, apellido, dni, password, tipo, nivel);
-            user.saveIt();
+            int tipo = Integer.parseInt((String) bodyParams.get("tipoUser"));
+            int nivel = Integer.parseInt((String) bodyParams.get("nivel"));
+            int area = Integer.parseInt((String) bodyParams.get("idArea"));
+            User.createUser(nombre, apellido, dni, password, tipo, nivel, area);
             res.type("application/json");
-            return user.toJson(true);
+            return new Gson().toJson(true);
         });
 
         //Edit a User (put es usado para crear o editar)
@@ -78,7 +99,6 @@ public class App {
             Integer tipo = Integer.parseInt((String) bodyParams.get("tipoUser"));
             Integer nivel = Integer.parseInt((String) bodyParams.get("nivel"));
             User toUser = User.findById(id);
-            System.out.println("toUser");
             if (toUser != null) {
                 toUser.set("nom", nombre);
                 toUser.set("ape", apellido);
@@ -93,60 +113,165 @@ public class App {
             }
         });
 
+        //----------------------------------------END USER--------------//
+        //
+        //-----------------------------------GAME-------------------//
         //return todos los Games.
         get("/games", (req, res) -> {
             res.type("application/json");
-            List<Game> r = new ArrayList<Game>();
-            r = Game.findAll();
-            List<Map> rm = new ArrayList<Map>();
-            for (Game game:r) {rm.add(game.getCompleteGame());}
-            return new Gson().toJson(rm);
+            return new Gson().toJson(Game.getAllGames());
         });
 
         //return un game de un usuario.
         get("/games/:userId", (req, res) -> {
             res.type("application/json");
-            String user = req.params(":userId");
-            List<Game> gameUser = Game.where("userId = ?", user);
-            Map m = gameUser.get(0).getCompleteGame();
-            return new Gson().toJson(m);
+            return new Gson().toJson(Game.getGame(req.params(":userId")).getCompleteGame());
         });
 
         //agregar un nuevo game.
         post("/games", (req, res) -> {
-            Map<String,Object> bodyParams = new Gson().fromJson(req.body(), Map.class);
+            Map<String, Object> bodyParams = new Gson().fromJson(req.body(), Map.class);
             Integer usuarioId = Integer.parseInt((String) bodyParams.get("userId"));
             String f = (String) bodyParams.get("fecha");
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
             Date gameFecha = formatter.parse(f);
-            Game game = new Game(usuarioId, gameFecha);
-            game.saveIt();
+            Game.createGame(usuarioId, gameFecha);
             res.type("application/json");
             return new Gson().toJson(true);
         });
 
         //borrar un game por id
-        /*delete("/games/:id", (req, res) -> {
+        delete("/games/:id", (req, res) -> {
+            res.type("application/json");
+            Game.deleteGame(req.params(":id"));
+            return new Gson().toJson(true);
+        });
+        //----------------------------------------END GAME----------//
+        //
+        //-----------------------------QUESTION--------------//
+        // returns all question
+        get("/questions", (req, res) -> {
+            res.type("application/json");
+            return new Gson().toJson(Question.getAllQuestion());
+        });
+
+        // returns a question by id
+        get("/questions/:id", (req, res) -> {
+            res.type("application/json");
+            return new Gson().toJson(Question.getQuestion(req.params(":id")).getCompleteQuestion());
+        });
+
+        //delete a question by id
+        delete("/questions/:id", (req, res) -> {
+            res.type("application/json");
+            Question.deleteQuestion(req.params(":id"));
+            return new Gson().toJson(true);
+        });
+
+        //Add question (post es usado para crear)
+        post("/questions", (req, res) -> {
+            Map<String, Object> bodyParams = new Gson().fromJson(req.body(), Map.class); //req.body -> indica que un parámetro del método debe estar vinculado al CUERPO de la solicitud web.
+            String preg = (String) bodyParams.get("preg");
+            Integer areaId = Integer.parseInt((String) bodyParams.get("areaId"));
+            Integer userId = Integer.parseInt((String) bodyParams.get("userId"));
+            Integer estado = Integer.parseInt((String) bodyParams.get("correcta"));
+            Question.createQuestion(preg, areaId, userId);
+            res.type("application/json");
+            return new Gson().toJson(true);
+        });
+
+        //Edit a User (put es usado para crear o editar)
+        put("/questions/:id", (req, res) -> {
+            Map<String, Object> bodyParams = new Gson().fromJson(req.body(), Map.class);
             res.type("application/json");
             String id = req.params(":id");
-            Game g = Game.findById(id);
-            g.delete();
-            return new Gson().toJson(true);
-        });*/
+            String pregunta = (String) bodyParams.get("preg");
+            Integer areaId = Integer.parseInt((String) bodyParams.get("areaId"));
+            Integer userId = Integer.parseInt((String) bodyParams.get("userId"));
+            Integer correcta = Integer.parseInt((String) bodyParams.get("correcta"));
+            Question toQuestion = Question.findById(id);
+            if (toQuestion != null) {
+                toQuestion.set("preg", pregunta);
+                toQuestion.set("areaId", areaId);
+                toQuestion.set("userId", userId);
+                toQuestion.set("correcta", correcta);
+                toQuestion.saveIt();
+                return new Gson().toJson(true);
+            } else {
+                return new Gson().toJson(false);
+            }
+        });
 
-        //listar todas las preguntas de un usuario.
+        //-----------------------------------END QUESTION------------------//
+        //
+        //---------------------------ANSWER-----------------//
+        // returns a answer by id
+        get("/answers/:id", (req, res) -> {
+            res.type("application/json");
+            return new Gson().toJson(Answer.getAnswer(req.params(":id")).getCompleteAnswer());
+        });
+
+        // returns all answer 
+        get("/answers", (req, res) -> {
+            res.type("application/json");
+            return new Gson().toJson(Answer.getAllAnswer());
+        });
+
+        //delete a answer by id
+        delete("/answers/:id", (req, res) -> {
+            res.type("application/json");
+            Answer.deleteAnswer(req.params(":id"));
+            return new Gson().toJson(true);
+        });
+
+        //Add Answer (post es usado para crear)
+        post("/answers", (req, res) -> {
+            Map<String, Object> bodyParams = new Gson().fromJson(req.body(), Map.class); //req.body -> indica que un parámetro del método debe estar vinculado al CUERPO de la solicitud web.
+            String resp = (String) bodyParams.get("resp");
+            Integer tipoAnswer = Integer.parseInt((String) bodyParams.get("tipoAnswer"));
+            Integer pregId = Integer.parseInt((String) bodyParams.get("pregId"));
+            Answer.createAnswer(resp, tipoAnswer, pregId);
+            res.type("application/json");
+            return new Gson().toJson(true);
+        });
+
+        //Edit a User (put es usado para crear o editar)
+        put("/answers/:id", (req, res) -> {
+            Map<String, Object> bodyParams = new Gson().fromJson(req.body(), Map.class);
+            res.type("application/json");
+            String id = req.params(":id");
+            String respuesta = (String) bodyParams.get("resp");
+            Integer tipoAnswer = Integer.parseInt((String) bodyParams.get("tipoAnswer"));
+            Integer pregId = Integer.parseInt((String) bodyParams.get("pregId"));
+            Answer toAnswer = Answer.findById(id);
+            if (toAnswer != null) {
+                toAnswer.set("resp", respuesta);
+                toAnswer.set("tipoAnswer", tipoAnswer);
+                toAnswer.set("pregId", pregId);
+                toAnswer.saveIt();
+                return new Gson().toJson(true);
+            } else {
+                return new Gson().toJson(false);
+            }
+        });
+        //-------------------END ANSWER-------------------//
+
+        //------------------------QUESTIONS_GAMES-------//
+        /*
+        //listar todas las preguntas de un juego.
         get("/questions_games/:idGame", (req, res) -> {
             res.type("application/json");
             String idGame = req.params(":idGame");
             List<QuestionGame> qGames = QuestionGame.where("gameId = ?", idGame);
             List<Map> qMapGames = new ArrayList<Map>();
-            for(QuestionGame quest:qGames){
+            for (QuestionGame quest : qGames) {
                 qMapGames.add(quest.getCompleteQuestionGame());
             }
             return new Gson().toJson(qMapGames);
         });
 
-        //listar todos las preguntas de todos los games.
+        
+        //listar todos las preguntas de todos los games. --> para mi esta busqueda no es necesaria
         /*get("/questions_games", (req, res) -> {
             res.type("application/json");
             List<QuestionGame> qGames = QuestionGame.findAll();
@@ -155,32 +280,34 @@ public class App {
                 qMapGames.add(quest.getCompleteQuestionGame());
             }
             return new Gson().toJson(qMapGames);
-        });*/
-
-        //agregar un nuevo QuestionGame.
+        });
+        
+        //agregar un nuevo QuestionGame. --> esto no deberia estar xq la tabla se completa por otras dos tablas
         post("/questions_games", (req, res) -> {
-            Map<String,Object> bodyParams = new Gson().fromJson(req.body(), Map.class);
+            Map<String, Object> bodyParams = new Gson().fromJson(req.body(), Map.class);
             Integer questId = Integer.parseInt((String) bodyParams.get("questionId"));
             Integer idGame = Integer.parseInt((String) bodyParams.get("gameId"));
             QuestionGame qGame = new QuestionGame(questId, idGame);
             qGame.saveIt();
             res.type("application/json");
             return new Gson().toJson(true);
-        });
-
-        //Listar todas las respuestas de un determinado Game
+        });*/
+        //-----------------------------END QUESTIONS_GAMES------------------------//
+        //----------------------ANSWER_GAMES--------------------------//
+        /*
+        //Listar todas las respuestas de un determinado Game --> para mi esta busqueda no es necesaria
         get("/answers_games/:gameId", (req, res) -> {
             res.type("application/json");
             String idGame = req.params(":gameId");
             List<AnswerGame> aGames = AnswerGame.where("gameId = ?", idGame);
             List<Map> aMapGames = new ArrayList<Map>();
-            for(AnswerGame answ:aGames){
+            for (AnswerGame answ : aGames) {
                 aMapGames.add(answ.getCompleteAnswerGame());
             }
             return new Gson().toJson(aMapGames);
         });
 
-        //Listar todas las respuestas de todos los games.
+        //Listar todas las respuestas de todos los games.--> para mi esta busqueda no es necesaria
         /*get("/answers_games", (req, res) -> {
             res.type("application/json");
             List<AnswerGame> aGames = AnswerGame.findAll();
@@ -189,204 +316,19 @@ public class App {
                 aMapGames.add(answ.getCompleteAnswerGame());
             }
             return new Gson().toJson(aMapGames);
-        });*/
-
-        //Agregar un nuevo AnswerGame en la base.
+        });
+        //Agregar un nuevo AnswerGame en la base. --> esto no deberia estar xq la tabla se completa por otras dos tablas
         post("/answers_games", (req, res) -> {
-            Map<String,Object> bodyParams = new Gson().fromJson(req.body(), Map.class);
+            Map<String, Object> bodyParams = new Gson().fromJson(req.body(), Map.class);
             Integer answId = Integer.parseInt((String) bodyParams.get("answerId"));
             Integer idGame = Integer.parseInt((String) bodyParams.get("gameId"));
             AnswerGame aGame = new AnswerGame(answId, idGame);
             aGame.saveIt();
             res.type("application/json");
             return new Gson().toJson(true);
-        });
+        });*/
+        //------------------END ANSWER_GAMES----------------------//
+        //--stat--
+        //--end stat--
     }
-
-    //////////////////////////////////////////////////////////////////////////////////////////////77
-
-        // returns an Answer by id
-        get("/answers/:id", (req, res) -> {
-            res.type("application/json");
-            String id = req.params(":id"); // req.params -> indica que un parámetro de método debe estar vinculado a un PARAMETRO de solicitud web.
-            Answer l = Answer.findById(id);
-            Map m = l.getCompleteAnswer();
-            return new Gson().toJson(m);
-        });
-
-        //returns all answers
-        get("/answers", (req, res) -> {
-            res.type("application/json");
-            List<Answer> r = new ArrayList<Answer>();
-            r = Answer.findAll();
-            List<Map> rm = new ArrayList<Map>();
-            for (Answer answer:r) {rm.add(answer.getCompleteAnswer());}
-            return new Gson().toJson(rm);
-        });
-
-        //delete an Answer by id
-        delete("/answers/:id", (req, res) -> {
-            res.type("application/json");
-            String id = req.params(":id");
-            Answer l = Answer.findById(id);
-            l.delete();
-            return new Gson().toJson(true);
-        });
-
-        //Add Answer (post es usado para crear)
-        post("/answers", (req, res) -> {
-            Map<String, Object> bodyParams = new Gson().fromJson(req.body(), Map.class); //req.body -> indica que un parámetro del método debe estar vinculado al CUERPO de la solicitud web.
-            String respuesta = (String) bodyParams.get("resp");
-            Integer tipoRespuesta = Integer.parseInt((String) bodyParams.get("tipoAnswer"));
-            Integer idPregunta = Integer.parseInt((String) bodyParams.get("pregId"));
-            Answer answer = new Answer(respuesta, tipoRespuesta, idPregunta);
-            answer.saveIt();
-            res.type("application/json");
-            return answer.toJson(true);
-        });
-
-        //Edit an Answer (put es usado para crear o editar)
-        put("/answers/:id", (req, res) -> {
-            Map<String, Object> bodyParams = new Gson().fromJson(req.body(), Map.class);
-            res.type("application/json");
-            String id = req.params(":id");
-            String respuesta = (String) bodyParams.get("resp");
-            Integer tipoRespuesta = Integer.parseInt((String) bodyParams.get("tipoAnswer"));
-            Integer idPregunta = Integer.parseInt((String) bodyParams.get("pregId"));
-            Answer toAnswer = Answer.findById(id);
-            System.out.println("toAnswer");
-            if (toAnswer != null) {
-                toAnswer.set("resp", respuesta);
-                toAnswer.set("tipoAnswer", tipoRespuesta);
-                toAnswer.set("pregId", idPregunta);
-                toAnswer.saveIt();
-                return new Gson().toJson(true);
-            } else {
-                return new Gson().toJson(false);
-            }
-        });
-
-
-        // returns an Area by id
-        get("/areas/:id", (req, res) -> {
-            res.type("application/json");
-            String id = req.params(":id"); // req.params -> indica que un parámetro de método debe estar vinculado a un PARAMETRO de solicitud web.
-            Area l = Area.findById(id);
-            Map m = l.getCompleteArea();
-            return new Gson().toJson(m);
-        });
-
-        //returns all areas
-        get("/areas", (req, res) -> {
-            res.type("application/json");
-            List<Area> r = new ArrayList<Area>();
-            r = Area.findAll();
-            List<Map> rm = new ArrayList<Map>();
-            for (Area area:r) {rm.add(area.getCompleteArea());}
-            return new Gson().toJson(rm);
-        });
-
-        //delete an Area by id
-        delete("/areas/:id", (req, res) -> {
-            res.type("application/json");
-            String id = req.params(":id");
-            Area l = Area.findById(id);
-            l.delete();
-            return new Gson().toJson(true);
-        });
-
-        //Add Area (post es usado para crear)
-        post("/areas", (req, res) -> {
-            Map<String, Object> bodyParams = new Gson().fromJson(req.body(), Map.class); //req.body -> indica que un parámetro del método debe estar vinculado al CUERPO de la solicitud web.
-            String area = (String) bodyParams.get("nombreArea");
-            Integer idUsuario = Integer.parseInt((String) bodyParams.get("userId"));
-            Area area = new Area(area, idUsuario);
-            area.saveIt();
-            res.type("application/json");
-            return area.toJson(true);
-        });
-
-        //Edit an Area (put es usado para crear o editar)
-        put("/areas/:id", (req, res) -> {
-            Map<String, Object> bodyParams = new Gson().fromJson(req.body(), Map.class);
-            res.type("application/json");
-            String id = req.params(":id");
-            String area = (String) bodyParams.get("nombreArea");
-            Integer idUsuario = Integer.parseInt((String) bodyParams.get("userId"));
-            Area toArea = Area.findById(id);
-            System.out.println("toArea");
-            if (toArea != null) {
-                toArea.set("nombreArea", area);
-                toArea.set("userId", idUsuario);
-                toArea.saveIt();
-                return new Gson().toJson(true);
-            } else {
-                return new Gson().toJson(false);
-            }
-        });
-
-
-        // return a Question by id
-        get("/questions/:id", (req, res) -> {
-            res.type("application/json");
-            String id = req.params(":id"); // req.params -> indica que un parámetro de método debe estar vinculado a un PARAMETRO de solicitud web.
-            Question l = Question.findById(id);
-            Map m = l.getCompleteQuestion();
-            return new Gson().toJson(m);
-        });
-
-        //return all questions
-        get("/questions", (req, res) -> {
-            res.type("application/json");
-            List<Question> r = new ArrayList<Question>();
-            r = Question.findAll();
-            List<Map> rm = new ArrayList<Map>();
-            for (Question question:r) {rm.add(question.getCompleteQuestion());}
-            return new Gson().toJson(rm);
-        });
-
-        //delete a Question by id
-        delete("/questions/:id", (req, res) -> {
-            res.type("application/json");
-            String id = req.params(":id");
-            Question l = Question.findById(id);
-            l.delete();
-            return new Gson().toJson(true);
-        });
-
-        //Add Question (post es usado para crear)
-        post("/questions", (req, res) -> {
-            Map<String, Object> bodyParams = new Gson().fromJson(req.body(), Map.class); //req.body -> indica que un parámetro del método debe estar vinculado al CUERPO de la solicitud web.
-            String pregunta = (String) bodyParams.get("preg");
-            Integer idArea = Integer.parseInt((String) bodyParams.get("idArea"));
-            Integer idUsuario = Integer.parseInt((String) bodyParams.get("idUsuario"));
-            Integer correct = Integer.parseInt((String) bodyParams.get("correcta"));
-            Question question = new Question(pregunta, idArea, idUsuario, correct);
-            question.saveIt();
-            res.type("application/json");
-            return question.toJson(true);
-        });
-
-        //Edit a Question (put es usado para crear o editar)
-        put("/questions/:id", (req, res) -> {
-            Map<String, Object> bodyParams = new Gson().fromJson(req.body(), Map.class);
-            res.type("application/json");
-            String id = req.params(":id");
-            String pregunta = (String) bodyParams.get("preg");
-            Integer idArea = Integer.parseInt((String) bodyParams.get("areaId"));
-            Integer idUsuario = Integer.parseInt((String) bodyParams.get("userId"));
-            Integer correct = Integer.parseInt((String) bodyParams.get("correcta"));
-            Question toQuestion = Question.findById(id);
-            System.out.println("toQuestion");
-            if (toQuestion != null) {
-                toQuestion.set("preg", pregunta);
-                toQuestion.set("areaId", idArea);
-                toQuestion.set("userId", idUsuario);
-                toQuestion.set("correcta", correct);
-                toQuestion.saveIt();
-                return new Gson().toJson(true);
-            } else {
-                return new Gson().toJson(false);
-            }
-        });
 }
