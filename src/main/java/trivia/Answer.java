@@ -7,6 +7,10 @@ import java.util.Map;
 import org.javalite.activejdbc.Model;
 
 public class Answer extends Model {
+    static {
+        validatePresenceOf("resp").message("Ingrese la respuesta");
+    }
+
     private String resp;
     private int tipoAnswer;
     private int pregId;

@@ -5,6 +5,11 @@ import java.util.*;
 
 public class Game extends Model {
 
+    static{
+        dateFormat("yyyy-MM-dd","fecha"); //forma de la fecha 'YYYY-MM-DD'
+        validatePresenceOf("fecha").message("Ingrese la fecha del juego");
+    }
+
         private int userId;
         private Date fecha;
 

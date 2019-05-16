@@ -1,14 +1,18 @@
-package triviavet;
+package trivia;
 
-import triviavet.Game;
+import trivia.Game;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import java.util.Date;
+
+import org.javalite.activejdbc.Base;
+
 import static org.junit.Assert.assertEquals;
 
 public class GameTest {
 	
-	@before
+	@Before
 	public void before(){
     	Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://127.0.0.1/trivia_test?nullNamePatternMatchesAll=true", "root", "root");
     	System.out.println("GameTest setup");
@@ -31,11 +35,27 @@ public class GameTest {
 	}
 
 	@Test
+	public void invalidGame2(){
+		Game game = new Game();
+		game.set("fecha", "2019-15-06");//mes incorrecto
+
+		//assertEquals(game.isValid(), false);
+	}
+
+	@Test
 	public void validGame(){
 		Game game = new Game();
-		game.set("fecha", "2019-05-06");
+		game.set("fecha", "2019-05-15");
 
 		assertEquals(game.isValid(), true);
 	}
 
+	@Test
+	public void validGame2(){
+		Date date = new Date();
+		Game game = new Game();
+		game.set("fecha",date);
+
+		assertEquals(game.isValid(), true);
+	}
 }
