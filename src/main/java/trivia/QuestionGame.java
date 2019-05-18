@@ -42,7 +42,8 @@ public class QuestionGame extends Model {
         return m;
     }
     
-    //retorna el id de todas las preguntas hechas para un juego dado 
+    /*
+    //retorna el id de todas las preguntas hechas para un juego dado
     //correctas e incorrectas
     public static List<Integer> allQuestionGame(String gameId) {
         List<QuestionGame> qGames = QuestionGame.where("gameId = ?", gameId);
@@ -51,6 +52,5 @@ public class QuestionGame extends Model {
                 listQuestions.add(quest.getQuestionId());
             }
         return listQuestions;
-    }
-
+    }*/
 }

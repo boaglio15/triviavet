@@ -22,20 +22,19 @@ public class User extends Model {
     private String pass;
     private int tipoUser; //1=admin 0=jugador
     private int nivel;
-    private int idArea; //1=area1 2=area2...6=area6"
+    
 
     public User() {
 
     }
 
-    public User(String nombre, String apellido, String dni, String password, int tipo, int nivel, int idArea) {
+    public User(String nombre, String apellido, String dni, String password, int tipo, int nivel) {
         set("nom", nombre);
         set("ape", apellido);
         set("dni", dni);
         set("pass", password);
         set("tipoUser", tipo);
         set("nivel", nivel);
-        set("idArea", idArea);
     }
 
     public String getNom() {
@@ -62,9 +61,7 @@ public class User extends Model {
         return this.getInteger("nivel");
     }
     
-    public int getIdArea() {
-        return this.getInteger("idArea");
-    }
+    
 
     public Map getCompleteUser() {
         Map m = new HashMap();
@@ -75,7 +72,6 @@ public class User extends Model {
         m.put("pass", this.getPass());
         m.put("tipoUser", this.getTipoUser());
         m.put("nivel", this.getNivel());
-        m.put("idArea", this.getIdArea());
         return m;
     }
     
@@ -100,8 +96,8 @@ public class User extends Model {
         g.delete();
     }
 
-    public static void createUser(String nombre, String apellido, String dni, String password, int tipo, int nivel, int idArea) {
-        User user = new User(nombre, apellido, dni, password, tipo, nivel, idArea);
+    public static void createUser(String nombre, String apellido, String dni, String password, int tipo, int nivel) {
+        User user = new User(nombre, apellido, dni, password, tipo, nivel);
         user.saveIt();
     }
     
