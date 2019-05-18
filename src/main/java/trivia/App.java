@@ -31,20 +31,19 @@ public class App {
             //String userId = req.params(":userId"); //req.params -> indica que un parámetro de método debe estar vinculado a un PARAMETRO de solicitud web.
             return new Gson().toJson(Game.newGame(req.params(":userId")));
         });//FUNCIONA
-
         
         //selecciona una pregunta del area en que esta para hacer (no considera las preguntas ya hechas)
         get("/newQuestion/:gameId/:areaId", (req, res) -> {
             res.type("application/json");
             List<Integer> pregHechas = Game.getAllQuestionGameArea(req.params(":gameId"), req.params(":areaId")); //(gameId, areaId)//devuelve las preguntas hechas en el area que jugo por ultima vez
             List<Integer> pregEnArea = Game.allQuestionArea(req.params(":areaId"));
-            String pregSelec = Game.selectQuestion(pregHechas,pregEnArea);
+            String pregSelec = Question.getQuestion(Integer.toString(Game.selectQuestion(pregHechas,pregEnArea))).getPreg();
             return new Gson().toJson(pregSelec);
-        });//NO FUNCIONA selectquestion REVISAR
+        });//FUNCIONA 
 
         get("/newAnswer/:pregId", (req, res) -> {
             res.type("application/json");
-            return new Gson().toJson(Answer.selecAnswer(req.params(":pregId")));
+            return new Gson().toJson(Game.selecAnswer(req.params(":pregId")));
         });//FUNCIONA
 
         //fin juego

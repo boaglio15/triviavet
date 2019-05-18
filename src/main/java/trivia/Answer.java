@@ -70,13 +70,5 @@ public class Answer extends Model {
         ans.saveIt();
     }
     
-    //selecciona las respuestas correspondientes a una pregunta por si id
-    public static List<Map> selecAnswer(String pregId){
-        List<Answer> preg = Answer.where("pregId = ?", pregId);
-        List<Map> sa = new ArrayList<Map>();
-        for (Answer p : preg) {
-            sa.add(p.getCompleteAnswer());
-        }
-        return sa;
-    }
+    
 }
