@@ -13,8 +13,6 @@ public class App {
     public static void main(String[] args) {
 
         before((request, response) -> {
-            //User currentUser = (User) request.headers();
-            //User currentUser = request.headers();
             Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://127.0.0.1/trivia?nullNamePatternMatchesAll=true", "root", "root");
         });
 
@@ -22,10 +20,12 @@ public class App {
             Base.close();
         });
 
+
         //supongo que el usuario se loguea por primera vez y esto automaticamente crea un juego
         //(si ya esta loguado y quiere jugar nuevamente hay que buscar su juego iniciado)
         // inicio juego
-        //devuelve datos de la ultima partida del usuario (nivel y areas en las que esta jugando)
+        
+        //devuelve datos de la ultima partida del usuario (nivel y area)
         get("/newGame/:userId", (req, res) -> {
             res.type("application/json");
             //String userId = req.params(":userId"); //req.params -> indica que un parámetro de método debe estar vinculado a un PARAMETRO de solicitud web.
@@ -39,18 +39,19 @@ public class App {
             //String gameId = req.params(":gameId"); //lo pongo asi para probar
             //String areaId = req.params(":areaId");
             //como hago para pasar los dos parametros gameId, areaId necesarios para det la preg a hacer?????
-            List<Integer> pregHechas = Game.getAllQuestionGameArea(req.params(":gameId"), req.params(":areaId")); //(gameId, areaId)//devuelve las preguntas hechas en el area que jugo por ultima vez
-            List<Integer> pregEnArea = Game.allQuestionArea(req.params(":areaId"));
-            String pregSelec = Game.selectQuestion(pregHechas,pregEnArea);
-            return new Gson().toJson(pregSelec);
-        });//NO FUNCIONA selectquestion REVISAR
-
+            List<Integer> pregHechas = Question.getAllQuestionGameArea(req.params(":gameId"), req.params(":areaId")); //(gameId, areaId)//devuelve las preguntas hechas en el area que jugo por ultima vez
+            List<Integer> pregEnArea = Question.allQuestionArea(req.params(":areaId"));
+            //String pregSelec = Question.selectQuestion(pregHechas);
+            return new Gson().toJson(pregHechas);
+        });//NO FUNCIONA REVISAR
+        
         get("/newAnswer/:pregId", (req, res) -> {
             res.type("application/json");
             return new Gson().toJson(Answer.selecAnswer(req.params(":pregId")));
         });//FUNCIONA
 
         //fin juego
+        
         //-----------------------------------------USER---------------------//       
         // returns a User by id
         get("/users/:id", (req, res) -> {
@@ -80,7 +81,8 @@ public class App {
             String password = (String) bodyParams.get("pass");
             int tipo = Integer.parseInt((String) bodyParams.get("tipoUser"));
             int nivel = Integer.parseInt((String) bodyParams.get("nivel"));
-            User.createUser(nombre, apellido, dni, password, tipo, nivel);
+            int area = Integer.parseInt((String) bodyParams.get("idArea"));
+            User.createUser(nombre, apellido, dni, password, tipo, nivel, area);
             res.type("application/json");
             return new Gson().toJson(true);
         });

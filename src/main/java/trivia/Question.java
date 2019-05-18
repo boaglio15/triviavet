@@ -70,9 +70,7 @@ public class Question extends Model {
         ques.saveIt();
     }
 
-    /*
     //retorna el id de todas las preguntas hechas en un juego para un area determinada
-    //el user de todas areas en las que esta jugando selecciona una para seguir jugando
     public static List<Integer> getAllQuestionGameArea(String gameId, String areaId) {
         List<Integer> questId = new ArrayList<Integer>();
         List<Integer> qId = QuestionGame.allQuestionGame(gameId);
@@ -83,9 +81,8 @@ public class Question extends Model {
             }
         }
         return questId;
-    }*/
+    }
 
-    /*
     //retorna el id de todas las preguntas en un area
     public static List<Integer> allQuestionArea(String areaId) {
         List<Question> quest = Question.where("areaId = ?", areaId);
@@ -94,9 +91,8 @@ public class Question extends Model {
             listQuestions.add((Integer) questA.getId());
         }
         return listQuestions;
-    }*/
-    
-    /*
+    }
+
     //REVISAR ESTE METODO LA FORMA EN QUE SELECCIONA ¡¡¡
     //retorna una pregunta para hacer
     public static String selectQuestion(List<Integer> pregHechas, List<Integer> pregEnArea) {
@@ -109,5 +105,5 @@ public class Question extends Model {
             }
         }
         return null;
-    }*/
+    }
 }
