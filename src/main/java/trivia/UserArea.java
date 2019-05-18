@@ -53,4 +53,6 @@ public class UserArea extends Model {
         return listArea;
     }
 
+    
+    
 }

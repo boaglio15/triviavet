@@ -36,9 +36,6 @@ public class App {
         //selecciona una pregunta del area en que esta para hacer (no considera las preguntas ya hechas)
         get("/newQuestion/:gameId/:areaId", (req, res) -> {
             res.type("application/json");
-            //String gameId = req.params(":gameId"); //lo pongo asi para probar
-            //String areaId = req.params(":areaId");
-            //como hago para pasar los dos parametros gameId, areaId necesarios para det la preg a hacer?????
             List<Integer> pregHechas = Game.getAllQuestionGameArea(req.params(":gameId"), req.params(":areaId")); //(gameId, areaId)//devuelve las preguntas hechas en el area que jugo por ultima vez
             List<Integer> pregEnArea = Game.allQuestionArea(req.params(":areaId"));
             String pregSelec = Game.selectQuestion(pregHechas,pregEnArea);

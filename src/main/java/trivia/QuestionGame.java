@@ -42,15 +42,5 @@ public class QuestionGame extends Model {
         return m;
     }
     
-    /*
-    //retorna el id de todas las preguntas hechas para un juego dado
-    //correctas e incorrectas
-    public static List<Integer> allQuestionGame(String gameId) {
-        List<QuestionGame> qGames = QuestionGame.where("gameId = ?", gameId);
-            List<Integer> listQuestions = new ArrayList<Integer>();
-            for (QuestionGame quest : qGames) {
-                listQuestions.add(quest.getQuestionId());
-            }
-        return listQuestions;
-    }*/
+   
 }

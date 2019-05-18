@@ -4,7 +4,7 @@ use trivia;
 
 create table areas (
         id int auto_increment,	
-        nomArea varchar(100), /*solo hay 6 areas*/
+        nomArea varchar(100), /* solo hay 6 areas */
         /*completada int,*/
     	primary key(id)        
 );

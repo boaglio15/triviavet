@@ -70,44 +70,6 @@ public class Question extends Model {
         ques.saveIt();
     }
 
-    /*
-    //retorna el id de todas las preguntas hechas en un juego para un area determinada
-    //el user de todas areas en las que esta jugando selecciona una para seguir jugando
-    public static List<Integer> getAllQuestionGameArea(String gameId, String areaId) {
-        List<Integer> questId = new ArrayList<Integer>();
-        List<Integer> qId = QuestionGame.allQuestionGame(gameId);
-        for (Integer quest : qId) {
-            Question qq = getQuestion(Integer.toString(quest));
-            if ((Integer) qq.getAreaId() == Integer.parseInt((String) areaId)) {
-                questId.add((int) qq.getId());
-            }
-        }
-        return questId;
-    }*/
-
-    /*
-    //retorna el id de todas las preguntas en un area
-    public static List<Integer> allQuestionArea(String areaId) {
-        List<Question> quest = Question.where("areaId = ?", areaId);
-        List<Integer> listQuestions = new ArrayList<Integer>();
-        for (Question questA : quest) {
-            listQuestions.add((Integer) questA.getId());
-        }
-        return listQuestions;
-    }*/
     
-    /*
-    //REVISAR ESTE METODO LA FORMA EN QUE SELECCIONA ¡¡¡
-    //retorna una pregunta para hacer
-    public static String selectQuestion(List<Integer> pregHechas, List<Integer> pregEnArea) {
-        
-        for (Integer questId : pregHechas) {
-            String id = "4"; //considerando las preguntas que hay en un area selccionar unu id  
-            Question pregSelec = getQuestion(id);
-            if (questId != pregSelec.getId()) {
-                return pregSelec.getPreg();
-            }
-        }
-        return null;
-    }*/
+    
 }

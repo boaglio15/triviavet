@@ -17,7 +17,7 @@ INSERT INTO questions (preg,areaId,userAdminId) VALUES
 	("¿Hola todo bien?",1,1),
     ("¿En donde estabas?",2,1)
     
-INSERT INTO answers (resp,tipoAnswer,pregId) VALUES /* las tres opciones incorrectas siempre serian las mismas, FIJARSE ESOOOO*/
+INSERT INTO answers (resp,tipoAnswer,pregId) VALUES /*las tres opciones incorrectas siempre serian las mismas, FIJARSE ESOOOO*/
 	("Si",1,1),
 	("No",0,1),
 	("Que",0,1),
