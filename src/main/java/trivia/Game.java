@@ -116,7 +116,7 @@ public class Game extends Model {
     public static int selectQuestion(List<Integer> pregHechas, List<Integer> pregEnArea) {      
         int indexRandom = (int)(Math.random()*(pregEnArea.size())); //no hacer pregEnArea.size()-1 xq random no genera el num extremo
         while (pregHechas.contains(pregEnArea.get(indexRandom))) {
-            indexRandom = (int)(Math.random()*((pregEnArea.size()-1)));
+            indexRandom = (int)(Math.random()*((pregEnArea.size())));
         }
         int pregSelec = (int) Question.getQuestion(Integer.toString(pregEnArea.get(indexRandom))).getId();
         return pregSelec; 
