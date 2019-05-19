@@ -5,9 +5,9 @@ INSERT INTO areas (nomArea) VALUES
     ("B")
 	
     
-INSERT INTO users (nom, ape, dni, pass, tipoUser,nivel) VALUES 
-	("Agustin","Boaglio","343321","abc123",0,1),
-    ("Fernando", "Bentolila", "4592313", "tre457",1,2)
+INSERT INTO users (nom, ape, dni, pass, tipoUser) VALUES 
+	("Agustin","Boaglio","343321","abc123",0),
+    ("Fernando", "Bentolila", "4592313", "tre457",1)
     
 INSERT INTO games (userId,fecha) VALUES
 	(1,'2019-06-01'),
@@ -51,6 +51,6 @@ INSERT INTO answers_games (answerId,gameId) VALUES
 (3,2),
 (4,2)	
 
-INSERT INTO users_areas (userId,areaId,completada) VALUES
-(1,1,0),
-(2,2,0)
+INSERT INTO users_areas (userId,areaId,completada,nivel) VALUES
+(1,1,0,0),
+(2,2,0,0)
