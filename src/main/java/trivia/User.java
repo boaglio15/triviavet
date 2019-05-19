@@ -9,7 +9,7 @@ public class User extends Model {
         validatePresenceOf("dni").message("Ingrese DNI");
         validatePresenceOf("pass").message("Ingrese clave");
 
-        /*int min=8, max=10; 
+        /*int min=8, max=10;
         validateRange("dni",min, max).message("El tamaño minimo y maximo de caracteres validos del dni");*/
 
         //Solo se permite dni que este formado por letras maysuculas y minusculas y numeros, no pueden tener caracteres especiales ni espacios
@@ -22,7 +22,7 @@ public class User extends Model {
     private String pass;
     private int tipoUser; //1=admin 0=jugador
     private int nivel;
-    
+
 
     public User() {
 
@@ -60,8 +60,8 @@ public class User extends Model {
     public int getNivel() {
         return this.getInteger("nivel");
     }
-    
-    
+
+
 
     public Map getCompleteUser() {
         Map m = new HashMap();
@@ -74,7 +74,7 @@ public class User extends Model {
         m.put("nivel", this.getNivel());
         return m;
     }
-    
+
     public static List<Map> getAllUser() {
         List<User> r = new ArrayList<User>();
         r = User.findAll();
@@ -89,8 +89,7 @@ public class User extends Model {
         User l = User.findById(id);
         return l;
     }
-    
-   
+
     public static void deleteUser(String id) {
         User g = User.findById(id);
         g.delete();
@@ -100,8 +99,18 @@ public class User extends Model {
         User user = new User(nombre, apellido, dni, password, tipo, nivel);
         user.saveIt();
     }
-    
-    
+
+    //Funcion que retorna el Id de un usuario si esta registrado.
+    public static Integer userLogin(String docum, String password){
+        List<User> l = User.where("dni = ?", docum);
+        if (l == null)
+            return -1; //Usuario no registrado.
+        if (l.get(0).getPass().equals(password))
+            return ((Integer) l.get(0).getId());
+        return -2; //No coincide el password.
+    }
+
+
     //userLogin
     //registerUser
     //userLogout

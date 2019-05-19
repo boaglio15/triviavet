@@ -5,7 +5,6 @@ use trivia;
 create table areas (
         id int auto_increment,	
         nomArea varchar(100), /* solo hay 6 areas */
-        /*completada int,*/
     	primary key(id)        
 );
 
@@ -17,7 +16,6 @@ create table users (
     	dni varchar(255) not null,
     	pass varchar(8),
         tipoUser int,
-		nivel int,
         /*idArea int,*/
     	primary key (id)
         
@@ -69,6 +67,7 @@ create table users_areas(
 		userId int,
         areaId int,
         completada int,
+		nivel int,
         foreign key (userId) references users(id),
         foreign key (areaId) references areas(id),
         primary key (userId,areaId)

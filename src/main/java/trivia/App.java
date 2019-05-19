@@ -22,17 +22,43 @@ public class App {
             Base.close();
         });
 
+        //------------------LOGIN-------------------------//
+
+        get("/login/:dniUser/:pass", (req, res) -> {
+            String documento = (String) req.params(":dniUser");
+            String pass = (String) req.params(":pass");
+            int idUsr = User.userLogin(documento, pass);
+            if (idUsr > 0)
+                return new Gson().toJson(true);
+            return new Gson().toJson(false);
+        });
+
+        //Registration User
+        post("/users", (req, res) -> {
+            Map<String, Object> bodyParams = new Gson().fromJson(req.body(), Map.class); //req.body -> indica que un parámetro del método debe estar vinculado al CUERPO de la solicitud web.
+            String nombre = (String) bodyParams.get("nom");
+            String apellido = (String) bodyParams.get("ape");
+            String dni = (String) bodyParams.get("dni");
+            String password = (String) bodyParams.get("pass");
+            int tipo = Integer.parseInt((String) bodyParams.get("tipoUser"));
+            int nivel = Integer.parseInt((String) bodyParams.get("nivel"));
+            User.createUser(nombre, apellido, dni, password, tipo, nivel);
+            res.type("application/json");
+            return new Gson().toJson(true);
+        });
+
+        //-------------------------------FIN LOGIN---------------------------------------//
+
         //supongo que el usuario se loguea por primera vez y esto automaticamente crea un juego
         //(si ya esta loguado y quiere jugar nuevamente hay que buscar su juego iniciado)
         // inicio juego
         //devuelve datos de la ultima partida del usuario (nivel y areas en las que esta jugando)
         get("/newGame/:userId", (req, res) -> {
             res.type("application/json");
-            //String userId = req.params(":userId"); //req.params -> indica que un parámetro de método debe estar vinculado a un PARAMETRO de solicitud web.
             return new Gson().toJson(Game.newGame(req.params(":userId")));
         });//FUNCIONA
 
-        
+
         //selecciona una pregunta del area en que esta para hacer (no considera las preguntas ya hechas)
         get("/newQuestion/:gameId/:areaId", (req, res) -> {
             res.type("application/json");
@@ -48,7 +74,7 @@ public class App {
         });//FUNCIONA
 
         //fin juego
-        //-----------------------------------------USER---------------------//       
+        //-----------------------------------------USER---------------------//
         // returns a User by id
         get("/users/:id", (req, res) -> {
             res.type("application/json");
@@ -65,20 +91,6 @@ public class App {
         delete("/users/:id", (req, res) -> {
             res.type("application/json");
             User.deleteUser(req.params(":id"));
-            return new Gson().toJson(true);
-        });
-
-        //Add User (post es usado para crear)
-        post("/users", (req, res) -> {
-            Map<String, Object> bodyParams = new Gson().fromJson(req.body(), Map.class); //req.body -> indica que un parámetro del método debe estar vinculado al CUERPO de la solicitud web.
-            String nombre = (String) bodyParams.get("nom");
-            String apellido = (String) bodyParams.get("ape");
-            String dni = (String) bodyParams.get("dni");
-            String password = (String) bodyParams.get("pass");
-            int tipo = Integer.parseInt((String) bodyParams.get("tipoUser"));
-            int nivel = Integer.parseInt((String) bodyParams.get("nivel"));
-            User.createUser(nombre, apellido, dni, password, tipo, nivel);
-            res.type("application/json");
             return new Gson().toJson(true);
         });
 
@@ -206,7 +218,7 @@ public class App {
             return new Gson().toJson(Answer.getAnswer(req.params(":id")).getCompleteAnswer());
         });
 
-        // returns all answer 
+        // returns all answer
         get("/answers", (req, res) -> {
             res.type("application/json");
             return new Gson().toJson(Answer.getAllAnswer());
@@ -249,6 +261,20 @@ public class App {
                 return new Gson().toJson(false);
             }
         });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         //-------------------END ANSWER-------------------//
 
         //------------------------QUESTIONS_GAMES-------//
@@ -265,7 +291,7 @@ public class App {
             return new Gson().toJson(qMapGames);
         });
 
-        
+
         //listar todos las preguntas de todos los games. --> para mi esta busqueda no es necesaria
         /*get("/questions_games", (req, res) -> {
             res.type("application/json");
@@ -276,7 +302,7 @@ public class App {
             }
             return new Gson().toJson(qMapGames);
         });
-        
+
         //agregar un nuevo QuestionGame. --> esto no deberia estar xq la tabla se completa por otras dos tablas
         post("/questions_games", (req, res) -> {
             Map<String, Object> bodyParams = new Gson().fromJson(req.body(), Map.class);

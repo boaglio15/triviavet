@@ -65,14 +65,14 @@ public class Game extends Model {
     }
 
     //------metodos para manejo de juego-----------------
-    
+
     //este metodo tiene que traer todos los datos de juego del usuario
     public static Map newGame(String userId) {
         List<Integer> areas = UserArea.getAreasUser(userId);
         Map m = new HashMap();
-        m.put("nivel", User.getUser(userId).getNivel());
         for (Integer are : areas) {
             m.put("area", are);
+            m.put("nivel",are);
         }
         return m;
     }
@@ -87,7 +87,7 @@ public class Game extends Model {
             }
         return listQuestions;
     }
-    
+
     //retorna el id de todas las preguntas hechas en un juego para un area determinada
     //el user de todas areas en las que esta jugando selecciona una para seguir jugando
     public static List<Integer> getAllQuestionGameArea(String gameId, String areaId) {
@@ -101,7 +101,7 @@ public class Game extends Model {
         }
         return questId;
     }
-    
+
     //retorna el id de todas las preguntas en un area
     public static List<Integer> allQuestionArea(String areaId) {
         List<Question> quest = Question.where("areaId = ?", areaId);
@@ -111,13 +111,13 @@ public class Game extends Model {
         }
         return listQuestions;
     }
-    
-    
+
+
     //REVISAR ESTE METODO LA FORMA EN QUE SELECCIONA ¡¡¡
     //retorna una pregunta para hacer
     public static String selectQuestion(List<Integer> pregHechas, List<Integer> pregEnArea) {
         for (Integer questId : pregHechas) {
-            String id = "4"; //considerando las preguntas que hay en un area selccionar unu id  
+            String id = "4"; //considerando las preguntas que hay en un area selccionar unu id
             ///
             Question pregSelec = Question.getQuestion(id);
             if (questId != pregSelec.getId()) {
@@ -126,13 +126,13 @@ public class Game extends Model {
         }
         return null;
     }
-    
+
 
 
     public static void play(String userId) {
 
     }
 
-    
-    
+
+
 }
