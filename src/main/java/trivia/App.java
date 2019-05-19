@@ -10,9 +10,13 @@ import org.javalite.activejdbc.Base;
 
 public class App {
 
+    //static User currentUser;
+
     public static void main(String[] args) {
 
         before((request, response) -> {
+            //String headerToken = (String) request.headers("users");
+            //currentUser = User.getUser(headerToken);
             //User currentUser = (User) request.headers();
             //User currentUser = request.headers();
             Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://127.0.0.1/trivia?nullNamePatternMatchesAll=true", "root", "root");
@@ -20,6 +24,10 @@ public class App {
 
         after((request, response) -> {
             Base.close();
+            response.header("Access-Control-Allow-Origin", "*");
+            response.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
+            response.header("Access-Control-Allow-Headers",
+                    "Content-Type,Authorization,X-Requested-With,Content-Length,Accept,Origin,");
         });
 
         //------------------LOGIN-------------------------//
@@ -58,19 +66,18 @@ public class App {
             return new Gson().toJson(Game.newGame(req.params(":userId")));
         });//FUNCIONA
 
-
         //selecciona una pregunta del area en que esta para hacer (no considera las preguntas ya hechas)
         get("/newQuestion/:gameId/:areaId", (req, res) -> {
             res.type("application/json");
             List<Integer> pregHechas = Game.getAllQuestionGameArea(req.params(":gameId"), req.params(":areaId")); //(gameId, areaId)//devuelve las preguntas hechas en el area que jugo por ultima vez
             List<Integer> pregEnArea = Game.allQuestionArea(req.params(":areaId"));
-            String pregSelec = Game.selectQuestion(pregHechas,pregEnArea);
+            String pregSelec = Question.getQuestion(Integer.toString(Game.selectQuestion(pregHechas, pregEnArea))).getPreg();
             return new Gson().toJson(pregSelec);
-        });//NO FUNCIONA selectquestion REVISAR
+        });//FUNCIONA
 
         get("/newAnswer/:pregId", (req, res) -> {
             res.type("application/json");
-            return new Gson().toJson(Answer.selecAnswer(req.params(":pregId")));
+            return new Gson().toJson(Game.selecAnswer(req.params(":pregId")));
         });//FUNCIONA
 
         //fin juego
@@ -96,7 +103,8 @@ public class App {
 
         //Edit a User (put es usado para crear o editar)
         put("/users/:id", (req, res) -> {
-            Map<String, Object> bodyParams = new Gson().fromJson(req.body(), Map.class);
+            Map<String, Object> bodyParams = new Gson().fromJson(req.body(), Map.class
+            );
             res.type("application/json");
             String id = req.params(":id");
             String nombre = (String) bodyParams.get("nom");
@@ -137,7 +145,8 @@ public class App {
 
         //agregar un nuevo game.
         post("/games", (req, res) -> {
-            Map<String, Object> bodyParams = new Gson().fromJson(req.body(), Map.class);
+            Map<String, Object> bodyParams = new Gson().fromJson(req.body(), Map.class
+            );
             Integer usuarioId = Integer.parseInt((String) bodyParams.get("userId"));
             String f = (String) bodyParams.get("fecha");
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
@@ -177,7 +186,8 @@ public class App {
 
         //Add question (post es usado para crear)
         post("/questions", (req, res) -> {
-            Map<String, Object> bodyParams = new Gson().fromJson(req.body(), Map.class); //req.body -> indica que un parámetro del método debe estar vinculado al CUERPO de la solicitud web.
+            Map<String, Object> bodyParams = new Gson().fromJson(req.body(), Map.class
+            ); //req.body -> indica que un parámetro del método debe estar vinculado al CUERPO de la solicitud web.
             String preg = (String) bodyParams.get("preg");
             Integer areaId = Integer.parseInt((String) bodyParams.get("areaId"));
             Integer userId = Integer.parseInt((String) bodyParams.get("userId"));
@@ -189,7 +199,8 @@ public class App {
 
         //Edit a User (put es usado para crear o editar)
         put("/questions/:id", (req, res) -> {
-            Map<String, Object> bodyParams = new Gson().fromJson(req.body(), Map.class);
+            Map<String, Object> bodyParams = new Gson().fromJson(req.body(), Map.class
+            );
             res.type("application/json");
             String id = req.params(":id");
             String pregunta = (String) bodyParams.get("preg");
@@ -233,7 +244,8 @@ public class App {
 
         //Add Answer (post es usado para crear)
         post("/answers", (req, res) -> {
-            Map<String, Object> bodyParams = new Gson().fromJson(req.body(), Map.class); //req.body -> indica que un parámetro del método debe estar vinculado al CUERPO de la solicitud web.
+            Map<String, Object> bodyParams = new Gson().fromJson(req.body(), Map.class
+            ); //req.body -> indica que un parámetro del método debe estar vinculado al CUERPO de la solicitud web.
             String resp = (String) bodyParams.get("resp");
             Integer tipoAnswer = Integer.parseInt((String) bodyParams.get("tipoAnswer"));
             Integer pregId = Integer.parseInt((String) bodyParams.get("pregId"));
@@ -244,7 +256,8 @@ public class App {
 
         //Edit a User (put es usado para crear o editar)
         put("/answers/:id", (req, res) -> {
-            Map<String, Object> bodyParams = new Gson().fromJson(req.body(), Map.class);
+            Map<String, Object> bodyParams = new Gson().fromJson(req.body(), Map.class
+            );
             res.type("application/json");
             String id = req.params(":id");
             String respuesta = (String) bodyParams.get("resp");
