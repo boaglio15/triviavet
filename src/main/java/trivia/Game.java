@@ -68,11 +68,11 @@ public class Game extends Model {
     
     //este metodo tiene que traer todos los datos de juego del usuario
     public static Map newGame(String userId) {
-        List<Integer> areas = UserArea.getAreasUser(userId);
+        List<UserArea> areas = UserArea.getAreasUser(userId);
         Map m = new HashMap();
-        for (Integer are : areas) {
-            m.put("area", are);
-            m.put("nivel",are);
+        for (UserArea are : areas) {
+            m.put("area", are.getAreaId());
+            m.put("nivel",are.getNivel());
         }
         return m;
     }

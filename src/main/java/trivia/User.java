@@ -21,20 +21,18 @@ public class User extends Model {
     private String dni;
     private String pass;
     private int tipoUser; //1=admin 0=jugador
-    private int nivel;
 
 
     public User() {
 
     }
 
-    public User(String nombre, String apellido, String dni, String password, int tipo, int nivel) {
+    public User(String nombre, String apellido, String dni, String password, int tipo) {
         set("nom", nombre);
         set("ape", apellido);
         set("dni", dni);
         set("pass", password);
         set("tipoUser", tipo);
-        set("nivel", nivel);
     }
 
     public String getNom() {
@@ -57,9 +55,7 @@ public class User extends Model {
         return this.getInteger("tipoUser");
     }
 
-    public int getNivel() {
-        return this.getInteger("nivel");
-    }
+    
 
 
 
@@ -71,7 +67,6 @@ public class User extends Model {
         m.put("dni", this.getDni());
         m.put("pass", this.getPass());
         m.put("tipoUser", this.getTipoUser());
-        m.put("nivel", this.getNivel());
         return m;
     }
 
@@ -95,8 +90,8 @@ public class User extends Model {
         g.delete();
     }
 
-    public static void createUser(String nombre, String apellido, String dni, String password, int tipo, int nivel) {
-        User user = new User(nombre, apellido, dni, password, tipo, nivel);
+    public static void createUser(String nombre, String apellido, String dni, String password, int tipo) {
+        User user = new User(nombre, apellido, dni, password, tipo);
         user.saveIt();
     }
 

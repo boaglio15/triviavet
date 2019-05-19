@@ -24,18 +24,18 @@ public class App {
 
         after((request, response) -> {
             Base.close();
-            response.header("Access-Control-Allow-Origin", "*");
-            response.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
-            response.header("Access-Control-Allow-Headers",
-                    "Content-Type,Authorization,X-Requested-With,Content-Length,Accept,Origin,");
+            //response.header("Access-Control-Allow-Origin", "*");
+            //response.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
+            //response.header("Access-Control-Allow-Headers",
+             //       "Content-Type,Authorization,X-Requested-With,Content-Length,Accept,Origin,");
         });
 
         //------------------LOGIN-------------------------//
-
         get("/login/:dniUser/:pass", (req, res) -> {
             String documento = (String) req.params(":dniUser");
             String pass = (String) req.params(":pass");
             int idUsr = User.userLogin(documento, pass);
+            System.out.println(idUsr);
             if (idUsr > 0)
                 return new Gson().toJson(true);
             return new Gson().toJson(false);
@@ -49,8 +49,7 @@ public class App {
             String dni = (String) bodyParams.get("dni");
             String password = (String) bodyParams.get("pass");
             int tipo = Integer.parseInt((String) bodyParams.get("tipoUser"));
-            int nivel = Integer.parseInt((String) bodyParams.get("nivel"));
-            User.createUser(nombre, apellido, dni, password, tipo, nivel);
+            User.createUser(nombre, apellido, dni, password, tipo);
             res.type("application/json");
             return new Gson().toJson(true);
         });
@@ -112,7 +111,6 @@ public class App {
             String dni = (String) bodyParams.get("dni");
             String password = (String) bodyParams.get("pass");
             Integer tipo = Integer.parseInt((String) bodyParams.get("tipoUser"));
-            Integer nivel = Integer.parseInt((String) bodyParams.get("nivel"));
             User toUser = User.findById(id);
             if (toUser != null) {
                 toUser.set("nom", nombre);
@@ -120,7 +118,6 @@ public class App {
                 toUser.set("dni", dni);
                 toUser.set("pass", password);
                 toUser.set("tipoUser", tipo);
-                toUser.set("nivel", nivel);
                 toUser.saveIt();
                 return new Gson().toJson(true);
             } else {
