@@ -10,18 +10,18 @@ public class Question extends Model {
     static {
         validatePresenceOf("preg").message("Ingrese la pregunta");
     }
-    
+
     private String preg;
     private int areaId;
-    private int userId;
+    private int userAdminId;
 
     public Question() {
     }
 
-    public Question(String preg, int areaId, int userId) {
+    public Question(String preg, int areaId, int userAdminId) {
         set("preg", preg);
         set("areaId", areaId);
-        set("userId", userId);
+        set("userAdminId", userAdminId);
     }
 
     public String getPreg() {
@@ -33,7 +33,7 @@ public class Question extends Model {
     }
 
     public Integer getUserId() {
-        return this.getInteger("userId");
+        return this.getInteger("userAdminId");
     }
 
     public Map getCompleteQuestion() {
@@ -41,7 +41,7 @@ public class Question extends Model {
         m.put("id", this.getId());
         m.put("preg", this.getPreg());
         m.put("areaId", this.getAreaId());
-        m.put("userId", this.getUserId());
+        m.put("userAdminId", this.getUserId());
         return m;
     }
 
@@ -65,11 +65,11 @@ public class Question extends Model {
         q.delete();
     }
 
-    public static void createQuestion(String preg, int areaId, int userId) {
-        Question ques = new Question(preg, areaId, userId);
+    public static void createQuestion(String preg, int areaId, int userAdminId) {
+        Question ques = new Question(preg, areaId, userAdminId);
         ques.saveIt();
     }
 
-    
-    
+
+
 }

@@ -53,10 +53,6 @@ public class User extends Model {
         return this.getInteger("tipoUser");
     }
 
-    
-
-
-
     public Map getCompleteUser() {
         Map m = new HashMap();
         m.put("id", this.getId());
