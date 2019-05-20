@@ -8,9 +8,7 @@ public class User extends Model {
     static {
         validatePresenceOf("dni").message("Ingrese DNI");
         validatePresenceOf("pass").message("Ingrese clave");
-
-        /*int min=8, max=10;
-        validateRange("dni",min, max).message("El tamaño minimo y maximo de caracteres validos del dni");*/
+        validatePresenceOf("nom", "ape", "tipoUser");
 
         //Solo se permite dni que este formado por letras maysuculas y minusculas y numeros, no pueden tener caracteres especiales ni espacios
         validateRegexpOf("dni","\\b([A-Z0-9a-z])\\w+\\b").message("Formato dni incorrecto. Mayus/Minus y Numeros");

@@ -7,6 +7,10 @@ public class Area extends Model {
 
     private int nomArea;
 
+    static {
+        validatePresenceOf("nomArea").message("Ingrese el nombre del area");
+    }
+
     public Area() {
 
     }
