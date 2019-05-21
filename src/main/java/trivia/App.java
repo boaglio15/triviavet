@@ -10,22 +10,30 @@ import org.javalite.activejdbc.Base;
 
 public class App {
 
+    static User currentUser;
 
     public static void main(String[] args) {
 
         before((request, response) -> {
             Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://127.0.0.1/trivia?nullNamePatternMatchesAll=true", "root", "root");
+            String headerToken = (String) request.headers("users");
+            currentUser = User.getUser(headerToken);
         });
 
         after((request, response) -> {
             Base.close();
+            response.header("Access-Control-Allow-Origin", "*");
+            response.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
+            response.header("Access-Control-Allow-Headers",
+                    "Content-Type,Authorization,X-Requested-With,Content-Length,Accept,Origin,");
         });
 
         //------------------LOGIN-------------------------//
         get("/login/:dniUser/:pass", (req, res) -> {
             int idUsr = User.userLogin((String) req.params(":dniUser"), (String) req.params(":pass"));
-            if (idUsr > 0)
+            if (idUsr > 0) {
                 return new Gson().toJson(true);
+            }
             return new Gson().toJson(false);
         });
 
@@ -38,7 +46,6 @@ public class App {
         });
 
         //-------------------------------FIN LOGIN---------------------------------------//
-
         //supongo que el usuario se loguea por primera vez y esto automaticamente crea un juego
         //(si ya esta loguado y quiere jugar nuevamente hay que buscar su juego iniciado)
         // inicio juego
@@ -93,7 +100,7 @@ public class App {
                 toUser.set("nom", (String) bodyParams.get("nom"));
                 toUser.set("ape", (String) bodyParams.get("ape"));
                 toUser.set("dni", (String) bodyParams.get("dni"));
-                toUser.set("pass",(String) bodyParams.get("pass"));
+                toUser.set("pass", (String) bodyParams.get("pass"));
                 toUser.set("tipoUser", Integer.parseInt((String) bodyParams.get("tipoUser")));
                 toUser.saveIt();
                 return new Gson().toJson(true);

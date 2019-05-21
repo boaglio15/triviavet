@@ -67,14 +67,16 @@ public class Game extends Model {
     //------metodos para manejo de juego-----------------
     
     //este metodo tiene que traer todos los datos de juego del usuario
-    public static Map newGame(String userId) {
+    public static List<Map> newGame(String userId) {
         List<UserArea> areas = UserArea.getAreasUser(userId);
-        Map m = new HashMap();
+        List<Map> an = new ArrayList<Map>();
         for (UserArea are : areas) {
+            Map m = new HashMap();
             m.put("area", are.getAreaId());
-            m.put("nivel",are.getNivel());
+            m.put("nivel", are.getNivel());
+            an.add(m);
         }
-        return m;
+        return an;
     }
 
     //retorna el id de todas las preguntas hechas para un juego dado
