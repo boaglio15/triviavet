@@ -1,3 +1,4 @@
+
 package trivia;
 
 import java.io.*;
