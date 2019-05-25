@@ -65,7 +65,7 @@ public class Game extends Model {
     }
 
     //------metodos para manejo de juego-----------------
-    
+
     //este metodo tiene que traer todos los datos de juego del usuario
     public static Map newGame(String userId) {
         List<UserArea> areas = UserArea.getAreasUser(userId);
@@ -164,6 +164,7 @@ public class Game extends Model {
 
         }
     }
+
 
 
 

@@ -7,18 +7,37 @@ import com.google.gson.Gson;
 import java.util.*;
 import java.text.SimpleDateFormat;
 import org.javalite.activejdbc.Base;
+import trivia.BasicAuth;
 
 public class App {
+
+    static User currentUser;
 
 
     public static void main(String[] args) {
 
         before((request, response) -> {
-            Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://127.0.0.1/trivia?nullNamePatternMatchesAll=true", "root", "root");
+          Base.open();
+
+          String headerToken = (String) request.headers("Authorization");
+
+          if (
+            headerToken == null ||
+            headerToken.isEmpty() ||
+            !BasicAuth.authorize(headerToken)
+          ) {
+            halt(401);
+          }
+
+          currentUser = BasicAuth.getUser(headerToken);
         });
 
         after((request, response) -> {
-            Base.close();
+          Base.close();
+          response.header("Access-Control-Allow-Origin", "*");
+          response.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
+          response.header("Access-Control-Allow-Headers",
+            "Content-Type,Authorization,X-Requested-With,Content-Length,Accept,Origin,");
         });
 
         //------------------LOGIN-------------------------//
