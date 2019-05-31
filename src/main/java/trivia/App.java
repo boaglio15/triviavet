@@ -40,12 +40,12 @@ public class App {
         });
 
         //------------------LOGIN-------------------------//
-        get("/login/:dniUser/:pass", (req, res) -> {
-            int idUsr = User.userLogin((String) req.params(":dniUser"), (String) req.params(":pass"));
-            if (idUsr > 0) {
-                return new Gson().toJson(true);
-            }
-            return new Gson().toJson(false);
+        post("/login", (req, res) -> {
+          res.type("application/json");
+
+          // if there is currentUser is because headers are correct, so we only
+          // return the current user here
+          return currentUser.toJson(true);
         });
 
         //Registration User
