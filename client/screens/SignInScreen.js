@@ -50,30 +50,31 @@ export default class SignInScreen extends React.Component {
 
   _signIn = () => {
     const { username, password } = this.state;
-
-    axios.post("http://192.168.0.147:4567/login", {
+    axios.post("http://192.168.0.94:4567/login", {
       username: username,
       password: password,
-    }, {
-      auth: {
-        username: username,
-        password: password
+    },
+      {
+        auth: { //parámetro "auth" para la autenticación básica propio de axios
+          username: username,
+          password: password,
+        }
       }
-    })
-      .then(response => JSON.stringify(response))
+    )
+      .then(response => JSON.parse(JSON.stringify(response)))
       .then(response => {
         // Handle the JWT response here
-        AsyncStorage.setItem('userToken', response.data);
+        AsyncStorage.setItem('userToken', response.config.headers.Authorization);//.config.headers.Authorization);
         this.props.navigation.navigate('App');
       })
-    .catch((error) => {
-      if(error.toString().match(/401/)) {
-        alert("Username or Password incorrect");
-        return;
-      }
+      .catch((error) => {
+        if (error.toString().match(/401/)) {
+          alert("Username or Password incorrect");
+          return;
+        }
 
-      alert("Networking Error");
-    });
+        alert("Networking Error");
+      });
   };
 }
 

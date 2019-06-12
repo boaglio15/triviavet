@@ -8,7 +8,9 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Button,
 } from 'react-native';
+//import { createStackNavigator, createAppContainer } from 'react-navigation'; // Version can be specified in package.json
 import { WebBrowser } from 'expo';
 
 import { MonoText } from '../components/StyledText';
@@ -26,7 +28,7 @@ export default class HomeScreen extends React.Component {
             <Image
               source={
                 __DEV__
-                  ? require('../assets/images/robot-dev.png')
+                  ? require('../assets/images/Logo.png')
                   : require('../assets/images/robot-prod.png')
               }
               style={styles.welcomeImage}
@@ -34,39 +36,62 @@ export default class HomeScreen extends React.Component {
           </View>
 
           <View style={styles.getStartedContainer}>
-            {this._maybeRenderDevelopmentModeWarning()}
-
-            <Text style={styles.getStartedText}>Get started by opening</Text>
-
+            <Text style={{fontSize:16}}>¿Cuanto Sabes de Veterinaria?</Text>
+            <Text style={styles.espacio}> {"\n"}</Text>
+            <Text style={styles.getStartedText}>Demuestra Tus Conocimientos</Text>
             <View style={[styles.codeHighlightContainer, styles.homeScreenFilename]}>
-              <MonoText style={styles.codeHighlightText}>screens/HomeScreen.js</MonoText>
+              <MonoText style={styles.codeHighlightText}></MonoText>
             </View>
-
-            <Text style={styles.getStartedText}>
-              Change this text and your app will automatically reload.
-            </Text>
-
-            <Text onPress={this._handleLogout} style={styles.logout}>
-              Logout
-            </Text>
+          
+            <Button
+              onPress={() => this.props.navigation.navigate('Play')}
+              style={{fontSize:96}}
+              title="-"
+              color="#f5fffa"
+            />
+            <Text style={{fontSize:150}}>GO!</Text>
+          <Button
+              onPress={() => this.props.navigation.navigate('Play')}
+              style={{fontSize:96}}
+              title="-"
+              color="#f5fffa"
+            />
+            <Text style={styles.espacio}> {"\n"} {"\n"} {"\n"} </Text>
+            <Button
+              onPress={this._handleLogout} style={styles.logout}
+              title="Logout"
+              color="#ff4500"
+              accessibilityLabel="Learn more about this button"
+              />
           </View>
+          
+          
 
           <View style={styles.helpContainer}>
             <TouchableOpacity onPress={this._handleHelpPress} style={styles.helpLink}>
-              <Text style={styles.helpLinkText}>Help, it didn’t automatically reload!</Text>
+              <Text style={styles.helpLinkText}></Text>
             </TouchableOpacity>
           </View>
         </ScrollView>
 
         <View style={styles.tabBarInfoContainer}>
-          <Text style={styles.tabBarInfoText}>This is a tab bar. You can edit it in:</Text>
+          <Text style={styles.tabBarInfoText}></Text>
 
           <View style={[styles.codeHighlightContainer, styles.navigationFilename]}>
-            <MonoText style={styles.codeHighlightText}>navigation/MainTabNavigator.js</MonoText>
+            <MonoText style={styles.codeHighlightText}></MonoText>
           </View>
         </View>
       </View>
     );
+  }
+  // notas:
+  //this.props.navigation.navigate ('RouteName') empuja una nueva ruta al navegador de pila si aún no está en la pila, 
+  //de lo contrario salta a esa pantalla.
+
+  //fin notas
+
+  onPressCategoryButton = (category) => {
+    alert(category);
   }
 
   _handleLogout = async () => {
@@ -125,7 +150,7 @@ const styles = StyleSheet.create({
   },
   welcomeContainer: {
     alignItems: 'center',
-    marginTop: 10,
+    marginTop: 20,
     marginBottom: 20,
   },
   welcomeImage: {

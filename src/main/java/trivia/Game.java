@@ -4,7 +4,6 @@ import org.javalite.activejdbc.Model;
 import java.util.*;
 import java.util.List;
 
-
 public class Game extends Model {
 
     static {
@@ -65,7 +64,6 @@ public class Game extends Model {
     }
 
     //------metodos para manejo de juego-----------------
-
     //este metodo tiene que traer todos los datos de juego del usuario
     public static List<Map> newGame(String userId) {
         List<UserArea> areas = UserArea.getAreasUser(userId);
@@ -83,10 +81,10 @@ public class Game extends Model {
     //correctas e incorrectas
     public static List<Integer> allQuestionGame(String gameId) {
         List<QuestionGame> qGames = QuestionGame.where("gameId = ?", gameId);
-            List<Integer> listQuestions = new ArrayList<Integer>();
-            for (QuestionGame quest : qGames) {
-                listQuestions.add(quest.getQuestionId());
-            }
+        List<Integer> listQuestions = new ArrayList<Integer>();
+        for (QuestionGame quest : qGames) {
+            listQuestions.add(quest.getQuestionId());
+        }
         return listQuestions;
     }
 
@@ -115,41 +113,96 @@ public class Game extends Model {
     }
 
     //retorna el id de una pregunta para hacer en forma random
-    public static int selectQuestion(List<Integer> pregHechas, List<Integer> pregEnArea) {
-        int indexRandom = (int)(Math.random()*(pregEnArea.size())); //no hacer pregEnArea.size()-1 xq random no genera el num extremo
-        while (pregHechas.contains(pregEnArea.get(indexRandom))) {
-            indexRandom = (int)(Math.random()*((pregEnArea.size())));
+    public static int selectQuestionId(List<Integer> pregHechas, List<Integer> pregEnArea) {
+        if (pregHechas == null) {
+            int pregSelec = (int) (Math.random() * (pregEnArea.size())); //no hay preguntas hechas en el juego para el area, elige una inicial 
+            return pregSelec;
+        } else {
+            int indexRandom = (int) (Math.random() * (pregEnArea.size())); //no hacer pregEnArea.size()-1 xq random no genera el num extremo
+            while (pregHechas.contains(pregEnArea.get(indexRandom))) {
+                indexRandom = (int) (Math.random() * ((pregEnArea.size())));
+            }
+            int pregSelec = (int) Question.getQuestion(Integer.toString(pregEnArea.get(indexRandom))).getId();
+            return pregSelec;
         }
-        int pregSelec = (int) Question.getQuestion(Integer.toString(pregEnArea.get(indexRandom))).getId();
-        return pregSelec;
     }
 
     //almacena todas las preguntas hechas durante la partida jugada
     //para luego cunado sale del juego con estos datos actualiza la BD
-    private List<Integer> guardarPregHechaPartida(String idPregSelect){
+    public static List<Integer> guardarPregHechaPartida(String idPregSelect) {
         List<Integer> pregPartida = new ArrayList<>();
         pregPartida.add(Integer.parseInt((String) idPregSelect));
         return pregPartida;
     }
 
     //luego de seleccionar una pregunta la agrega a preguntas hechas
-    private void actualizarPegHechas(int idPregSelect, List<Integer> pregHechas){
-        pregHechas.add(idPregSelect);
-    }
+    //public static void actualizarPegHechas(int idPregSelect, List<Integer> pregHechas) {
+    //    pregHechas.add(idPregSelect); //actualizarPegHechas
+    //}
 
     //luego de seleccionar una pregunta la quita de las preguntas en el area
-    private void actualizarPregEnAreas(int idPregSelect, List<Integer> pregEnArea){
-        pregEnArea.remove(idPregSelect);
-    }
+    //public static void actualizarPregEnAreas(int idPregSelect, List<Integer> pregEnArea) {
+    //    pregEnArea.remove(idPregSelect); //actualizarPregEnAreas
+    //}
 
     //selecciona las respuestas correspondientes a una pregunta por si id
-    public static List<Map> selecAnswer(String pregId){
+    public static List<Answer> selecAnswer(String pregId) {
         List<Answer> preg = Answer.where("pregId = ?", pregId);
-        List<Map> sa = new ArrayList<Map>();
-        for (Answer p : preg) {
-            sa.add(p.getCompleteAnswer());
+        //List<Map> sa = new ArrayList<Map>();
+        //for (Answer p : preg) {
+        //    sa.add(p.getCompleteAnswer());
+        //}
+        return preg;
+    }
+    //FALTA CONTEMPLAR CUANDO SE QUEDA SIN PREGUNTAS EL AREA !!!
+    //retorna una pregunta junto con sus respuestas
+    public static Map selectQuestionAnswer(List<Integer> pregHechas, List<Integer> pregEnArea) {
+        Integer idPregSelect = selectQuestionId(pregHechas, pregEnArea);
+        Question pregSelec = Question.getQuestion(Integer.toString(idPregSelect));
+        List<Answer> answerSelec = selecAnswer(Integer.toString(idPregSelect));
+        Map m = new HashMap();
+        m.put("id", pregSelec.getId());
+        m.put("areaId", pregSelec.getAreaId());
+        m.put("preg", pregSelec.getPreg());
+        m.put("resp1", answerSelec.get(0).getResp());
+        m.put("tipo1", answerSelec.get(0).getTipoAnswer());
+        m.put("resp2", answerSelec.get(1).getResp());
+        m.put("tipo2", answerSelec.get(1).getTipoAnswer());
+        m.put("resp3", answerSelec.get(2).getResp());
+        m.put("tipo3", answerSelec.get(2).getTipoAnswer());
+        m.put("resp4", answerSelec.get(3).getResp());
+        m.put("tipo4", answerSelec.get(3).getTipoAnswer());
+        pregHechas.add(idPregSelect);       //actualizarPegHechas
+        pregEnArea.remove(idPregSelect);    //actualizarPregEnAreas
+        return m;
+
+    }
+    //FALTA CONTEMPLAR CUANDO SE QUEDA SIN PREGUNTAS EL AREA !!!
+    //inicializa la partida configurando las preguntas posibles a realiazr, retorna una pregunta junto con sus respuestas
+    public static Map selectQuestionAnswerInit(List<Integer> pregHechas, List<Integer> pregEnArea) {
+        if (pregHechas != null) { // para caso area ya jugada quita las preguntas realizadas en el area
+            for (Integer a : pregHechas) {
+                pregEnArea.remove(a);
+            }           
         }
-        return sa;
+        Integer idPregSelect = selectQuestionId(pregHechas, pregEnArea);
+        Question pregSelec = Question.getQuestion(Integer.toString(idPregSelect));
+        List<Answer> answerSelec = selecAnswer(Integer.toString(idPregSelect));
+        Map m = new HashMap();
+        m.put("id", pregSelec.getId());
+        m.put("areaId", pregSelec.getAreaId());
+        m.put("preg", pregSelec.getPreg());
+        m.put("resp1", answerSelec.get(0).getResp());
+        m.put("tipo1", answerSelec.get(0).getTipoAnswer());
+        m.put("resp2", answerSelec.get(1).getResp());
+        m.put("tipo2", answerSelec.get(1).getTipoAnswer());
+        m.put("resp3", answerSelec.get(2).getResp());
+        m.put("tipo3", answerSelec.get(2).getTipoAnswer());
+        m.put("resp4", answerSelec.get(3).getResp());
+        m.put("tipo4", answerSelec.get(3).getTipoAnswer());
+        pregHechas.add(idPregSelect);       //actualizarPegHechas
+        pregEnArea.remove(idPregSelect);    //actualizarPregEnAreas
+        return m;
     }
 
     public static void play(List<Integer> pregHechas, List<Integer> pregEnArea, boolean play) {
@@ -161,13 +214,10 @@ public class Game extends Model {
             //actualizarPegHechas
             //actualizarPregEnAreas
 
-        }else {
+        } else {
             //tomar los datos en guardarPregHechaPartida y pasarlos a la BD
 
         }
     }
-
-
-
 
 }

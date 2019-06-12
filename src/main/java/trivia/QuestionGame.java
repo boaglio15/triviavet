@@ -42,5 +42,10 @@ public class QuestionGame extends Model {
         return m;
     }
     
+    public static void createQuestionGame(int questionId, int gameId, int estado) {
+        QuestionGame questionGame = new QuestionGame(questionId, gameId, estado);
+        questionGame.saveIt();
+    }
+    
    
 }

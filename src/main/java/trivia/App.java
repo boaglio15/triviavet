@@ -12,23 +12,32 @@ import trivia.BasicAuth;
 public class App {
 
     static User currentUser;
-
+    static String ide;// = Integer.toString/;/(currentUser.getIdUser());
+    static List<Integer> pregHechas; //agregado
+    static List<Integer> pregEnArea; //agregado
+    static List<Integer> respHechas; //agregado
+    
     public static void main(String[] args) {
 
         before((request, response) -> {
-          Base.open();
+          if (Base.hasConnection()){
+                Base.close();
+          }
+          if (!Base.hasConnection())
+                Base.open();
 
           String headerToken = (String) request.headers("Authorization");
 
           if (
             headerToken == null ||
             headerToken.isEmpty() ||
-            !BasicAuth.authorize(headerToken)
+            !BasicAuth.authorize(headerToken) //determina que el user y pass pasados desde la app estan en la bd
           ) {
             halt(401);
           }
-
-          currentUser = BasicAuth.getUser(headerToken);
+          
+          currentUser = BasicAuth.getUser(headerToken); //hace visible a todo trivia el user
+          ide = Integer.toString(currentUser.getIdUser());
         });
 
         after((request, response) -> {
@@ -45,6 +54,8 @@ public class App {
 
           // if there is currentUser is because headers are correct, so we only
           // return the current user here
+          //si existe currentUser es porque el header es correcto, por lo que solo
+            //devuelve el usuario actual aquí
           return currentUser.toJson(true);
         });
 
@@ -61,25 +72,71 @@ public class App {
         //(si ya esta loguado y quiere jugar nuevamente hay que buscar su juego iniciado)
         // inicio juego
         //devuelve datos de la ultima partida del usuario (nivel y areas en las que esta jugando)
-        get("/newGame/:userId", (req, res) -> {
+        get("/newGame", (req, res) -> { //"/newGame/:userId"
             res.type("application/json");
-            return new Gson().toJson(Game.newGame(req.params(":userId")));
+            return new Gson().toJson(Game.newGame(ide));//req.params("userId")
         });//FUNCIONA
 
         //selecciona una pregunta del area en que esta para hacer (no considera las preguntas ya hechas)
-        get("/newQuestion/:gameId/:areaId", (req, res) -> {
+        get("/newQuestion/:areaId", (req, res) -> { //gameId/areaId
             res.type("application/json");
-            List<Integer> pregHechas = Game.getAllQuestionGameArea(req.params(":gameId"), req.params(":areaId")); //(gameId, areaId)//devuelve las preguntas hechas en el area que jugo por ultima vez
+            List<Integer> pregHechas = Game.getAllQuestionGameArea(ide, req.params(":areaId")); //(gameId, areaId)//devuelve las preguntas hechas en el area que jugo por ultima vez
             List<Integer> pregEnArea = Game.allQuestionArea(req.params(":areaId"));
-            String pregSelec = Question.getQuestion(Integer.toString(Game.selectQuestion(pregHechas, pregEnArea))).getPreg();
+            Map pregSelec = Question.getQuestion(Integer.toString(Game.selectQuestionId(pregHechas, pregEnArea))).getCompleteQuestion();
             return new Gson().toJson(pregSelec);
         });//FUNCIONA
 
-        get("/newAnswer/:pregId", (req, res) -> {
+        get("/newAnswer/:pregId", (req, res) -> { //==> revisar xq se cambio la definicion en games
             res.type("application/json");
             return new Gson().toJson(Game.selecAnswer(req.params(":pregId")));
         });//FUNCIONA
-
+//-------------------
+        get("/selectQuestionAnswerInit/:areaId", (req, res) -> { //:userId/:areaId
+            res.type("application/json");
+            pregHechas = Game.getAllQuestionGameArea(ide, req.params(":areaId")); //(gameId, areaId)//devuelve las preguntas hechas en el area que jugo por ultima vez
+            pregEnArea = Game.allQuestionArea(req.params(":areaId"));
+            System.out.println(pregHechas);
+            System.out.println(pregEnArea);
+            Map QuestionAnswerInit = Game.selectQuestionAnswerInit(pregHechas, pregEnArea);
+            System.out.println(pregHechas);
+            System.out.println(pregEnArea);
+            return new Gson().toJson(QuestionAnswerInit);
+            });
+        
+        get("/selectQuestionAnswer/:areaId", (req, res) -> { //:userId/:areaId
+            res.type("application/json");
+            System.out.println(pregHechas);
+            System.out.println(pregEnArea);
+            Map QuestionAnswer = Game.selectQuestionAnswer(pregHechas, pregEnArea);
+            System.out.println(pregHechas);
+            System.out.println(pregEnArea);
+            return new Gson().toJson(QuestionAnswer);
+    
+    });
+      
+        //guarda si se contesto la preg en forma correcta o incorrecta en un arreglo
+        post("/updateTypeQuest", (req, res) -> { ///:tipoResp
+            res.type("application/json");
+            Map<String, Object> bodyParams = new Gson().fromJson(req.body(), Map.class);
+            Integer typeAnsw = (Integer) bodyParams.get("tipoResp");
+            respHechas.add(typeAnsw); //guarda el tipo de respuesta que se dio en la pregunta dada
+            System.out.println(respHechas);
+            return new Gson().toJson(true);
+        });
+        
+        //carga las preguntas hechas en la partida y su estado en la base de datos
+        post("/exit", (req, res) -> {
+            res.type("application/json");
+           // Map<String, Object> bodyParams = new Gson().fromJson(req.body(), Map.class);
+            for (int i = 0; i < pregHechas.size(); i++) {
+                QuestionGame.createQuestionGame( pregHechas.get(i),Integer.parseInt(ide), respHechas.get(i));
+            }
+            return new Gson().toJson(true);
+        });
+        
+        
+        
+        
         //fin juego
         //-----------------------------------------USER---------------------//
         // returns a User by id

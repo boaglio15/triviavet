@@ -32,6 +32,10 @@ public class User extends Model {
         set("pass", password);
         set("tipoUser", tipo);
     }
+    
+    public int getIdUser(){
+        return  (int) this.getId();
+    }
 
     public String getNom() {
         return this.getString("nom");
@@ -63,6 +67,8 @@ public class User extends Model {
         m.put("tipoUser", this.getTipoUser());
         return m;
     }
+    
+    
 
     public static List<Map> getAllUser() {
         List<User> r = new ArrayList<User>();

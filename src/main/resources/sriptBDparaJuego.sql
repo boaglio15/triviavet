@@ -41,7 +41,7 @@ INSERT INTO questions_games (questionId,gameId,estado) VALUES
 	(1,1,0), /*la preg 1 fue contestada mal por el jugador 1*/
 	(1,2,1) /*la preg 1 fue contestda bien por el jugador 2*/
     
-INSERT INTO answers_games (answerId,gameId) VALUES 
+INSERT INTO answers_games (answerId,gameId) VALUES /*PUEDE SER QUE ESTA TABLA ESTE DE MAS XQ LAS RESPUESTAS QUE DIO UN JUGADOR EN UN JUEGO PUDEN OBTENERSE POR questions_games HABLARLO !! */
 (1,1),/*las respuestas para la perg 1 son hechas al jugador 1*/
 (2,1),
 (3,1),
