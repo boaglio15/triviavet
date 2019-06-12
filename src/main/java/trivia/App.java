@@ -115,10 +115,11 @@ public class App {
     });
       
         //guarda si se contesto la preg en forma correcta o incorrecta en un arreglo
-        post("/updateTypeQuest", (req, res) -> { ///:tipoResp
+        post("/updateTypeQuest/:tipoResp", (req, res) -> { ///:tipoResp
             res.type("application/json");
-            Map<String, Object> bodyParams = new Gson().fromJson(req.body(), Map.class);
-            Integer typeAnsw = (Integer) bodyParams.get("tipoResp");
+            //Map<String, Object> bodyParams = new Gson().fromJson(req.body(), Map.class);
+            Integer typeAnsw = Integer.parseInt(req.params(":tipoResp"));//Integer.parseInt ((String) bodyParams.get("tipoResp"));
+            System.out.println(typeAnsw);
             respHechas.add(typeAnsw); //guarda el tipo de respuesta que se dio en la pregunta dada
             System.out.println(respHechas);
             return new Gson().toJson(true);

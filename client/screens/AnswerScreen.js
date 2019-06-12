@@ -1,3 +1,4 @@
+import { API_HOST } from 'react-native-dotenv';
 import React from 'react';
 import {
   AsyncStorage,
@@ -7,7 +8,6 @@ import {
   StyleSheet,
 } from 'react-native';
 import axios from 'axios';
-//import update from 'immutability-helper';
 
 export default class AnswerScreen extends React.Component {
   static navigationOptions = {
@@ -23,28 +23,19 @@ export default class AnswerScreen extends React.Component {
   render() {
     const { navigation } = this.props;
     const tipoAnsw = navigation.getParam('tipo', 'NO-ID');
-
-    //const initialArray = [1,2];
-    //const newArray = update(initialArray, {$push: [tipoAnsw]}); // => [1, 2, 3, 4]
-    //var d = [];
-    //this.state.questState;
-    //d.push(tipoAnsw);
-    //this.setState({questState:d});//guarda el estado de la pregunta respondida
-    //console.log(initialArray);
-
     return (
       <View style={styles.container}>
 
         <View>
           {this.correctaOIncorrecta(tipoAnsw)}
         </View>
-
-        <Button
-          onPress={() => this.nextQuestions()}
-          title="Siguiente pregunta"
-          color="#a4f590"
-        />
-
+        <View style={styles.button}>
+          <Button
+            onPress={() => this.nextQuestions()}
+            title="Siguiente pregunta"
+          />
+        </View>
+        <Text style={styles.espacio}> {"\n"}</Text>
         <Button
           onPress={() => this.exitGame()}
           title="Exit"
@@ -60,7 +51,7 @@ export default class AnswerScreen extends React.Component {
   nextQuestions = async () => {
     const { navigation } = this.props;
     const area = navigation.getParam('areaId', 'NO-ID');
-    axios.get("http://192.168.0.94:4567/selectQuestionAnswer/" + area, {
+    axios.get(API_HOST + "selectQuestionAnswer/" + area, {
       headers: { 'Authorization': await AsyncStorage.getItem('userToken') }
     })
       .then(response => JSON.parse(JSON.stringify(response)))
@@ -104,14 +95,21 @@ export default class AnswerScreen extends React.Component {
   };
 
   exitGame = async () => {
-    /*axios.post("http://192.168.0.94:4567/exit", {
-      
+    /*axios.post(API_HOST + "exit", {
+
     },
       {
         headers: { 'Authorization': await AsyncStorage.getItem('userToken') }
       }
-    )  */
-    this.props.navigation.navigate('Home');
+    )
+    .then(response => JSON.parse(JSON.stringify(response)))
+      .then(response => {
+        // Handle the JWT response here
+        AsyncStorage.setItem('userToken', response.config.headers.Authorization);//.config.headers.Authorization);
+        this.props.navigation.navigate('Home');
+      })*/
+    //AsyncStorage.setItem('userToken', response.config.headers.Authorization);//.config.headers.Authorization);
+        this.props.navigation.navigate('Home');
   }
 }
 

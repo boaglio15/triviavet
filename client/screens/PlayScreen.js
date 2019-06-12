@@ -1,3 +1,4 @@
+import { API_HOST } from 'react-native-dotenv';
 import React from 'react';
 import {
   AsyncStorage,
@@ -21,7 +22,7 @@ export default class PlayScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}> selecciona un area para jugar </Text>
+        <Text style={styles.welcome}> Selecciona un area para jugar </Text>
 
 
         <View style={styles.button}>
@@ -44,7 +45,7 @@ export default class PlayScreen extends React.Component {
           <Button
             onPress={() => this.props.navigation.goBack()}
             title="volver"
-            color="#a4f590"
+            color="#ff0000"
           /> 
         </View>
 
@@ -55,7 +56,7 @@ export default class PlayScreen extends React.Component {
 
 
   handleQuestionAnswer = async (area) => {
-    axios.get("http://192.168.0.94:4567/selectQuestionAnswerInit/" + area, {
+    axios.get(API_HOST + "selectQuestionAnswerInit/" + area, {
       headers: { 'Authorization': await AsyncStorage.getItem('userToken') }
     })
       .then(response => JSON.parse(JSON.stringify(response)))
@@ -77,110 +78,9 @@ export default class PlayScreen extends React.Component {
           alert("No hay preguntas");
           return;
         }
-        alert("Networking Error question");
-      })
-    }
-      //var descripcion = this.state.preg;
-      //var idQuest = this.state.questId;
-      //console.log(descripcion);
-      //console.log(idQuest);
-      //const {navigation} = this.props;
-      //const idQuest = this.state.questId;
-      /*
-      axios.get("http://192.168.1.9:4567/newAnswer/" + this.state.questId, {
-          headers: {'Authorization' : await AsyncStorage.getItem('userToken')}
-        })
-        .then(response => JSON.parse(JSON.stringify(response)))
-        .then(response =>{
-          var listAnswers = response.data; //lista de answers
-          console.log(listaAnswers);
-          this.props.navigation.navigate('QuestionsAnswers',
-          {'preg': preg, 'questId': idQuest, 'area': area,
-            'listAnswers' : listAnswers});
-        })
-        .catch((error) => {
-          if (error.toString().match(/401/)){
-            alert("Error con las respuestas de la pregunta");
-            return;
-          }
-          alert("Networking Error answer");
-        }) 
-  };*/
-
-/*
-  showPregunta = async () => {
-    axios.get("http://192.168.88.96:4567/newQuestion/" + areaId, {
-      auth: "Basic AsyncStorage.getItem('userToken')",
+      alert("Networking Error question");
     })
-      .then(response => {
-        { this.setState({ questJson: response.data }) }
-      })
-      .catch((error) => {
-        if (error.toString().match(/401/)) {
-          alert("No hay preguntas");
-          return;
-        }
-        alert("Networking Error");
-      });
-  };*/
-
-
-
-
-
-
-
-
-  /*
-    _signInAsync = async () => {
-      await AsyncStorage.setItem('use', JSON.stringify(1));
-      this.props.navigation.navigate('QuestionsAnswers')
-  
-   */
-  /*
-    _signInAsync = async () => {
-      await AsyncStorage.setItem('use',JSON.stringify(1));
-      this.props.navigation.navigate('QuestionsAnswers')
-  <View style={styles.button}>
-          <Button title="Sign in!" onPress={this._signInAsync} />
-          </View>
-  
-    };*/
-
-
-  //QUE HAY QUE MODIFICAR EN LA APP PARA PODER HACER LAS CONSULTAS???
-  //COMO MOSTRAR EL RESULTADO DEL GET (areas)???
-  //COMO HACER PARA GENERAR UN BOTON DE ACUERDO A LA CANTIDAD DE AREAS EN LAS QUE ESTA JUGANDO???
-
-  //_handleBack = async () => {
-  // await AsyncStorage.clear();
-  // this.props.navigation.navigate('App');
-  //};
-
-
-  /*
-    questionsAnswers = (idArea) => {
-      axios.get("http://192.168.0.17:4567/newQuestion")
-        .then(res => {
-          const idPreg = res.data;
-          this.setState({ idPreg });
-        },
-  
-          {
-            auth: "Basic AsyncStorage.getItem('userToken')"
-          }
-        )
-        .then(response => JSON.stringify(response))
-        .then(response => {
-          //console.log(response);
-  
-          // Handle the JWT response here
-  
-        })
-    }*/
-
-
-
+  }
 }
 
 

@@ -1,3 +1,4 @@
+import { API_HOST } from 'react-native-dotenv';
 import React from 'react';
 import {
   AsyncStorage,
@@ -12,7 +13,6 @@ import {
 } from 'react-native';
 //import { createStackNavigator, createAppContainer } from 'react-navigation'; // Version can be specified in package.json
 import { WebBrowser } from 'expo';
-
 import { MonoText } from '../components/StyledText';
 
 export default class HomeScreen extends React.Component {
@@ -36,36 +36,26 @@ export default class HomeScreen extends React.Component {
           </View>
 
           <View style={styles.getStartedContainer}>
-            <Text style={{fontSize:16}}>¿Cuanto Sabes de Veterinaria?</Text>
+            <Text style={{ fontSize: 16 }}>¿Cuanto Sabes de Veterinaria?</Text>
             <Text style={styles.espacio}> {"\n"}</Text>
             <Text style={styles.getStartedText}>Demuestra Tus Conocimientos</Text>
             <View style={[styles.codeHighlightContainer, styles.homeScreenFilename]}>
               <MonoText style={styles.codeHighlightText}></MonoText>
             </View>
-          
+  
             <Button
               onPress={() => this.props.navigation.navigate('Play')}
-              style={{fontSize:96}}
-              title="-"
-              color="#f5fffa"
-            />
-            <Text style={{fontSize:150}}>GO!</Text>
-          <Button
-              onPress={() => this.props.navigation.navigate('Play')}
-              style={{fontSize:96}}
-              title="-"
-              color="#f5fffa"
+              title="----------play------------"
+              color="red"
             />
             <Text style={styles.espacio}> {"\n"} {"\n"} {"\n"} </Text>
             <Button
               onPress={this._handleLogout} style={styles.logout}
               title="Logout"
-              color="#ff4500"
+              color="#ff0000"
               accessibilityLabel="Learn more about this button"
-              />
+            />
           </View>
-          
-          
 
           <View style={styles.helpContainer}>
             <TouchableOpacity onPress={this._handleHelpPress} style={styles.helpLink}>
@@ -84,12 +74,7 @@ export default class HomeScreen extends React.Component {
       </View>
     );
   }
-  // notas:
-  //this.props.navigation.navigate ('RouteName') empuja una nueva ruta al navegador de pila si aún no está en la pila, 
-  //de lo contrario salta a esa pantalla.
-
-  //fin notas
-
+  
   onPressCategoryButton = (category) => {
     alert(category);
   }
