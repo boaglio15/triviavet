@@ -12,10 +12,10 @@ import trivia.BasicAuth;
 public class App {
 
     static User currentUser;
-    static String ide;// = Integer.toString/;/(currentUser.getIdUser());
-    static List<Integer> pregHechas; //agregado
-    static List<Integer> pregEnArea; //agregado
-    static List<Integer> respHechas; //agregado
+    static String ide;
+    static List<Integer> pregHechas; //contiene las preguntas realizadas en un partida a un jugador
+    static List<Integer> pregEnArea; //contiene todas las preguntas posibles de realizar en un area
+    static List<Integer> respHechas; //contiene el resultado de la pregunta hecha al jugador
     
     public static void main(String[] args) {
 
@@ -90,7 +90,11 @@ public class App {
             res.type("application/json");
             return new Gson().toJson(Game.selecAnswer(req.params(":pregId")));
         });//FUNCIONA
-//-------------------
+        //-------------------
+        
+        //----inicio juego-----
+        
+        //inicializa las preguntas que tiene el jugador resposdidas, las que tiene el area y envia una pregunta para hacer
         get("/selectQuestionAnswerInit/:areaId", (req, res) -> { //:userId/:areaId
             res.type("application/json");
             pregHechas = Game.getAllQuestionGameArea(ide, req.params(":areaId")); //(gameId, areaId)//devuelve las preguntas hechas en el area que jugo por ultima vez
@@ -103,6 +107,7 @@ public class App {
             return new Gson().toJson(QuestionAnswerInit);
             });
         
+        //selecciona una pregunta para realizar (ya tiene inicializado pregHechas y pregEnArea)
         get("/selectQuestionAnswer/:areaId", (req, res) -> { //:userId/:areaId
             res.type("application/json");
             System.out.println(pregHechas);

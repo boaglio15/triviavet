@@ -11,7 +11,7 @@ import axios from 'axios';
 
 export default class QuestionsSreens extends React.Component {
   static navigationOptions = {
-    title: 'tu pregunta es:',
+    title: 'Tu pregunta es:',
   };
   constructor(props) {
     super(props);
@@ -30,47 +30,47 @@ export default class QuestionsSreens extends React.Component {
       <View style={styles.container}>
 
         <View>
-          <Text>Pregunta: {question}</Text>
+          <Text style={styles.welcome}> {question}</Text>
         </View>
 
         <View style={styles.button}>
-        <Button
-          onPress={this.handleAnswer.bind(this, '1')}
-          title={respuesta1}
-          
-        />
-        </View>
-        <Text style={styles.espacio}> {"\n"}</Text>
+          <Button
+            onPress={this.handleAnswer.bind(this, '1')}
+            title={respuesta1}
 
-        <View style={styles.button}>
-        <Button
-          onPress={this.handleAnswer.bind(this, '0')}
-          title={respuesta2}
-          
-        />
+          />
         </View>
         <Text style={styles.espacio}> {"\n"}</Text>
 
         <View style={styles.button}>
-        <Button
-          onPress={this.handleAnswer.bind(this, '0')}
-          title={respuesta3}
-          
-        />
+          <Button
+            onPress={this.handleAnswer.bind(this, '0')}
+            title={respuesta2}
+
+          />
         </View>
         <Text style={styles.espacio}> {"\n"}</Text>
 
         <View style={styles.button}>
-        <Button
-          onPress={this.handleAnswer.bind(this, '0')}
-          title={respuesta4}
-          
-        />
-</View>
+          <Button
+            onPress={this.handleAnswer.bind(this, '0')}
+            title={respuesta3}
+
+          />
+        </View>
+        <Text style={styles.espacio}> {"\n"}</Text>
+
+        <View style={styles.button}>
+          <Button
+            onPress={this.handleAnswer.bind(this, '0')}
+            title={respuesta4}
+
+          />
+        </View>
       </View>
     );
   }
-
+  //toma la respuesta seleccionada por el jugador y la envia la app
   handleAnswer = async (tipo) => {
     const { navigation } = this.props;
     /*axios.post(API_HOST + "updateTypeQuest/" + tipo , {
@@ -87,8 +87,8 @@ export default class QuestionsSreens extends React.Component {
         const area = navigation.getParam('areaId', 'NO-ID');
         this.props.navigation.navigate('Answer', { 'areaId': area, 'tipo': tipo });
       })*/
-      const area = navigation.getParam('areaId', 'NO-ID');
-        this.props.navigation.navigate('Answer', { 'areaId': area, 'tipo': tipo });
+    const area = navigation.getParam('areaId', 'NO-ID');
+    this.props.navigation.navigate('Answer', { 'areaId': area, 'tipo': tipo });
   }
 }
 

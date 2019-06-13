@@ -6,7 +6,6 @@ import {
   Text,
   TextInput,
   Button,
-  TouchableOpacity,
   StyleSheet,
 } from 'react-native';
 import axios from 'axios';
@@ -56,7 +55,7 @@ export default class SignInScreen extends React.Component {
       password: password,
     },
       {
-        auth: { //parámetro "auth" para la autenticación básica propio de axios
+        auth: { 
           username: username,
           password: password,
         }
@@ -83,10 +82,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#F5FCFF', 
   },
   welcome: {
-    fontSize: 20,
+    fontSize: 40,
     textAlign: 'center',
     margin: 10,
   },
@@ -95,7 +94,7 @@ const styles = StyleSheet.create({
     height: 40,
     padding: 5,
     fontSize: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#4228F8'
+    borderBottomWidth: 3,
+    borderBottomColor: '#ff0000', 
   }
 })

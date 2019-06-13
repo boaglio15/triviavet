@@ -11,7 +11,7 @@ import axios from 'axios';
 
 export default class PlayScreen extends React.Component {
   static navigationOptions = {
-    title: 'play',
+    title: 'Play',
   };
 
   constructor(props) {
@@ -22,7 +22,7 @@ export default class PlayScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}> Selecciona un area para jugar </Text>
+        <Text style={styles.welcome}> Seleciona un area a jugar </Text>
 
 
         <View style={styles.button}>
@@ -54,7 +54,7 @@ export default class PlayScreen extends React.Component {
   }
 
 
-
+  //genera una pregunta inicial de acuerdo al area seleccionada
   handleQuestionAnswer = async (area) => {
     axios.get(API_HOST + "selectQuestionAnswerInit/" + area, {
       headers: { 'Authorization': await AsyncStorage.getItem('userToken') }
@@ -91,9 +91,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5FCFF',
   },
   welcome: {
-    fontSize: 20,
+    fontSize: 25,
     textAlign: 'center',
-    margin: 10,
+    margin: 30,
   },
   input: {
     margin: 15,

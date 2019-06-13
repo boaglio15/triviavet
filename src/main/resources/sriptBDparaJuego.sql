@@ -6,7 +6,7 @@ INSERT INTO areas (nomArea) VALUES
 	
     
 INSERT INTO users (nom, ape, dni, pass, tipoUser) VALUES 
-	("Agustin","Boaglio","343321","abc123",0),
+	("Agustin","Boaglio","admin","admin",0),
     ("Fernando", "Bentolila", "4592313", "tre457",1)
     
 INSERT INTO games (userId,fecha) VALUES

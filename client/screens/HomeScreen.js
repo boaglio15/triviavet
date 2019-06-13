@@ -11,8 +11,6 @@ import {
   View,
   Button,
 } from 'react-native';
-//import { createStackNavigator, createAppContainer } from 'react-navigation'; // Version can be specified in package.json
-import { WebBrowser } from 'expo';
 import { MonoText } from '../components/StyledText';
 
 export default class HomeScreen extends React.Component {
@@ -36,24 +34,29 @@ export default class HomeScreen extends React.Component {
           </View>
 
           <View style={styles.getStartedContainer}>
-            <Text style={{ fontSize: 16 }}>¿Cuanto Sabes de Veterinaria?</Text>
+            <Text style={{ fontSize: 19 }}>¿Cuanto Sabes de Veterinaria?</Text>
             <Text style={styles.espacio}> {"\n"}</Text>
-            <Text style={styles.getStartedText}>Demuestra Tus Conocimientos</Text>
+            <Text style={styles.getStartedText}>Demostra Tus Conocimientos</Text>
             <View style={[styles.codeHighlightContainer, styles.homeScreenFilename]}>
               <MonoText style={styles.codeHighlightText}></MonoText>
             </View>
-  
+
+
+            <Text style={styles.go}> GO! </Text>
             <Button
               onPress={() => this.props.navigation.navigate('Play')}
               title="----------play------------"
               color="red"
             />
-            <Text style={styles.espacio}> {"\n"} {"\n"} {"\n"} </Text>
+
+            
+
+            <Text style={styles.espacio}> {"\n"} {"\n"} {"\n"} {"\n"}</Text>
             <Button
               onPress={this._handleLogout} style={styles.logout}
               title="Logout"
               color="#ff0000"
-              accessibilityLabel="Learn more about this button"
+
             />
           </View>
 
@@ -74,7 +77,7 @@ export default class HomeScreen extends React.Component {
       </View>
     );
   }
-  
+
   onPressCategoryButton = (category) => {
     alert(category);
   }
@@ -84,44 +87,18 @@ export default class HomeScreen extends React.Component {
     this.props.navigation.navigate('Auth');
   };
 
-  _maybeRenderDevelopmentModeWarning() {
-    if (__DEV__) {
-      const learnMoreButton = (
-        <Text onPress={this._handleLearnMorePress} style={styles.helpLinkText}>
-          Learn more
-        </Text>
-      );
-
-      return (
-        <Text style={styles.developmentModeText}>
-          Development mode is enabled, your app will be slower but you can use useful development
-          tools. {learnMoreButton}
-        </Text>
-      );
-    } else {
-      return (
-        <Text style={styles.developmentModeText}>
-          You are not in development mode, your app will run at full speed.
-        </Text>
-      );
-    }
-  }
-
-  _handleLearnMorePress = () => {
-    WebBrowser.openBrowserAsync('https://docs.expo.io/versions/latest/guides/development-mode');
-  };
-
-  _handleHelpPress = () => {
-    WebBrowser.openBrowserAsync(
-      'https://docs.expo.io/versions/latest/guides/up-and-running.html#can-t-see-your-changes'
-    );
-  };
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+
+  go: {
+    fontSize:120,
+    textAlign: 'center',
+    margin: 10,
   },
   developmentModeText: {
     marginBottom: 20,
@@ -140,7 +117,7 @@ const styles = StyleSheet.create({
   },
   welcomeImage: {
     width: 100,
-    height: 80,
+    height: 100,
     resizeMode: 'contain',
     marginTop: 3,
     marginLeft: -10,
