@@ -47,30 +47,36 @@ create table games(
 		primary key (id)		 
 );
 create table questions_games(
-		questionId int auto_increment,
+		id int auto_increment,
+        questionId int,
 		gameId int,
         estado int, /* 0 : hecha e incorrecta, 1: hecha correcta*/
-		foreign key (questionId) references questions(id),
+		/*foreign key (questionId) references questions(id),
 		foreign key (gameId) references games(id),
-		primary key (questionId,gameId)
+		primary key (questionId,gameId) */
+        primary key (id)
 );
 
 create table answers_games(
-		answerId int,
+		id int auto_increment,
+        answerId int,
 		gameId int,
-		foreign key (answerId) references answers(id),
+		/*foreign key (answerId) references answers(id),
 		foreign key (gameId) references games(id),
-		primary key (answerId,gameId)
+		primary key (answerId,gameId)*/
+        primary key (id)
 );
 
 create table users_areas(
-		userId int,
+		id int auto_increment,
+        userId int,
         areaId int,
         completada int,
 		nivel int,
-        foreign key (userId) references users(id),
+        /*foreign key (userId) references users(id),
         foreign key (areaId) references areas(id),
-        primary key (userId,areaId)
+        primary key (userId,areaId)*/
+        primary key (id)
 );
 
 create table stats(

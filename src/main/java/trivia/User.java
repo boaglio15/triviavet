@@ -64,7 +64,7 @@ public class User extends Model {
         m.put("ape", this.getApe());
         m.put("dni", this.getDni());
         m.put("pass", this.getPass());
-        m.put("tipoUser", this.getTipoUser());
+        //m.put("tipoUser", this.getTipoUser());
         return m;
     }
     

@@ -36,9 +36,7 @@ export default class PlayScreen extends React.Component {
         <View style={styles.button}>
           <Button title="Abejorros" onPress={this.handleQuestionAnswer.bind(this, '3')} />
         </View>
-        <View style={styles.button}>
-          {this.stateArea}
-        </View>
+        
 
 
         <View style={styles.button}>
@@ -53,14 +51,20 @@ export default class PlayScreen extends React.Component {
     );
   }
 
-
-  //genera una pregunta inicial de acuerdo al area seleccionada
+  
+  //pide una pregunta inicial y parametros para iniciar la partida de acuerdo al area seleccionada
   handleQuestionAnswer = async (area) => {
     axios.get(API_HOST + "selectQuestionAnswerInit/" + area, {
       headers: { 'Authorization': await AsyncStorage.getItem('userToken') }
     })
       .then(response => JSON.parse(JSON.stringify(response)))
       .then(response => {
+        const areaComplet = response.data.areaComplet;
+        const nivel = response.data.nivel;
+        if (areaComplet == 1){ //caso area jugada y completada (falta contemplar cuando mo hay mas preg)
+          return (
+          this.props.navigation.navigate('AreaCompletada', {'areaId': area, 'areaComplet': areaComplet}))
+        } else  { //caso area en juego
         const quest = response.data.preg;
         const questId = response.data.id;
         const answ1 = response.data.resp1;
@@ -68,10 +72,14 @@ export default class PlayScreen extends React.Component {
         const answ3 = response.data.resp3;
         const answ4 = response.data.resp4;
         const type1 = response.data.tipo1;
+        const nivel = response.data.nivel;
+        //console.log(nivel);
+        //console.log(areaComplet);
         this.props.navigation.navigate('QuestionsAnswers',
           {'quest': quest, 'questId': questId, 'areaId': area, 'answ1': answ1,
-            'answ2':answ2,  'answ3':answ3, 'answ4':answ4, 'type1':type1
+            'answ2':answ2,  'answ3':answ3, 'answ4':answ4, 'type1':type1, 'nivel':nivel, 'areaComplet':areaComplet
           });
+        }
       })
       .catch((error) => {
         if (error.toString().match(/401/)) {

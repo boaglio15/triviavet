@@ -28,34 +28,45 @@ export default class SignInScreen extends React.Component {
       <View style={styles.container}>
         <Text style={styles.welcome}> Login! </Text>
 
-        <TextInput
-          placeholder="Username"
-          style={styles.input}
-          onChangeText={(value) => this.setState({ username: value })}
-          value={this.state.username}
-        />
+        <View>
+          <TextInput
+            placeholder="Username"
+            style={styles.input}
+            onChangeText={(value) => this.setState({ username: value })}
+            value={this.state.username}
+          />
 
-        <TextInput
-          placeholder="Password"
-          style={styles.input}
-          secureTextEntry={true}
-          onChangeText={(value) => this.setState({ password: value })}
-          value={this.state.password}
-        />
+          <TextInput
+            placeholder="Password"
+            style={styles.input}
+            secureTextEntry={true}
+            onChangeText={(value) => this.setState({ password: value })}
+            value={this.state.password}
+          />
 
-        <Button title="Sign in!" onPress={this._signIn} />
+          <Button title="Sign in!" onPress={this._signIn} />
+          <Text style={styles.espacio}> {"\n"}</Text>
+
+          <Button title="Registrar" onPress={this.registrar} />
+          <Text style={styles.espacio}> {"\n"}</Text>
+        </View>
       </View>
     );
   }
 
+  registrar = () => {
+    this.props.navigation.navigate('Registro')
+
+  }
+
   _signIn = () => {
     const { username, password } = this.state;
-    axios.post(API_HOST + "login", {
+    axios.post(API_HOST + "login", { //API_HOST
       username: username,
       password: password,
     },
       {
-        auth: { 
+        auth: {
           username: username,
           password: password,
         }
@@ -82,7 +93,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: '#F5FCFF', 
+    backgroundColor: '#F5FCFF',
   },
   welcome: {
     fontSize: 40,
@@ -95,6 +106,6 @@ const styles = StyleSheet.create({
     padding: 5,
     fontSize: 16,
     borderBottomWidth: 3,
-    borderBottomColor: '#ff0000', 
+    borderBottomColor: '#ff0000',
   }
 })

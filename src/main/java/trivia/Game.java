@@ -63,7 +63,6 @@ public class Game extends Model {
         game.saveIt();
     }
 
-    //------metodos para manejo de juego-----------------
     //este metodo tiene que traer todos los datos de juego del usuario
     public static List<Map> newGame(String userId) {
         List<UserArea> areas = UserArea.getAreasUser(userId);
@@ -77,8 +76,8 @@ public class Game extends Model {
         return an;
     }
 
-    //retorna el id de todas las preguntas hechas para un juego dado
-    //correctas e incorrectas
+    //------metodos para manejo de juego-----------------//
+    //retorna el id de todas las preguntas hechas para un juego dado correctas e incorrectas
     public static List<Integer> allQuestionGame(String gameId) {
         List<QuestionGame> qGames = QuestionGame.where("gameId = ?", gameId);
         List<Integer> listQuestions = new ArrayList<Integer>();
@@ -89,7 +88,6 @@ public class Game extends Model {
     }
 
     //retorna el id de todas las preguntas hechas en un juego para un area determinada
-    //el user de todas areas en las que esta jugando selecciona una para seguir jugando
     public static List<Integer> getAllQuestionGameArea(String gameId, String areaId) {
         List<Integer> questId = new ArrayList<Integer>();
         List<Integer> qId = allQuestionGame(gameId);
@@ -112,6 +110,21 @@ public class Game extends Model {
         return listQuestions;
     }
 
+    //determina la cantidad de preg contestadas correctamente en un area
+    public static int getCantQuestCorrecArea(String userId, List<Integer> pregHechasEnArea) {
+        if (pregHechasEnArea.isEmpty()) {
+            return 0;
+        }
+        int cantRespCorrect = 0;
+        for (Integer pregId : pregHechasEnArea) {
+            QuestionGame qg = QuestionGame.getEstadosQuestGame(Integer.toString(pregId), userId);
+            if ((Integer) qg.getEstado() == 1) {
+                cantRespCorrect++;
+            }
+        }
+        return cantRespCorrect;
+    }
+
     //retorna el id de una pregunta para hacer en forma random
     public static int selectQuestionId(List<Integer> pregHechas, List<Integer> pregEnArea) {
         if (pregHechas == null) {
@@ -127,24 +140,6 @@ public class Game extends Model {
         }
     }
 
-    //almacena todas las preguntas hechas durante la partida jugada
-    //para luego cunado sale del juego con estos datos actualiza la BD
-    public static List<Integer> guardarPregHechaPartida(String idPregSelect) {
-        List<Integer> pregPartida = new ArrayList<>();
-        pregPartida.add(Integer.parseInt((String) idPregSelect));
-        return pregPartida;
-    }
-
-    //luego de seleccionar una pregunta la agrega a preguntas hechas
-    //public static void actualizarPegHechas(int idPregSelect, List<Integer> pregHechas) {
-    //    pregHechas.add(idPregSelect); //actualizarPegHechas
-    //}
-
-    //luego de seleccionar una pregunta la quita de las preguntas en el area
-    //public static void actualizarPregEnAreas(int idPregSelect, List<Integer> pregEnArea) {
-    //    pregEnArea.remove(idPregSelect); //actualizarPregEnAreas
-    //}
-
     //selecciona las respuestas correspondientes a una pregunta por si id
     public static List<Answer> selecAnswer(String pregId) {
         List<Answer> preg = Answer.where("pregId = ?", pregId);
@@ -154,70 +149,138 @@ public class Game extends Model {
         //}
         return preg;
     }
-    //FALTA CONTEMPLAR CUANDO SE QUEDA SIN PREGUNTAS EL AREA !!!
-    //retorna una pregunta junto con sus respuestas
-    public static Map selectQuestionAnswer(List<Integer> pregHechas, List<Integer> pregEnArea) {
-        Integer idPregSelect = selectQuestionId(pregHechas, pregEnArea);
-        Question pregSelec = Question.getQuestion(Integer.toString(idPregSelect));
-        List<Answer> answerSelec = selecAnswer(Integer.toString(idPregSelect));
-        Map m = new HashMap();
-        m.put("id", pregSelec.getId());
-        m.put("areaId", pregSelec.getAreaId());
-        m.put("preg", pregSelec.getPreg());
-        m.put("resp1", answerSelec.get(0).getResp());
-        m.put("tipo1", answerSelec.get(0).getTipoAnswer());
-        m.put("resp2", answerSelec.get(1).getResp());
-        m.put("tipo2", answerSelec.get(1).getTipoAnswer());
-        m.put("resp3", answerSelec.get(2).getResp());
-        m.put("tipo3", answerSelec.get(2).getTipoAnswer());
-        m.put("resp4", answerSelec.get(3).getResp());
-        m.put("tipo4", answerSelec.get(3).getTipoAnswer());
-        pregHechas.add(idPregSelect);       //actualizarPegHechas
-        pregEnArea.remove(idPregSelect);    //actualizarPregEnAreas
-        return m;
 
+    //det el nivel donde esta jugando en un area
+    private static Integer nivel(int cantPregCorrectArea) { //la cant de preg necesarias para avanzar puede cambiarse
+        if (cantPregCorrectArea <= 1) {
+            return 1;
+        };
+        if (cantPregCorrectArea > 1 && cantPregCorrectArea <= 2) {
+            return 2;
+        };
+        if (cantPregCorrectArea > 2 && cantPregCorrectArea <= 3) {
+            return 3;
+        };
+        return -1;
     }
-    //FALTA CONTEMPLAR CUANDO SE QUEDA SIN PREGUNTAS EL AREA !!!
-    //inicializa la partida configurando las preguntas posibles a realiazr, retorna una pregunta junto con sus respuestas
-    public static Map selectQuestionAnswerInit(List<Integer> pregHechas, List<Integer> pregEnArea) {
-        if (pregHechas != null) { // para caso area ya jugada quita las preguntas realizadas en el area
-            for (Integer a : pregHechas) {
-                pregEnArea.remove(a);
-            }           
+
+    //inicializa la partida configurando: 
+    // -verifica que en el area haya preg para hacer 
+    // -verifica si el area esta completada
+    // -det el nivel en que esta jugando en el area
+    // -determina la cantidad depreguntas correctas hechas por el jugador en el area
+    // -selecciona una preg a realizar
+    // -selecciona las respuestas posibles a la preg seleccionada
+    public static Map selectQuestionAnswerInit(String areaId, List<Integer> pregHechas, List<Integer> pregEnArea) {
+        List<UserArea> datAreaUser = UserArea.getDatAreaUser(areaId);   //det los datos de nivel y completada para el area elegida por el usuario
+        if (datAreaUser.isEmpty()) {                                                    //caso jugador nuevo en el area seleccionada o que nunca jugo
+            Integer idPregSelect = selectQuestionId(pregHechas, pregEnArea);            //det en forma random el id de una preg a realizar
+            Question pregSelec = Question.getQuestion(Integer.toString(idPregSelect));  //obtiene la preg
+            List<Answer> answerSelec = selecAnswer(Integer.toString(idPregSelect));     //det las respuestas para la preg
+            Map m = new HashMap();                                                      //mapea toda la info a enviar
+            m.put("id", pregSelec.getId());
+            m.put("areaId", pregSelec.getAreaId());
+            m.put("preg", pregSelec.getPreg());
+            m.put("resp1", answerSelec.get(0).getResp());
+            m.put("tipo1", answerSelec.get(0).getTipoAnswer());
+            m.put("resp2", answerSelec.get(1).getResp());
+            m.put("resp3", answerSelec.get(2).getResp());
+            m.put("resp4", answerSelec.get(3).getResp());
+            m.put("areaSinPreg", 0);
+            m.put("areaComplet", 0);
+            m.put("nivel", 0);
+            pregHechas.add(idPregSelect);                                                 //actualizarPegHechas
+            pregEnArea.remove(idPregSelect);                                              //actualizarPregEnAreas
+            return m;
+        } else {                                                                          //caso jugador con partidas jugadas
+            if ((pregHechas.size() == pregEnArea.size()) || (datAreaUser.get(0).getCompletada()) == 1) { //caso sin preguntas para hacer o area completada
+                Map m = new HashMap();
+                m.put("areaSinPreg", 1);
+                m.put("areaComplet", 1);
+                return m;
+            } else {
+                if (pregHechas != null) {                                      // para caso area ya jugada quita las preguntas realizadas en el area
+                    for (Integer a : pregHechas) {
+                        pregEnArea.remove(a);
+                    }
+                }
+                Integer idPregSelect = selectQuestionId(pregHechas, pregEnArea);            //det en froma random el id de una preg a realizar
+                Question pregSelec = Question.getQuestion(Integer.toString(idPregSelect));  //obtiene la preg
+                List<Answer> answerSelec = selecAnswer(Integer.toString(idPregSelect));     //det las respuestas para la preg
+                Map m = new HashMap();                                                      //mapea toda la info a inviar
+                m.put("id", pregSelec.getId());
+                m.put("areaId", pregSelec.getAreaId());
+                m.put("preg", pregSelec.getPreg());
+                m.put("resp1", answerSelec.get(0).getResp());
+                m.put("tipo1", answerSelec.get(0).getTipoAnswer());
+                m.put("resp2", answerSelec.get(1).getResp());
+                m.put("resp3", answerSelec.get(2).getResp());
+                m.put("resp4", answerSelec.get(3).getResp());
+                m.put("areaSinPreg", 0);
+                m.put("areaComplet", 0);
+                m.put("nivel", datAreaUser.get(0).getNivel());
+                pregHechas.add(idPregSelect);                                                 //actualizarPegHechas
+                pregEnArea.remove(idPregSelect);                                              //actualizarPregEnAreas
+                return m;
+            }
         }
-        Integer idPregSelect = selectQuestionId(pregHechas, pregEnArea);
-        Question pregSelec = Question.getQuestion(Integer.toString(idPregSelect));
-        List<Answer> answerSelec = selecAnswer(Integer.toString(idPregSelect));
-        Map m = new HashMap();
-        m.put("id", pregSelec.getId());
-        m.put("areaId", pregSelec.getAreaId());
-        m.put("preg", pregSelec.getPreg());
-        m.put("resp1", answerSelec.get(0).getResp());
-        m.put("tipo1", answerSelec.get(0).getTipoAnswer());
-        m.put("resp2", answerSelec.get(1).getResp());
-        m.put("tipo2", answerSelec.get(1).getTipoAnswer());
-        m.put("resp3", answerSelec.get(2).getResp());
-        m.put("tipo3", answerSelec.get(2).getTipoAnswer());
-        m.put("resp4", answerSelec.get(3).getResp());
-        m.put("tipo4", answerSelec.get(3).getTipoAnswer());
-        pregHechas.add(idPregSelect);       //actualizarPegHechas
-        pregEnArea.remove(idPregSelect);    //actualizarPregEnAreas
-        return m;
     }
 
-    public static void play(List<Integer> pregHechas, List<Integer> pregEnArea, boolean play) {
-
-        if (play) {
-            //selectQuestion
-            //guardarPregHechaPartida
-            //selecAnswer
-            //actualizarPegHechas
-            //actualizarPregEnAreas
-
-        } else {
-            //tomar los datos en guardarPregHechaPartida y pasarlos a la BD
-
+    //retorna una pregunta junto con sus respuestas y demas datos
+    public static Map selectQuestionAnswer(String userId, List<Integer> pregHechas, List<Integer> pregEnArea, int cantPregCorr) {
+        Integer nivel = nivel(cantPregCorr);
+        System.out.println("NIVEL " + nivel);
+        Integer areaComplet = 0;
+        if (nivel == -1) {
+            areaComplet = 1;
+            Map m = new HashMap();
+            m.put("nivel", nivel);
+            m.put("areaComplet", areaComplet);
+            return m;
+        }
+        System.out.println("AREA COMPLETA " + areaComplet);
+        //ver caso cuando queda una preg y esa preg se contesta bien con lo que pasa de nivel o completa el area
+        if (pregEnArea.size() == 1) {//caso en que queda una pregunta para hacer, la cual se hace y queda vacia las preg en area
+            System.out.println("NO HAY MAS PREG EN EL AREA");
+            Integer idPregSelect = selectQuestionId(pregHechas, pregEnArea);
+            Question pregSelec = Question.getQuestion(Integer.toString(idPregSelect));
+            List<Answer> answerSelec = selecAnswer(Integer.toString(idPregSelect));
+            Map m = new HashMap();
+            m.put("id", pregSelec.getId());
+            m.put("areaId", pregSelec.getAreaId());
+            m.put("preg", pregSelec.getPreg());
+            m.put("resp1", answerSelec.get(0).getResp());
+            m.put("tipo1", answerSelec.get(0).getTipoAnswer());
+            m.put("resp2", answerSelec.get(1).getResp());
+            m.put("resp3", answerSelec.get(2).getResp());
+            m.put("resp4", answerSelec.get(3).getResp());
+            m.put("sinPregArea", 1);       //se realiza la ultima preg y no hay mas en el area (1=true) FALTA CONTEMPLAR ESTE CASO EN EL CLIENTE
+            m.put("nivel", nivel);
+            m.put("areaComplet", areaComplet);
+            pregHechas.add(idPregSelect);       //actualizarPegHechas
+            pregEnArea.remove(idPregSelect);    //actualizarPregEnAreas
+            return m;
+        } else {                                //caso hay preg para hacer
+            Integer idPregSelect = selectQuestionId(pregHechas, pregEnArea);
+            Question pregSelec = Question.getQuestion(Integer.toString(idPregSelect));
+            List<Answer> answerSelec = selecAnswer(Integer.toString(idPregSelect));
+            Map m = new HashMap();
+            m.put("id", pregSelec.getId());
+            m.put("areaId", pregSelec.getAreaId());
+            m.put("preg", pregSelec.getPreg());
+            m.put("resp1", answerSelec.get(0).getResp());
+            m.put("tipo1", answerSelec.get(0).getTipoAnswer());
+            m.put("resp2", answerSelec.get(1).getResp());
+            m.put("resp3", answerSelec.get(2).getResp());
+            m.put("resp4", answerSelec.get(3).getResp());
+            m.put("sinPregArea", 0); //0 = false
+            m.put("nivel", nivel);
+            m.put("areaComplet", areaComplet);
+            pregHechas.add(idPregSelect);       //actualizarPegHechas
+            pregEnArea.remove(idPregSelect);    //actualizarPregEnAreas
+            return m;
         }
     }
 
+    //-----------------fin metodos para manejo de juego-----------------//
 }

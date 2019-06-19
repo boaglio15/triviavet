@@ -13,65 +13,169 @@ public class App {
 
     static User currentUser;
     static String ide;
-    static List<Integer> pregHechas; //contiene las preguntas realizadas en un partida a un jugador
-    static List<Integer> pregEnArea; //contiene todas las preguntas posibles de realizar en un area
-    static List<Integer> respHechas; //contiene el resultado de la pregunta hecha al jugador
+    static List<Integer> pregHechas = new ArrayList<Integer>(); //contiene las preguntas realizadas durante la partida y en partidas anteriores
+    static List<Integer> pregEnArea = new ArrayList<Integer>(); //contiene todas las preguntas posibles de realizar en un area
+    static List<Integer> respHechasCorIncor = new ArrayList<Integer>(); //contiene el resultado de la pregunta hecha al jugador
+    static int cantPregCorrect;
+    static int indexPregHechas; //indica cuantas preg tenia hechas el jugador en partidas anteriores
     
     public static void main(String[] args) {
 
         before((request, response) -> {
-          if (Base.hasConnection()){
+            if (Base.hasConnection()) {
                 Base.close();
-          }
-          if (!Base.hasConnection())
+            }
+            if (!Base.hasConnection()) {
                 Base.open();
+            }
 
-          String headerToken = (String) request.headers("Authorization");
+            String headerToken = (String) request.headers("Authorization");
 
-          if (
-            headerToken == null ||
-            headerToken.isEmpty() ||
-            !BasicAuth.authorize(headerToken) //determina que el user y pass pasados desde la app estan en la bd
-          ) {
-            halt(401);
-          }
-          
-          currentUser = BasicAuth.getUser(headerToken); //hace visible a todo trivia el user
-          ide = Integer.toString(currentUser.getIdUser());
+            if (headerToken == null
+                    || headerToken.isEmpty()
+                    || !BasicAuth.authorize(headerToken) //determina que el user y pass pasados desde la app estan en la bd
+                    ) {
+                halt(401);
+            }
+
+            currentUser = BasicAuth.getUser(headerToken); //hace visible a todo trivia el user
+            ide = Integer.toString(currentUser.getIdUser());
         });
 
         after((request, response) -> {
-          Base.close();
-          response.header("Access-Control-Allow-Origin", "*");
-          response.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
-          response.header("Access-Control-Allow-Headers",
-            "Content-Type,Authorization,X-Requested-With,Content-Length,Accept,Origin,");
+            Base.close();
+            response.header("Access-Control-Allow-Origin", "*");
+            response.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
+            response.header("Access-Control-Allow-Headers",
+                    "Content-Type,Authorization,X-Requested-With,Content-Length,Accept,Origin,");
         });
 
         //------------------LOGIN-------------------------//
         post("/login", (req, res) -> {
-          res.type("application/json");
-
-          // if there is currentUser is because headers are correct, so we only
-          // return the current user here
-          //si existe currentUser es porque el header es correcto, por lo que solo
-            //devuelve el usuario actual aquí
-          return currentUser.toJson(true);
+            res.type("application/json");
+            return currentUser.toJson(true);
         });
 
+        //----------------REGISTRAR--------------------//
+        //Registration User
+        post("/user", (req, res) -> {
+            Map<String, Object> bodyParams = new Gson().fromJson(req.body(), Map.class); //req.body -> indica que un parámetro del método debe estar vinculado al CUERPO de la solicitud web.
+            Double c = (Double) bodyParams.get("tipoUser");
+            int cc = c.intValue();
+            User.createUser((String) bodyParams.get("nom"), (String) bodyParams.get("ape"), (String) bodyParams.get("dni"), (String) bodyParams.get("pass"), cc);
+            res.type("application/json");
+            return new Gson().toJson(true);
+        });
+
+        //---------------GAME-------------------------//
+        //inicializa partida 
+        get("/selectQuestionAnswerInit/:areaId", (req, res) -> { //:userId/:areaId
+            System.out.println(ide);
+            res.type("application/json");
+            pregHechas = Game.getAllQuestionGameArea(ide, req.params(":areaId")); //devuelve las preguntas ya hechas en el area seleccionada y las realizadas durante la partida
+            indexPregHechas = pregHechas.size();                            //det la cant de preg ya hechas
+            pregEnArea = Game.allQuestionArea(req.params(":areaId"));       //devuelve todas las preguntas que se encuentran en el area
+            cantPregCorrect = Game.getCantQuestCorrecArea(ide, pregHechas); //det la cant de preg correctas contestadas por el usuario en el area elegida
+            
+            System.out.println("PREG HECHAS INICIAL " + pregHechas);
+            System.out.println("PREG EN AREA TOTAL INICIAL " + pregEnArea);
+            System.out.println("PREG CORREC EN AREA INICIAL " + cantPregCorrect);
+           
+            Map QuestionAnswerInit = Game.selectQuestionAnswerInit(req.params(":areaId"), pregHechas, pregEnArea); //det los datos necesarios para inicializar
+           
+            System.out.println("PREG HECHAS " + pregHechas);
+            System.out.println("PREG EN AREA " + pregEnArea);
+            return new Gson().toJson(QuestionAnswerInit);
+        });
+
+        //selecciona una pregunta para realizar (ya tiene inicializado pregHechas y pregEnArea)
+        get("/selectQuestionAnswer/:areaId", (req, res) -> { //:userId/:areaId
+            res.type("application/json");
+            System.out.println("PREG HECHAS " + pregHechas);
+            System.out.println("PREG EN AREA " + pregEnArea);
+            System.out.println("CANT PREG CORREC " + cantPregCorrect);
+            
+            Map QuestionAnswer = Game.selectQuestionAnswer(ide, pregHechas, pregEnArea, cantPregCorrect);
+           
+            System.out.println("PREG HECHAS " + pregHechas);
+            System.out.println("PREG EN AREA " + pregEnArea);
+            System.out.println("CANT PREG CORREC " + cantPregCorrect);
+            return new Gson().toJson(QuestionAnswer);
+
+        });
+
+        //guarda si se contesto la preg en forma correcta o incorrecta en un arreglo
+        post("/updateTypeQuest", (req, res) -> { ///:tipoResp
+            res.type("application/json");
+            Map<String, Object> bodyParams = new Gson().fromJson(req.body(), Map.class);
+            Integer typeAnsw = Integer.parseInt((String) bodyParams.get("tipoResp"));//Integer.parseInt ((String) bodyParams.get("tipoResp"));
+            if (typeAnsw == 1) {
+                cantPregCorrect = cantPregCorrect + 1;
+            }
+            System.out.println("TIPO RESP " + typeAnsw);
+            
+            respHechasCorIncor.add(typeAnsw); //guarda el tipo de respuesta que se dio en la pregunta dada
+           
+            System.out.println("TIPO RESP HECHAS " + respHechasCorIncor);
+            System.out.println("CANT PREG CORRECT " + cantPregCorrect);
+            return new Gson().toJson(true);
+        });
+
+        //carga las preguntas hechas en la partida y su estado en la base de datos
+        post("/exit", (req, res) -> {//:preg/:game/:est
+            res.type("application/json");
+            Map<String, Object> bodyParams = new Gson().fromJson(req.body(), Map.class);
+
+            Integer areaId = Integer.parseInt((String) bodyParams.get("areaId"));
+            System.out.println("AREA " + areaId);
+
+            Double n = (Double) bodyParams.get("nivel");
+            int nn = n.intValue();
+            System.out.println("NIVEL " + nn);
+
+            Double c = (Double) bodyParams.get("completada");
+            int cc = c.intValue();
+            System.out.println("AREA COMPLETADA " + cc);
+
+            Integer userId = Integer.parseInt(ide);
+            System.out.println("USUARIO " + ide);
+
+            UserArea.updateAreaUser(userId, areaId, cc, nn); //carga los datos de completada y nivel en caso que el usuario no este cargado 
+                                                             //o los modifica en caso que ya haya jugado
+            System.out.println("PREG EN AREA " + pregEnArea);
+            System.out.println("PREG HECHAS " + pregHechas);
+            System.out.println("TIPO RESP HECHAS " + respHechasCorIncor);
+            System.out.println("CANT PREG CORRECT " + cantPregCorrect);
+            System.out.println("INDEX PREG HECHAS INICIAL " + indexPregHechas);           
+            
+            //carga las preguntas hechas al usuario durante la partida
+            QuestionGame.updateQuestionGame(ide, indexPregHechas, pregHechas, respHechasCorIncor);
+            
+            pregEnArea.clear();//reset de todas las listas y variables
+            pregHechas.clear();
+            respHechasCorIncor.clear();
+            cantPregCorrect = 0;
+            
+            System.out.println("PREG EN AREA " + pregEnArea);
+            System.out.println("PREG HECHAS " + pregHechas);
+            System.out.println("TIPO RESP HECHAS " + respHechasCorIncor);
+            System.out.println("CANT PREG CORRECT " + cantPregCorrect);
+            return new Gson().toJson(true);
+        });
+
+        //--------------------FIN GAME----------------------//
+        
+
+
+        /*
         //Registration User
         post("/users", (req, res) -> {
             Map<String, Object> bodyParams = new Gson().fromJson(req.body(), Map.class); //req.body -> indica que un parámetro del método debe estar vinculado al CUERPO de la solicitud web.
             User.createUser((String) bodyParams.get("nom"), (String) bodyParams.get("ape"), (String) bodyParams.get("dni"), (String) bodyParams.get("pass"), Integer.parseInt((String) bodyParams.get("tipoUser")));
             res.type("application/json");
             return new Gson().toJson(true);
-        });
+        });*/
 
-        //-------------------------------FIN LOGIN---------------------------------------//
-        //supongo que el usuario se loguea por primera vez y esto automaticamente crea un juego
-        //(si ya esta loguado y quiere jugar nuevamente hay que buscar su juego iniciado)
-        // inicio juego
-        //devuelve datos de la ultima partida del usuario (nivel y areas en las que esta jugando)
         get("/newGame", (req, res) -> { //"/newGame/:userId"
             res.type("application/json");
             return new Gson().toJson(Game.newGame(ide));//req.params("userId")
@@ -90,61 +194,7 @@ public class App {
             res.type("application/json");
             return new Gson().toJson(Game.selecAnswer(req.params(":pregId")));
         });//FUNCIONA
-        //-------------------
-        
-        //----inicio juego-----
-        
-        //inicializa las preguntas que tiene el jugador resposdidas, las que tiene el area y envia una pregunta para hacer
-        get("/selectQuestionAnswerInit/:areaId", (req, res) -> { //:userId/:areaId
-            res.type("application/json");
-            pregHechas = Game.getAllQuestionGameArea(ide, req.params(":areaId")); //(gameId, areaId)//devuelve las preguntas hechas en el area que jugo por ultima vez
-            pregEnArea = Game.allQuestionArea(req.params(":areaId"));
-            System.out.println(pregHechas);
-            System.out.println(pregEnArea);
-            Map QuestionAnswerInit = Game.selectQuestionAnswerInit(pregHechas, pregEnArea);
-            System.out.println(pregHechas);
-            System.out.println(pregEnArea);
-            return new Gson().toJson(QuestionAnswerInit);
-            });
-        
-        //selecciona una pregunta para realizar (ya tiene inicializado pregHechas y pregEnArea)
-        get("/selectQuestionAnswer/:areaId", (req, res) -> { //:userId/:areaId
-            res.type("application/json");
-            System.out.println(pregHechas);
-            System.out.println(pregEnArea);
-            Map QuestionAnswer = Game.selectQuestionAnswer(pregHechas, pregEnArea);
-            System.out.println(pregHechas);
-            System.out.println(pregEnArea);
-            return new Gson().toJson(QuestionAnswer);
-    
-    });
-      
-        //guarda si se contesto la preg en forma correcta o incorrecta en un arreglo
-        post("/updateTypeQuest/:tipoResp", (req, res) -> { ///:tipoResp
-            res.type("application/json");
-            //Map<String, Object> bodyParams = new Gson().fromJson(req.body(), Map.class);
-            Integer typeAnsw = Integer.parseInt(req.params(":tipoResp"));//Integer.parseInt ((String) bodyParams.get("tipoResp"));
-            System.out.println(typeAnsw);
-            respHechas.add(typeAnsw); //guarda el tipo de respuesta que se dio en la pregunta dada
-            System.out.println(respHechas);
-            return new Gson().toJson(true);
-        });
-        
-        //carga las preguntas hechas en la partida y su estado en la base de datos
-        post("/exit", (req, res) -> {
-            res.type("application/json");
-           // Map<String, Object> bodyParams = new Gson().fromJson(req.body(), Map.class);
-            for (int i = 0; i < pregHechas.size(); i++) {
-                QuestionGame.createQuestionGame( pregHechas.get(i),Integer.parseInt(ide), respHechas.get(i));
-            }
-            return new Gson().toJson(true);
-        });
-        
-        
-        
-        
-        //fin juego
-        //-----------------------------------------USER---------------------//
+
         // returns a User by id
         get("/users/:id", (req, res) -> {
             res.type("application/json");
@@ -183,9 +233,6 @@ public class App {
             }
         });
 
-        //----------------------------------------END USER--------------//
-        //
-        //-----------------------------------GAME-------------------//
         //return todos los Games.
         get("/games", (req, res) -> {
             res.type("application/json");
@@ -214,9 +261,7 @@ public class App {
             Game.deleteGame(req.params(":id"));
             return new Gson().toJson(true);
         });
-        //---------------------END GAME----------//
-        //
-        //--------------------------QUESTIONS----------------------//
+
         // returns all question
         get("/questions", (req, res) -> {
             res.type("application/json");
@@ -260,9 +305,6 @@ public class App {
             }
         });
 
-        //-----------------------------------FINQUESTION------------------//
-        //
-        //---------------------------ANSWER-----------------//
         // returns a answer by id
         get("/answers/:id", (req, res) -> {
             res.type("application/json");
@@ -305,7 +347,5 @@ public class App {
                 return new Gson().toJson(false);
             }
         });
-
-        //--------------------END ANSWER----------------------------//
     }
 }
