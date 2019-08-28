@@ -1,2 +1,3 @@
 target/
 nbactions.xml
+main/resources/database.properties
