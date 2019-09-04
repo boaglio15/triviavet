@@ -94,7 +94,7 @@ export default class QuestionsSreens extends React.Component {
   //toma la respuesta seleccionada por el jugador y la envia a la app
   handleAnswer = async (tipo) => {
     const { navigation } = this.props;
-    const tipoResp = JSON.stringify(tipo);
+    const tipoResp = tipo;//JSON.stringify(tipo);
     axios.post(API_HOST + "updateTypeQuest", {
       tipoResp: tipoResp,
     },
