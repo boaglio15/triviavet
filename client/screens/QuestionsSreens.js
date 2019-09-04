@@ -22,10 +22,21 @@ export default class QuestionsSreens extends React.Component {
     const { navigation } = this.props;
     const question = navigation.getParam('quest', 'NO-ID');
     const respuesta1 = navigation.getParam('answ1', 'NO-ID');
+    const tipoResp1 = navigation.getParam('tipoAnsw1', 'NO-ID');
     const respuesta2 = navigation.getParam('answ2', 'NO-ID');
+    const tipoResp2 = navigation.getParam('tipoAnsw2', 'NO-ID');
     const respuesta3 = navigation.getParam('answ3', 'NO-ID');
+    const tipoResp3 = navigation.getParam('tipoAnsw3', 'NO-ID');
     const respuesta4 = navigation.getParam('answ4', 'NO-ID');
+    const tipoResp4 = navigation.getParam('tipoAnsw4', 'NO-ID');
     const nivel = navigation.getParam('nivel', 'NO-ID');
+    //const tipo1 = navigation.getParam('type1', 'No-ID');
+    console.log(tipoResp1);
+    console.log(tipoResp2);
+    console.log(tipoResp3);
+    console.log(tipoResp4);
+
+    //console.log(tipo1);
     //FALTA GENERAR MOSTRAR LAS RESPUESTAS EN DISTINTOS BOTONES PORQUE
     //DE ESTA FORMA SIEMPRE LA RESPUESTA CORRECTA ESTA EN EL MISMO BOTON
     return (
@@ -39,7 +50,7 @@ export default class QuestionsSreens extends React.Component {
 
         <View style={styles.button}>
           <Button
-            onPress={this.handleAnswer.bind(this, 1)}
+            onPress={this.handleAnswer.bind(this, tipoResp1)}
             title={respuesta1}
 
           />
@@ -48,7 +59,7 @@ export default class QuestionsSreens extends React.Component {
 
         <View style={styles.button}>
           <Button
-            onPress={this.handleAnswer.bind(this, 0)}
+            onPress={this.handleAnswer.bind(this, tipoResp2)}
             title={respuesta2}
 
           />
@@ -57,7 +68,7 @@ export default class QuestionsSreens extends React.Component {
 
         <View style={styles.button}>
           <Button
-            onPress={this.handleAnswer.bind(this, 0)}
+            onPress={this.handleAnswer.bind(this, tipoResp3)}
             title={respuesta3}
 
           />
@@ -66,7 +77,7 @@ export default class QuestionsSreens extends React.Component {
 
         <View style={styles.button}>
           <Button
-            onPress={this.handleAnswer.bind(this, 0)}
+            onPress={this.handleAnswer.bind(this, tipoResp4)}
             title={respuesta4}
           />
         </View>

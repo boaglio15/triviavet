@@ -68,15 +68,19 @@ export default class AnswerScreen extends React.Component {
           const questId = response.data.id;
           const quest = response.data.preg;
           const answ1 = response.data.resp1;
+          const tipoAnsw1 = response.data.tipo1;
           const answ2 = response.data.resp2;
+          const tipoAnsw2 = response.data.tipo2;
           const answ3 = response.data.resp3;
+          const tipoAnsw3 = response.data.tipo3;
           const answ4 = response.data.resp4;
-          const type1 = response.data.tipo1;
+          const tipoAnsw4 = response.data.tipo4;
           const nivel = response.data.nivel;
           this.props.navigation.navigate('QuestionsAnswers',
             {
               'quest': quest, 'questId': questId, 'areaId': area, 'answ1': answ1,
-              'answ2': answ2, 'answ3': answ3, 'answ4': answ4, 'type1': type1, 'nivel': nivel, 'areaComplet': areaComplet
+              'tipoAnsw1':tipoAnsw1, 'tipoAnsw2':tipoAnsw2, 'tipoAnsw3':tipoAnsw3, 'tipoAnsw4':tipoAnsw4,
+              'answ2': answ2, 'answ3': answ3, 'answ4': answ4, 'nivel': nivel, 'areaComplet': areaComplet
             }); //envia parametros a la sig vista
         }
       })

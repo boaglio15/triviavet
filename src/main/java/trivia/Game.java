@@ -1,6 +1,7 @@
 package trivia;
 
 import org.javalite.activejdbc.Model;
+import java.lang.Math;
 import java.util.*;
 import java.util.List;
 
@@ -150,6 +151,7 @@ public class Game extends Model {
         return preg;
     }
 
+
     //det el nivel donde esta jugando en un area
     private static Integer nivel(int cantPregCorrectArea) { //la cant de preg necesarias para avanzar puede cambiarse
         if (cantPregCorrectArea <= 1) {
@@ -162,6 +164,28 @@ public class Game extends Model {
             return 3;
         };
         return -1;
+    }
+   
+    public static List<Answer> aleatoryOptionsQuestion(List<Answer> answers){
+    	int numRandom;
+    	List<Answer> resultList = new LinkedList<Answer>();
+    	Answer auxiliar;
+    	for(int i=4; i>1; i--){
+    		numRandom = (int) (Math.random()* i);
+    		auxiliar = answers.remove(numRandom);
+    		resultList.add(auxiliar);
+    	}
+    	resultList.add(answers.get(0));
+    	return resultList;
+    }
+
+    public static void toString(List<Answer> lista){
+    	int i = 0;
+    	int size = lista.size();
+    	while(i<size){
+    		System.out.println(lista.get(i).getResp());
+    		i++;
+    	}
     }
 
     //inicializa la partida configurando: 
@@ -176,16 +200,20 @@ public class Game extends Model {
         if (datAreaUser.isEmpty()) {                                                    //caso jugador nuevo en el area seleccionada o que nunca jugo
             Integer idPregSelect = selectQuestionId(pregHechas, pregEnArea);            //det en forma random el id de una preg a realizar
             Question pregSelec = Question.getQuestion(Integer.toString(idPregSelect));  //obtiene la preg
-            List<Answer> answerSelec = selecAnswer(Integer.toString(idPregSelect));     //det las respuestas para la preg
+            List<Answer> answerSelec = selecAnswer(Integer.toString(idPregSelect));
+            List<Answer> answerSelecFinal = aleatoryOptionsQuestion(answerSelec);
             Map m = new HashMap();                                                      //mapea toda la info a enviar
             m.put("id", pregSelec.getId());
             m.put("areaId", pregSelec.getAreaId());
             m.put("preg", pregSelec.getPreg());
-            m.put("resp1", answerSelec.get(0).getResp());
-            m.put("tipo1", answerSelec.get(0).getTipoAnswer());
-            m.put("resp2", answerSelec.get(1).getResp());
-            m.put("resp3", answerSelec.get(2).getResp());
-            m.put("resp4", answerSelec.get(3).getResp());
+            m.put("resp1", answerSelecFinal.get(0).getResp());
+            m.put("tipo1", answerSelecFinal.get(0).getTipoAnswer());
+            m.put("resp2", answerSelecFinal.get(1).getResp());
+            m.put("tipo2", answerSelecFinal.get(1).getTipoAnswer());
+            m.put("resp3", answerSelecFinal.get(2).getResp());
+            m.put("tipo3", answerSelecFinal.get(2).getTipoAnswer());
+            m.put("resp4", answerSelecFinal.get(3).getResp());
+            m.put("tipo4", answerSelecFinal.get(3).getTipoAnswer());
             m.put("areaSinPreg", 0);
             m.put("areaComplet", 0);
             m.put("nivel", 0);
@@ -207,15 +235,19 @@ public class Game extends Model {
                 Integer idPregSelect = selectQuestionId(pregHechas, pregEnArea);            //det en froma random el id de una preg a realizar
                 Question pregSelec = Question.getQuestion(Integer.toString(idPregSelect));  //obtiene la preg
                 List<Answer> answerSelec = selecAnswer(Integer.toString(idPregSelect));     //det las respuestas para la preg
+                List<Answer> answerSelecFinal = aleatoryOptionsQuestion(answerSelec);
                 Map m = new HashMap();                                                      //mapea toda la info a inviar
                 m.put("id", pregSelec.getId());
                 m.put("areaId", pregSelec.getAreaId());
                 m.put("preg", pregSelec.getPreg());
-                m.put("resp1", answerSelec.get(0).getResp());
-                m.put("tipo1", answerSelec.get(0).getTipoAnswer());
-                m.put("resp2", answerSelec.get(1).getResp());
-                m.put("resp3", answerSelec.get(2).getResp());
-                m.put("resp4", answerSelec.get(3).getResp());
+            	m.put("resp1", answerSelecFinal.get(0).getResp());
+            	m.put("tipo1", answerSelecFinal.get(0).getTipoAnswer());
+            	m.put("resp2", answerSelecFinal.get(1).getResp());
+            	m.put("tipo2", answerSelecFinal.get(1).getTipoAnswer());
+            	m.put("resp3", answerSelecFinal.get(2).getResp());
+            	m.put("tipo3", answerSelecFinal.get(2).getTipoAnswer());
+            	m.put("resp4", answerSelecFinal.get(3).getResp());
+            	m.put("tipo4", answerSelecFinal.get(3).getTipoAnswer());                
                 m.put("areaSinPreg", 0);
                 m.put("areaComplet", 0);
                 m.put("nivel", datAreaUser.get(0).getNivel());
@@ -245,15 +277,19 @@ public class Game extends Model {
             Integer idPregSelect = selectQuestionId(pregHechas, pregEnArea);
             Question pregSelec = Question.getQuestion(Integer.toString(idPregSelect));
             List<Answer> answerSelec = selecAnswer(Integer.toString(idPregSelect));
+            List<Answer> answerSelecFinal = aleatoryOptionsQuestion(answerSelec);
             Map m = new HashMap();
             m.put("id", pregSelec.getId());
             m.put("areaId", pregSelec.getAreaId());
             m.put("preg", pregSelec.getPreg());
-            m.put("resp1", answerSelec.get(0).getResp());
-            m.put("tipo1", answerSelec.get(0).getTipoAnswer());
-            m.put("resp2", answerSelec.get(1).getResp());
-            m.put("resp3", answerSelec.get(2).getResp());
-            m.put("resp4", answerSelec.get(3).getResp());
+            m.put("resp1", answerSelecFinal.get(0).getResp());
+            m.put("tipo1", answerSelecFinal.get(0).getTipoAnswer());
+            m.put("resp2", answerSelecFinal.get(1).getResp());
+            m.put("tipo2", answerSelecFinal.get(1).getTipoAnswer());
+            m.put("resp3", answerSelecFinal.get(2).getResp());
+            m.put("tipo3", answerSelecFinal.get(2).getTipoAnswer());
+            m.put("resp4", answerSelecFinal.get(3).getResp());
+            m.put("tipo4", answerSelecFinal.get(3).getTipoAnswer());            
             m.put("sinPregArea", 1);       //se realiza la ultima preg y no hay mas en el area (1=true) FALTA CONTEMPLAR ESTE CASO EN EL CLIENTE
             m.put("nivel", nivel);
             m.put("areaComplet", areaComplet);
@@ -264,15 +300,19 @@ public class Game extends Model {
             Integer idPregSelect = selectQuestionId(pregHechas, pregEnArea);
             Question pregSelec = Question.getQuestion(Integer.toString(idPregSelect));
             List<Answer> answerSelec = selecAnswer(Integer.toString(idPregSelect));
+            List<Answer> answerSelecFinal = aleatoryOptionsQuestion(answerSelec);
             Map m = new HashMap();
             m.put("id", pregSelec.getId());
             m.put("areaId", pregSelec.getAreaId());
             m.put("preg", pregSelec.getPreg());
-            m.put("resp1", answerSelec.get(0).getResp());
-            m.put("tipo1", answerSelec.get(0).getTipoAnswer());
-            m.put("resp2", answerSelec.get(1).getResp());
-            m.put("resp3", answerSelec.get(2).getResp());
-            m.put("resp4", answerSelec.get(3).getResp());
+            m.put("resp1", answerSelecFinal.get(0).getResp());
+            m.put("tipo1", answerSelecFinal.get(0).getTipoAnswer());
+            m.put("resp2", answerSelecFinal.get(1).getResp());
+            m.put("tipo2", answerSelecFinal.get(1).getTipoAnswer());
+            m.put("resp3", answerSelecFinal.get(2).getResp());
+            m.put("tipo3", answerSelecFinal.get(2).getTipoAnswer());
+            m.put("resp4", answerSelecFinal.get(3).getResp());
+            m.put("tipo4", answerSelecFinal.get(3).getTipoAnswer());            
             m.put("sinPregArea", 0); //0 = false
             m.put("nivel", nivel);
             m.put("areaComplet", areaComplet);

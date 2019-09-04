@@ -80,6 +80,8 @@ public class App {
             System.out.println("PREG HECHAS INICIAL " + pregHechas);
             System.out.println("PREG EN AREA TOTAL INICIAL " + pregEnArea);
             System.out.println("PREG CORREC EN AREA INICIAL " + cantPregCorrect);
+
+            System.out.println("-----------------------");
            
             Map QuestionAnswerInit = Game.selectQuestionAnswerInit(req.params(":areaId"), pregHechas, pregEnArea); //det los datos necesarios para inicializar
            

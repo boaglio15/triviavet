@@ -30,7 +30,7 @@ export default class SignInScreen extends React.Component {
 
         <View>
           <TextInput
-            placeholder="Username"
+            placeholder="Dni"
             style={styles.input}
             onChangeText={(value) => this.setState({ username: value })}
             value={this.state.username}
