@@ -9,11 +9,20 @@ import AuthLoadingScreen from '../screens/AuthLoadingScreen';
 import AnswerScreen from '../screens/AnswerScreen';
 import Registration from '../screens/Registration';
 import CompletArea from '../screens/CompletArea';
+import EmptyArea from '../screens/EmptyArea';
+import LostArea from '../screens/LostArea';
 
 //createStackNavigator: crea un componente que se coloca en la pila de navegacion que se usa para
 //recorrer distintas pantallas en la app
-const AppStack = createStackNavigator({ Home: HomeScreen, Play: PlayScreen,  QuestionsAnswers: QuestionsSreens,
-   Answer: AnswerScreen, Registro: Registration, AreaCompletada: CompletArea });
+const AppStack = createStackNavigator({ Home: HomeScreen, 
+  Play: PlayScreen,  
+  QuestionsAnswers: QuestionsSreens,
+  Answer: AnswerScreen, 
+  Registro: Registration, 
+  AreaCompletada: CompletArea, 
+  AreaSinPreguntas: EmptyArea,
+  AreaPerdida: LostArea});
+  
 const AuthStack = createStackNavigator({ SignIn: SignInScreen }); //contenedor para inicio por defecto
                                                                   //carga el logueo
 export default createAppContainer(createSwitchNavigator(

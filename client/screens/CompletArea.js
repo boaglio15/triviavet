@@ -4,7 +4,6 @@ import {
     AsyncStorage,
     View,
     Text,
-    TextInput,
     Button,
     StyleSheet,
 } from 'react-native';
@@ -12,13 +11,11 @@ import axios from 'axios';
 
 export default class CompletArea extends React.Component {
     static navigationOptions = {
-        title: 'Areas',
+        title: 'Area completada',
     };
 
     constructor(props) {
         super(props);
-        this.state = {
-        }
     }
 
     render() {
@@ -47,7 +44,7 @@ export default class CompletArea extends React.Component {
                 <View style={styles.getStartedContainer}>
                     <Button
                         onPress={this.salvarArea} style={styles.logout}
-                        title="--- areas ---"
+                        title="--- ir a play ---"
                         color="#ff0000"
                     />
                 </View>

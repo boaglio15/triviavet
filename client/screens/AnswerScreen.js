@@ -23,31 +23,19 @@ export default class AnswerScreen extends React.Component {
     const { navigation } = this.props;
     const tipoAnsw = navigation.getParam('tipo', 'NO-ID');
     return (
-      <View style={styles.container}>
+        <View style={styles.container}>
+          
+          <View>{this.perdio()}</View>
 
-        <View>
-          {this.correctaOIncorrecta(tipoAnsw)}
+          <View>{this.correctaOIncorrecta()}</View>
+
+          <View style={styles.button}>
+            <Button onPress={this.nextQuestions} title="Siguiente pregunta" />
+          </View>
+
+          
         </View>
-
-        <View style={styles.button}>
-          <Button
-            onPress={() => this.nextQuestions()}
-            title="Siguiente pregunta"
-          />
-        </View>
-
-        <Text style={styles.espacio}> {"\n\n\n\n\n"}</Text>
-
-        <View style={styles.getStartedContainer}>
-          <Button
-            onPress={this.exitGame} style={styles.logout}
-            title="--- exit ---"
-            color="#ff0000"
-          />
-        </View>
-
-      </View>
-    );
+      );
   }
 
   //pide un pregunta a la app y parametros de juego
@@ -60,11 +48,18 @@ export default class AnswerScreen extends React.Component {
       .then(response => JSON.parse(JSON.stringify(response)))
       .then(response => {
         const areaComplet = response.data.areaComplet;
-        const nivel = response.data.nivel;
-        if (areaComplet == 1) { //caso area jugada y completada  (falta contemplar cuando mo hay mas preg)     
-          return (
-            this.props.navigation.navigate('AreaCompletada', { 'areaId': area, 'areaComplet': areaComplet }))
-        } else { //caso area en juego
+        const areaSinPreg = response.data.areaSinPreg;
+        if (areaSinPreg == 1) {
+          //caso area sin preguntas para hacer
+          this.props.navigation.navigate("AreaSinPreguntas");
+        } else {
+          if (areaComplet == 1) {
+            //caso area jugada y completada
+            return this.props.navigation.navigate("AreaCompletada", {
+              areaId: area,
+              areaComplet: areaComplet
+            });
+          } else { //caso area en juego
           const questId = response.data.id;
           const quest = response.data.preg;
           const answ1 = response.data.resp1;
@@ -76,12 +71,14 @@ export default class AnswerScreen extends React.Component {
           const answ4 = response.data.resp4;
           const tipoAnsw4 = response.data.tipo4;
           const nivel = response.data.nivel;
-          this.props.navigation.navigate('QuestionsAnswers',
-            {
+          const cantQuestIncorrect = response.data.cantPregInco;
+          this.props.navigation.navigate('QuestionsAnswers',{
               'quest': quest, 'questId': questId, 'areaId': area, 'answ1': answ1,
               'tipoAnsw1':tipoAnsw1, 'tipoAnsw2':tipoAnsw2, 'tipoAnsw3':tipoAnsw3, 'tipoAnsw4':tipoAnsw4,
-              'answ2': answ2, 'answ3': answ3, 'answ4': answ4, 'nivel': nivel, 'areaComplet': areaComplet
+              'answ2': answ2, 'answ3': answ3, 'answ4': answ4, 'nivel': nivel, 'areaComplet': areaComplet,
+              'areaSinPreg': areaSinPreg, 'cantQuestIncorrect': cantQuestIncorrect
             }); //envia parametros a la sig vista
+        }
         }
       })
       .catch((error) => {
@@ -93,42 +90,52 @@ export default class AnswerScreen extends React.Component {
       })
   }
 
-  //det si la respuesta seleccionada es corecta o no
-  correctaOIncorrecta(tipoAnsw) {
-    if (tipoAnsw == 1) {
-      return (
-        <View>
-          <View style={styles.welcomeContainer}>
-            <Image
-              source={
-                __DEV__
-                  ? require('../assets/images/caballo2.png')
-                  : require('../assets/images/robot-prod.png')
-              }
-              style={styles.welcomeImage}
-            />
-          </View>
-          <Text style={styles.welcome}>Correcto !</Text>
-        </View>
-      )
-    } else {
-      return (
-        <View>
-          <View style={styles.welcomeContainer}>
-            <Image
-              source={
-                __DEV__
-                  ? require('../assets/images/caballo.png')
-                  : require('../assets/images/robot-prod.png')
-              }
-              style={styles.welcomeImage}
-            />
-          </View>
-          <Text style={styles.welcome}>Incorrecto !</Text>
-        </View>
-      )
+  perdio = () => {
+    const {navigation} = this.props;
+    const cantQuestIncorrect = navigation.getParam("cantQuestIncorrect", "NO-ID");
+    if (cantQuestIncorrect >= 1) {
+        return this.props.navigation.navigate("AreaPerdida");
     }
-  };
+  }
+
+//det si la respuesta seleccionada es corecta o no y si pierde por respuestas incorrectas
+correctaOIncorrecta = () => {
+  const { navigation } = this.props;
+  const tipoAnsw = navigation.getParam("tipo", "NO-ID");
+  if (tipoAnsw == 1) {
+    return (
+      <View>
+        <View style={styles.welcomeContainer}>
+          <Image
+            source={
+              __DEV__
+                ? require("../assets/images/caballo2.png")
+                : require("../assets/images/robot-prod.png")
+            }
+            style={styles.welcomeImage}
+          />
+        </View>
+        <Text style={styles.welcome}> Correcto !</Text>
+      </View>
+    );
+  } else {
+    return (
+      <View>
+        <View style={styles.welcomeContainer}>
+          <Image
+            source={
+              __DEV__
+                ? require("../assets/images/caballo.png")
+                : require("../assets/images/robot-prod.png")
+            }
+            style={styles.welcomeImage}
+          />
+        </View>
+        <Text style={styles.welcome}>Incorrecto !</Text>
+      </View>
+   );
+  }
+};
 
   //permite volver al home y habilita a la app a salvar las preguntas hechas en la partida en la base de datos
   exitGame = async () => {

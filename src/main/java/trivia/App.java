@@ -17,6 +17,7 @@ public class App {
     static List<Integer> pregEnArea = new ArrayList<Integer>(); //contiene todas las preguntas posibles de realizar en un area
     static List<Integer> respHechasCorIncor = new ArrayList<Integer>(); //contiene el resultado de la pregunta hecha al jugador
     static int cantPregCorrect;
+    static int cantPregIncorrect;
     static int indexPregHechas; //indica cuantas preg tenia hechas el jugador en partidas anteriores
     
     public static void main(String[] args) {
@@ -83,7 +84,7 @@ public class App {
 
             System.out.println("-----------------------");
            
-            Map QuestionAnswerInit = Game.selectQuestionAnswerInit(req.params(":areaId"), pregHechas, pregEnArea); //det los datos necesarios para inicializar
+            Map QuestionAnswerInit = Game.selectQuestionAnswerInit(req.params(":areaId"), pregHechas, pregEnArea, cantPregIncorrect); //det los datos necesarios para inicializar
            
             System.out.println("PREG HECHAS " + pregHechas);
             System.out.println("PREG EN AREA " + pregEnArea);
@@ -97,7 +98,7 @@ public class App {
             System.out.println("PREG EN AREA " + pregEnArea);
             System.out.println("CANT PREG CORREC " + cantPregCorrect);
             
-            Map QuestionAnswer = Game.selectQuestionAnswer(ide, pregHechas, pregEnArea, cantPregCorrect);
+            Map QuestionAnswer = Game.selectQuestionAnswer(ide, pregHechas, pregEnArea, cantPregCorrect, cantPregIncorrect);
            
             System.out.println("PREG HECHAS " + pregHechas);
             System.out.println("PREG EN AREA " + pregEnArea);

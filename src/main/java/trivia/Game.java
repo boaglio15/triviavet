@@ -195,7 +195,7 @@ public class Game extends Model {
     // -determina la cantidad depreguntas correctas hechas por el jugador en el area
     // -selecciona una preg a realizar
     // -selecciona las respuestas posibles a la preg seleccionada
-    public static Map selectQuestionAnswerInit(String areaId, List<Integer> pregHechas, List<Integer> pregEnArea) {
+    public static Map selectQuestionAnswerInit(String areaId, List<Integer> pregHechas, List<Integer> pregEnArea, int cantPregIncorrect) {
         List<UserArea> datAreaUser = UserArea.getDatAreaUser(areaId);   //det los datos de nivel y completada para el area elegida por el usuario
         if (datAreaUser.isEmpty()) {                                                    //caso jugador nuevo en el area seleccionada o que nunca jugo
             Integer idPregSelect = selectQuestionId(pregHechas, pregEnArea);            //det en forma random el id de una preg a realizar
@@ -216,7 +216,8 @@ public class Game extends Model {
             m.put("tipo4", answerSelecFinal.get(3).getTipoAnswer());
             m.put("areaSinPreg", 0);
             m.put("areaComplet", 0);
-            m.put("nivel", 0);
+            m.put("nivel", 1);
+            m.put("cantPregInco", 0);
             pregHechas.add(idPregSelect);                                                 //actualizarPegHechas
             pregEnArea.remove(idPregSelect);                                              //actualizarPregEnAreas
             return m;
@@ -251,6 +252,7 @@ public class Game extends Model {
                 m.put("areaSinPreg", 0);
                 m.put("areaComplet", 0);
                 m.put("nivel", datAreaUser.get(0).getNivel());
+                m.put("cantPregInco", cantPregIncorrect);
                 pregHechas.add(idPregSelect);                                                 //actualizarPegHechas
                 pregEnArea.remove(idPregSelect);                                              //actualizarPregEnAreas
                 return m;
@@ -259,7 +261,7 @@ public class Game extends Model {
     }
 
     //retorna una pregunta junto con sus respuestas y demas datos
-    public static Map selectQuestionAnswer(String userId, List<Integer> pregHechas, List<Integer> pregEnArea, int cantPregCorr) {
+    public static Map selectQuestionAnswer(String userId, List<Integer> pregHechas, List<Integer> pregEnArea, int cantPregCorr, int cantPregIncorrect) {
         Integer nivel = nivel(cantPregCorr);
         System.out.println("NIVEL " + nivel);
         Integer areaComplet = 0;
@@ -268,6 +270,12 @@ public class Game extends Model {
             Map m = new HashMap();
             m.put("nivel", nivel);
             m.put("areaComplet", areaComplet);
+            return m;
+        }
+        if (pregEnArea.isEmpty()) { //caso donde no hay mas preguntas en el area para hacer
+            Map m = new HashMap();
+            m.put("nivel", nivel);
+            m.put("areaSinPreg", 1);
             return m;
         }
         System.out.println("AREA COMPLETA " + areaComplet);
@@ -290,9 +298,10 @@ public class Game extends Model {
             m.put("tipo3", answerSelecFinal.get(2).getTipoAnswer());
             m.put("resp4", answerSelecFinal.get(3).getResp());
             m.put("tipo4", answerSelecFinal.get(3).getTipoAnswer());            
-            m.put("sinPregArea", 1);       //se realiza la ultima preg y no hay mas en el area (1=true) FALTA CONTEMPLAR ESTE CASO EN EL CLIENTE
-            m.put("nivel", nivel);
+            m.put("sinPregArea", 1);       //se realiza la ultima preg y no hay mas en el area (1=true) 
             m.put("areaComplet", areaComplet);
+            m.put("nivel", nivel);
+            m.put("cantPregInco", cantPregIncorrect);
             pregHechas.add(idPregSelect);       //actualizarPegHechas
             pregEnArea.remove(idPregSelect);    //actualizarPregEnAreas
             return m;
@@ -314,8 +323,9 @@ public class Game extends Model {
             m.put("resp4", answerSelecFinal.get(3).getResp());
             m.put("tipo4", answerSelecFinal.get(3).getTipoAnswer());            
             m.put("sinPregArea", 0); //0 = false
-            m.put("nivel", nivel);
             m.put("areaComplet", areaComplet);
+            m.put("nivel", nivel);
+            m.put("cantPregInco", cantPregIncorrect);
             pregHechas.add(idPregSelect);       //actualizarPegHechas
             pregEnArea.remove(idPregSelect);    //actualizarPregEnAreas
             return m;

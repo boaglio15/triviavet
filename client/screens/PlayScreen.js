@@ -60,29 +60,34 @@ export default class PlayScreen extends React.Component {
       .then(response => JSON.parse(JSON.stringify(response)))
       .then(response => {
         const areaComplet = response.data.areaComplet;
-        const nivel = response.data.nivel;
-        if (areaComplet == 1){ //caso area jugada y completada (falta contemplar cuando mo hay mas preg)
-          return (
-          this.props.navigation.navigate('AreaCompletada', {'areaId': area, 'areaComplet': areaComplet}))
-        } else  { //caso area en juego
-        const quest = response.data.preg;
-        const questId = response.data.id;
-        const answ1 = response.data.resp1;
-        const tipoAnsw1 = response.data.tipo1;
-        const answ2 = response.data.resp2;
-        const tipoAnsw2 = response.data.tipo2;
-        const answ3 = response.data.resp3;
-        const tipoAnsw3 = response.data.tipo3;
-        const answ4 = response.data.resp4;
-        const tipoAnsw4 = response.data.tipo4;
-        const nivel = response.data.nivel;
-        //console.log(nivel);
-        //console.log(areaComplet);
-        this.props.navigation.navigate('QuestionsAnswers',
-          {'quest': quest, 'questId': questId, 'areaId': area, 'answ1': answ1,
-          	'tipoAnsw1':tipoAnsw1, 'tipoAnsw2':tipoAnsw2, 'tipoAnsw3':tipoAnsw3, 'tipoAnsw4':tipoAnsw4,
-            'answ2':answ2,  'answ3':answ3, 'answ4':answ4, 'nivel':nivel, 'areaComplet':areaComplet
-          });
+        const areaSinPreg = response.data.areaSinPreg;
+        if (areaSinPreg == 1){ //caso area sin preguntas para hacer
+          this.props.navigation.navigate('AreaSinPreguntas')
+        } else {
+          if (areaComplet == 1){ //caso area jugada y completada
+            return (this.props.navigation.navigate('AreaCompletada', {'areaId': area}))
+          } else  { //caso area en juego
+                const quest = response.data.preg;
+                const questId = response.data.id;
+                const answ1 = response.data.resp1;
+                const tipoAnsw1 = response.data.tipo1;
+                const answ2 = response.data.resp2;
+                const tipoAnsw2 = response.data.tipo2;
+                const answ3 = response.data.resp3;
+                const tipoAnsw3 = response.data.tipo3;
+                const answ4 = response.data.resp4;
+                const tipoAnsw4 = response.data.tipo4;
+                const nivel = response.data.nivel;
+                const cantQuestIncorrect = response.data.cantPregInco;
+                //console.log(nivel);
+                //console.log(areaComplet);
+                this.props.navigation.navigate('QuestionsAnswers',
+                {'quest': quest, 'questId': questId, 'areaId': area, 'answ1': answ1,
+          	      'tipoAnsw1':tipoAnsw1, 'tipoAnsw2':tipoAnsw2, 'tipoAnsw3':tipoAnsw3, 'tipoAnsw4':tipoAnsw4,
+                  'answ2':answ2,  'answ3':answ3, 'answ4':answ4, 'nivel':nivel, areaComplet: areaComplet,
+                  areaSinPreg: areaSinPreg, cantQuestIncorrect: cantQuestIncorrect
+                });
+          }
         }
       })
       .catch((error) => {
