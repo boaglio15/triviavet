@@ -1,0 +1,68 @@
+INSERT INTO areas (nomArea) VALUES
+	("Anatomia"),
+    ("Genetica Basica"),
+	("Inmunologia");
+
+INSERT INTO users (nom, ape, dni, pass, tipoUser) VALUES 
+	("Agustin","Boaglio","admin","admin",0),
+    ("Fernando", "Bentolila", "4592313", "tre457",1),
+    ("Dego","Maradona","4545","123",0);
+
+INSERT INTO games (userId,fecha) VALUES
+	(1,'2019-06-01'),
+    (2,'2019-01-01'),
+    (3,'2019-01-02');
+    
+INSERT INTO questions (preg,areaId,userAdminId) VALUES
+	("La fijacion del estomago a la pared instastinal se denomina:",1,1),
+    ("El material con que se cubre y protege una herida:",1,1),
+    ("Son agentes homostaticos:",1,1),
+    ("El tratamiento de una cicatriz hipertrofica incluye:",1,1),
+    ("La angiotripsia es una tecnica hemostatica:",1,1),
+    ("El material de eleccion para Cirugia tendinosa debe ser:",2,1),
+    ("Un colgajo es:",2,1),
+    ("En el tratamiento provisional de una fractura no esta indicado",3,1),
+    ("Señale los ansioliticos:",3,1),
+    ("Señale los relajantes despolarizantes:",3,1);
+
+INSERT INTO answers (resp,tipoAnswer,pregId) VALUES
+	("Enteropexia",1,1),
+    ("Enteroplastia",0,1),
+    ("Gastropexia",0,1),
+    ("Gastroplastia",0,1),
+    ("Vendaje",1,2),
+    ("Gasa",0,2),
+    ("Aposito",0,2),
+    ("Cura",0,2),
+    ("Adrenalina",1,3),
+    ("Vitamina C",0,3),
+    ("Atropina",0,3),
+    ("Cloruro Sodico",0,3),
+    ("Ninguna",1,4),
+    ("Corticoterapia",0,4),
+    ("Radioterapia",0,4),
+    ("Presion eslastica",0,4),
+    ("Preventiva, mecanica",1,5),
+    ("Definitiva, mecanica",0,5),
+    ("Definitiva, por ligadura",0,5),
+    ("No es homeostatica",0,5),
+    ("Trenzado y reabsorbible",0,6),
+    ("Reabsorbible y no capilar",0,6),
+    ("No reabsorbible",1,6),
+    ("Muy reactivo",0,6),
+    ("Un injerto pediculado",0,7),
+    ("Trozo de piel sin pelo",0,7),
+    ("Trozo de piel fina",0,7),
+    ("Piel sobrante",1,7),
+    ("Estabilizar al paciente",0,8),
+    ("Vendar al paciente",0,8),
+    ("Sedar al paciente",0,8),
+    ("Antibioterapia",1,8),
+    ("Zolacepan",1,9),
+    ("Antipamezol",0,9),
+    ("Atropina",0,9),
+    ("Flumazenil",0,9),
+    ("Atracuario",0,10),
+    ("Succinilcolina",1,10),
+    ("Gallamina",0,10),
+    ("Pancuronio",0,10);

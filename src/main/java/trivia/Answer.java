@@ -7,16 +7,39 @@ import java.util.Map;
 import org.javalite.activejdbc.Model;
 
 public class Answer extends Model {
-    static {
+    
+	static {
         validatePresenceOf("resp").message("Ingrese la respuesta");
     }
-
+	
+	/**
+	 * Variable representing a description of the answer.
+	 */
     private String resp;
+    
+    /**
+     * Variable representing the type of the answer, 1 is correct and 0 is incorrect.
+     */
     private int tipoAnswer;
+    
+    /**
+     * Variable representing the id of the answer.
+     */
     private int pregId;
     
-    public Answer(){}
+    /**
+     * Constructor for the class Answer.
+     */
+    public Answer(){
+    	
+    }
     
+    /**
+     * Constructor for the class Answer.
+     * @param resp description of the answer.
+     * @param tipoAnswer type of the answer.
+     * @param pregId id of the answer.
+     */
     public Answer(String resp, int tipoAnswer, int pregId){
         set("resp", resp);
         set("tipoAnswer", tipoAnswer);

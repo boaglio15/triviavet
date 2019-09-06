@@ -22,19 +22,19 @@ export default class PlayScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}> Seleciona un area a jugar </Text>
+        <Text style={styles.welcome}> SELECCIONA UN AREA PARA JUGAR </Text>
 
 
         <View style={styles.button}>
-          <Button title="Cucarachas" onPress={this.handleQuestionAnswer.bind(this, 1)} />
+          <Button title="Anatomia" onPress={this.handleQuestionAnswer.bind(this, 1)} />
         </View>
 
         <View style={styles.button}>
-          <Button title="Bichos Bolitas" onPress={this.handleQuestionAnswer.bind(this, 2)} />
+          <Button title="Genetica Basica" onPress={this.handleQuestionAnswer.bind(this, 2)} />
         </View>
 
         <View style={styles.button}>
-          <Button title="Abejorros" onPress={this.handleQuestionAnswer.bind(this, 3)} />
+          <Button title="Inmunologia" onPress={this.handleQuestionAnswer.bind(this, 3)} />
         </View>
         
 

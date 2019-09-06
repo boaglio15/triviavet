@@ -12,7 +12,7 @@ import axios from 'axios';
 
 export default class SignInScreen extends React.Component {
   static navigationOptions = {
-    title: 'Please sign in',
+    title: 'Página de ingreso',
   };
 
   constructor(props) {
@@ -26,7 +26,7 @@ export default class SignInScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}> Login! </Text>
+        <Text style={styles.welcome}> LOGIN! </Text>
 
         <View>
           <TextInput
@@ -44,10 +44,10 @@ export default class SignInScreen extends React.Component {
             value={this.state.password}
           />
 
-          <Button title="Sign in!" onPress={this._signIn} />
+          <Button title="INGRESAR" onPress={this._signIn} />
           <Text style={styles.espacio}> {"\n"}</Text>
 
-          <Button title="Registrar" onPress={this.registrar} />
+          <Button title="REGISTRATE" onPress={this.registrar} />
           <Text style={styles.espacio}> {"\n"}</Text>
         </View>
       </View>

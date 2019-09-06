@@ -33,6 +33,10 @@ export default class AnswerScreen extends React.Component {
             <Button onPress={this.nextQuestions} title="Siguiente pregunta" />
           </View>
 
+          <View style={styles.button}>
+          	<Button onPress={this.exitGame} title="VOLVER AL INICIO" />
+          </View>
+
           
         </View>
       );

@@ -7,12 +7,14 @@ import {
     TextInput,
     Button,
     StyleSheet,
+    ScrollView,
+    KeyboardAvoidingView,
 } from 'react-native';
 import axios from 'axios';
 
 export default class Registration extends React.Component {
     static navigationOptions = {
-        title: 'Registrate como usuario',
+        title: 'Registro',
     };
 
     constructor(props) {
@@ -29,39 +31,40 @@ export default class Registration extends React.Component {
 
     render() {
         return (
-            <View style={styles.container}>
-                <Text style={styles.welcome}> Registrate! </Text>
+                <View style={styles.container}>
+                    <Text style={styles.welcome}> Registrate! </Text>
 
-                <TextInput
-                    placeholder="Ingresa tu nombre"
-                    style={styles.input}
-                    onChangeText={(value) => this.setState({ nombre: value })}
-                    value={this.state.nombre}
-                />
+                    <TextInput
+                        placeholder="Ingresa tu nombre"
+                        style={styles.input}
+                        onChangeText={(value) => this.setState({ nombre: value })}
+                        value={this.state.nombre}
+                    />
 
-                <TextInput
-                    placeholder="Ingresa tu apellido"
-                    style={styles.input}
-                    onChangeText={(value) => this.setState({ apellido: value })}
-                    value={this.state.apellido}
-                />
+                    <TextInput
+                        placeholder="Ingresa tu apellido"
+                        style={styles.input}
+                        onChangeText={(value) => this.setState({ apellido: value })}
+                        value={this.state.apellido}
+                    />
 
-                <TextInput
-                    placeholder="Ingresa tu dni"
-                    style={styles.input}
-                    onChangeText={(value) => this.setState({ dni: value })}
-                    value={this.state.dni}
-                />
+                    <TextInput
+                        placeholder="Ingresa tu dni"
+                        style={styles.input}
+                        onChangeText={(value) => this.setState({ dni: value })}
+                        value={this.state.dni}
+                    />
 
-                <TextInput
-                    placeholder="Ingresa tu password"
-                    style={styles.input}
-                    onChangeText={(value) => this.setState({ pass: value })}
-                    value={this.state.pass}
-                />
+                    <TextInput
+                        placeholder="Ingresa tu password"
+                        style={styles.input}
+                        secureTextEntry={true}
+                        onChangeText={(value) => this.setState({ pass: value })}
+                        value={this.state.pass}
+                    />
 
-                <Button title="registrar!" onPress={this.registration} />
-            </View>
+                    <Button title="registrar!" onPress={this.registration} />
+                </View>
         );
     }
 
