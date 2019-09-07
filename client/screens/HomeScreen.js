@@ -49,6 +49,12 @@ export default class HomeScreen extends React.Component {
               color="red"
             />
 
+            <Button
+              onPress={() => this.props.navigation.navigate('Estadistica')}
+              title="Estadisticas"
+              color="red"
+            />
+
             
 
             <Text style={styles.espacio}> {"\n"} {"\n"} {"\n"} {"\n"}</Text>

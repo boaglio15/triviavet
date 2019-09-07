@@ -3,7 +3,7 @@ import { createSwitchNavigator, createStackNavigator, createAppContainer } from 
 import HomeScreen from '../screens/HomeScreen';
 import PlayScreen from '../screens/PlayScreen';
  
-import  QuestionsSreens from '../screens/QuestionsSreens';
+import QuestionsSreens from '../screens/QuestionsSreens';
 import SignInScreen from '../screens/SignInScreen';
 import AuthLoadingScreen from '../screens/AuthLoadingScreen';
 import AnswerScreen from '../screens/AnswerScreen';
@@ -11,6 +11,9 @@ import Registration from '../screens/Registration';
 import CompletArea from '../screens/CompletArea';
 import EmptyArea from '../screens/EmptyArea';
 import LostArea from '../screens/LostArea';
+import Stat from '../screens/Stat';
+import StatAreaComplet from '../screen/StatAreaComplet';
+import StatAreaInPlay from '../screen/StatAreaInPlay';
 
 //createStackNavigator: crea un componente que se coloca en la pila de navegacion que se usa para
 //recorrer distintas pantallas en la app
@@ -21,7 +24,10 @@ const AppStack = createStackNavigator({ Home: HomeScreen,
   Registro: Registration, 
   AreaCompletada: CompletArea, 
   AreaSinPreguntas: EmptyArea,
-  AreaPerdida: LostArea});
+  AreaPerdida: LostArea,
+  Estadistica: Stat,
+  EstadisticaAComplet: StatAreaComplet,
+  EstadisticaEnJuego: StatAreaInPlay});
   
 const AuthStack = createStackNavigator({ SignIn: SignInScreen }); //contenedor para inicio por defecto
                                                                   //carga el logueo
