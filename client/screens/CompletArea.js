@@ -56,8 +56,7 @@ export default class CompletArea extends React.Component {
         const { navigation } = this.props;
         const area = navigation.getParam('areaId', 'NO-ID');
         const areaComplet = navigation.getParam('areaComplet', 'NO-ID');
-        console.log(area);  
-          console.log(areaComplet);   
+           
         axios.post(API_HOST + "exit", {
             areaId: area,
             completada: areaComplet,

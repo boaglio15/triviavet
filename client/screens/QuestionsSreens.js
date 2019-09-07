@@ -78,11 +78,16 @@ export default class QuestionsSreens extends React.Component {
         <View>
           <Text style={styles.nivel}> Nivel {nivel}</Text>
         </View>
+
+        <View>
+          <Text style={styles.nivel}> respuestas incorrectas {cantQuestIncorrect}</Text>
+        </View>
+
       </View>
     );
   }
   //toma la respuesta seleccionada por el jugador y la envia a la app
-  handleAnswer = async tipo => {
+  handleAnswer = async (tipo) => {
     const { navigation } = this.props;
     const tipoResp = tipo;
     axios
