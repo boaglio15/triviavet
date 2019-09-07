@@ -154,16 +154,25 @@ public class App {
             //carga las preguntas hechas al usuario durante la partida
             QuestionGame.updateQuestionGame(ide, indexPregHechas, pregHechas, respHechasCorIncor);
             
+            //ACA HAY QUE GUARDAR LA CANT DE PREG CORR E INCORR EN LA TABLA STAT DE LA BASE DE DATOS
+            
             pregEnArea.clear();//reset de todas las listas y variables
             pregHechas.clear();
             respHechasCorIncor.clear();
             cantPregCorrect = 0;
+            indexPregHechas = 0;
             
             System.out.println("PREG EN AREA " + pregEnArea);
             System.out.println("PREG HECHAS " + pregHechas);
             System.out.println("TIPO RESP HECHAS " + respHechasCorIncor);
             System.out.println("CANT PREG CORRECT " + cantPregCorrect);
             return new Gson().toJson(true);
+        });
+        
+        get("/stat/:areaId", (req, res) -> {
+            res.type("application/json");           
+            Map m = Stat.getStatPlayArea(req.params(":areaId")); 
+            return new Gson().toJson(m);
         });
 
         //--------------------FIN GAME----------------------//

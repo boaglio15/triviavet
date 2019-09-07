@@ -84,6 +84,6 @@ create table stats(
 		userId int,
 		cantCorrectas int,
 		cantIncorrectas int,
-		foreign key (userId) references users(id),
+		/*foreign key (userId) references users(id),*/
 		primary key (id)
 );
