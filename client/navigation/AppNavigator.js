@@ -20,7 +20,7 @@ import StatAreaInPlay from '../screens/StatAreaInPlay';
 const AppStack = createStackNavigator({ Home: HomeScreen, 
   Play: PlayScreen,  
   QuestionsAnswers: QuestionsSreens,
-  Answer: AnswerScreen, 
+  Answer: AnswerScreen,
   Registro: Registration, 
   AreaCompletada: CompletArea, 
   AreaSinPreguntas: EmptyArea,

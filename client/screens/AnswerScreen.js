@@ -34,7 +34,7 @@ export default class AnswerScreen extends React.Component {
           </View>
 
           <View style={styles.button}>
-          	<Button onPress={this.exitGame} title="VOLVER AL INICIO" />
+          	<Button onPress={this.exitGame} title="SALIR" />
           </View>
 
           
@@ -177,7 +177,8 @@ correctaOIncorrecta = () => {
       .then(response => {
         AsyncStorage.setItem('userToken', response.config.headers.Authorization);
       })
-    this.props.navigation.navigate('Home');
+    await AsyncStorage.clear();
+    this.props.navigation.navigate('Auth');
   }
 }
 
