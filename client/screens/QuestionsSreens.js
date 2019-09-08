@@ -30,6 +30,8 @@ export default class QuestionsSreens extends React.Component {
     console.log(tipoResp2);
     console.log(tipoResp3);
     console.log(tipoResp4);
+    console.log("cant preg incorrec");
+    console.log(cantQuestIncorrect);
 
     //console.log(tipo1);
     //FALTA GENERAR MOSTRAR LAS RESPUESTAS EN DISTINTOS BOTONES PORQUE

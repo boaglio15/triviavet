@@ -64,6 +64,8 @@ public class App {
             Double c = (Double) bodyParams.get("tipoUser");
             int cc = c.intValue();
             User.createUser((String) bodyParams.get("nom"), (String) bodyParams.get("ape"), (String) bodyParams.get("dni"), (String) bodyParams.get("pass"), cc);
+            int idUser = User.findUserByDni((String) bodyParams.get("dni")).getIdUser();
+            Game.createGame(idUser);
             res.type("application/json");
             return new Gson().toJson(true);
         });
@@ -77,10 +79,14 @@ public class App {
             indexPregHechas = pregHechas.size();                            //det la cant de preg ya hechas
             pregEnArea = Game.allQuestionArea(req.params(":areaId"));       //devuelve todas las preguntas que se encuentran en el area
             cantPregCorrect = Game.getCantQuestCorrecArea(ide, pregHechas); //det la cant de preg correctas contestadas por el usuario en el area elegida
+            cantPregIncorrect = pregHechas.size() - cantPregCorrect;        //det la cant de preg incorrectas contestadas por el usuario en el area elegida
             
-            System.out.println("PREG HECHAS INICIAL " + pregHechas);
+            System.out.println("USER " + ide);
+            System.out.println("AREA SELEC " + req.params(":areaId"));
+            System.out.println("PREG HECHAS INICIAL EN AREA SELEC " + pregHechas);
             System.out.println("PREG EN AREA TOTAL INICIAL " + pregEnArea);
-            System.out.println("PREG CORREC EN AREA INICIAL " + cantPregCorrect);
+            System.out.println("CANT PREG CORREC EN AREA INICIAL " + cantPregCorrect);
+            System.out.println("CANT PREG INCORREC EN AREA INICIAL " + cantPregIncorrect);
 
             System.out.println("-----------------------");
            
@@ -94,15 +100,17 @@ public class App {
         //selecciona una pregunta para realizar (ya tiene inicializado pregHechas y pregEnArea)
         get("/selectQuestionAnswer/:areaId", (req, res) -> { //:userId/:areaId
             res.type("application/json");
-            System.out.println("PREG HECHAS " + pregHechas);
-            System.out.println("PREG EN AREA " + pregEnArea);
-            System.out.println("CANT PREG CORREC " + cantPregCorrect);
+            System.out.println("PREG HECHAS EN AREA" + pregHechas);
+            System.out.println("PREG TOTAL EN AREA " + pregEnArea);
+            System.out.println("CANT PREG CORREC EN AREA " + cantPregCorrect);
+            System.out.println("CANT PREG INCORREC EN AREA " + cantPregIncorrect);
             
             Map QuestionAnswer = Game.selectQuestionAnswer(ide, pregHechas, pregEnArea, cantPregCorrect, cantPregIncorrect);
            
-            System.out.println("PREG HECHAS " + pregHechas);
-            System.out.println("PREG EN AREA " + pregEnArea);
-            System.out.println("CANT PREG CORREC " + cantPregCorrect);
+            System.out.println("PREG HECHAS EN AREA " + pregHechas);
+            System.out.println("PREG TOTAL EN AREA " + pregEnArea);
+            System.out.println("CANT PREG CORREC EN AREA " + cantPregCorrect);
+            System.out.println("CANT PREG INCORREC EN AREA " + cantPregIncorrect);
             return new Gson().toJson(QuestionAnswer);
 
         });
@@ -113,14 +121,18 @@ public class App {
             Map<String, Object> bodyParams = new Gson().fromJson(req.body(), Map.class);
             Integer typeAnsw = Integer.parseInt((String) bodyParams.get("tipoResp"));//Integer.parseInt ((String) bodyParams.get("tipoResp"));
             if (typeAnsw == 1) {
-                cantPregCorrect = cantPregCorrect + 1;
+                cantPregCorrect = cantPregCorrect + 1;  //permite llevar cuantas preg correctas tiene en la partida
+            }else{
+                cantPregIncorrect = cantPregIncorrect + 1; //permite llevar cuantas preg incorrectas tiene en la partida
             }
-            System.out.println("TIPO RESP " + typeAnsw);
+            
+            System.out.println("TIPO RESP SELECCIONADA " + typeAnsw);
             
             respHechasCorIncor.add(typeAnsw); //guarda el tipo de respuesta que se dio en la pregunta dada
            
             System.out.println("TIPO RESP HECHAS " + respHechasCorIncor);
-            System.out.println("CANT PREG CORRECT " + cantPregCorrect);
+            System.out.println("CANT PREG CORRECT EN ESTA PARTIDA " + cantPregCorrect);
+            System.out.println("CANT PREG INCORRECT EN ESTA PARTIDA " + cantPregIncorrect);
             return new Gson().toJson(true);
         });
 
@@ -128,9 +140,10 @@ public class App {
         post("/exit", (req, res) -> {//:preg/:game/:est
             res.type("application/json");
             Map<String, Object> bodyParams = new Gson().fromJson(req.body(), Map.class);
-
-            Integer areaId = Integer.parseInt((String) bodyParams.get("areaId"));
-            System.out.println("AREA " + areaId);
+            
+            Double a = (Double) bodyParams.get("areaId");
+            int aa = a.intValue();
+            System.out.println("AREA " + aa);
 
             Double n = (Double) bodyParams.get("nivel");
             int nn = n.intValue();
@@ -143,8 +156,8 @@ public class App {
             Integer userId = Integer.parseInt(ide);
             System.out.println("USUARIO " + ide);
 
-            UserArea.updateAreaUser(userId, areaId, cc, nn); //carga los datos de completada y nivel en caso que el usuario no este cargado 
-                                                             //o los modifica en caso que ya haya jugado
+            UserArea.updateAreaUser(userId, aa, cc, nn); //carga los datos de completada y nivel en caso que el usuario no este cargado 
+                                                         //o los modifica en caso que ya haya jugado
             System.out.println("PREG EN AREA " + pregEnArea);
             System.out.println("PREG HECHAS " + pregHechas);
             System.out.println("TIPO RESP HECHAS " + respHechasCorIncor);
@@ -154,12 +167,12 @@ public class App {
             //carga las preguntas hechas al usuario durante la partida
             QuestionGame.updateQuestionGame(ide, indexPregHechas, pregHechas, respHechasCorIncor);
             
-            //ACA HAY QUE GUARDAR LA CANT DE PREG CORR E INCORR EN LA TABLA STAT DE LA BASE DE DATOS
             
             pregEnArea.clear();//reset de todas las listas y variables
             pregHechas.clear();
             respHechasCorIncor.clear();
             cantPregCorrect = 0;
+            cantPregIncorrect = 0;
             indexPregHechas = 0;
             
             System.out.println("PREG EN AREA " + pregEnArea);
@@ -176,17 +189,17 @@ public class App {
         });
 
         //--------------------FIN GAME----------------------//
-        
-
-
         /*
+
+
+        
         //Registration User
         post("/users", (req, res) -> {
             Map<String, Object> bodyParams = new Gson().fromJson(req.body(), Map.class); //req.body -> indica que un parámetro del método debe estar vinculado al CUERPO de la solicitud web.
             User.createUser((String) bodyParams.get("nom"), (String) bodyParams.get("ape"), (String) bodyParams.get("dni"), (String) bodyParams.get("pass"), Integer.parseInt((String) bodyParams.get("tipoUser")));
             res.type("application/json");
             return new Gson().toJson(true);
-        });*/
+        });
 
         get("/newGame", (req, res) -> { //"/newGame/:userId"
             res.type("application/json");
@@ -358,6 +371,6 @@ public class App {
             } else {
                 return new Gson().toJson(false);
             }
-        });
+        });*/
     }
 }

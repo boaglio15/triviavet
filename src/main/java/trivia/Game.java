@@ -6,36 +6,36 @@ import java.util.*;
 import java.util.List;
 
 public class Game extends Model {
-
+/*
     static {
         dateFormat("yyyy-MM-dd", "fecha"); //forma de la fecha 'YYYY-MM-DD'
         validatePresenceOf("fecha").message("Ingrese la fecha del juego");
-    }
+    }*/
 
     private int userId;
-    private Date fecha;
+   // private Date fecha;
 
     public Game() {
     }
 
-    public Game(int idUsuario, Date dia) {
+    public Game(int idUsuario) {
         set("userId", idUsuario);
-        set("fecha", fecha);
+       // set("fecha", fecha);
     }
 
     public int getUserId() {
         return this.getInteger("userId");
     }
 
-    public Date getFecha() {
+    /*public Date getFecha() {
         return this.getDate("fecha");
-    }
+    }*/
 
     public Map getCompleteGame() {
         Map m = new HashMap();
         m.put("id", this.getId());
         m.put("userId", this.getUserId());
-        m.put("fecha", this.getFecha());
+        //m.put("fecha", this.getFecha());
         return m;
     }
 
@@ -59,8 +59,8 @@ public class Game extends Model {
         g.delete();
     }
 
-    public static void createGame(Integer userId, Date gameFecha) {
-        Game game = new Game(userId, gameFecha);
+    public static void createGame(Integer userId) { // Date gameFecha
+        Game game = new Game(userId);
         game.saveIt();
     }
 

@@ -48,6 +48,7 @@ export default class HomeScreen extends React.Component {
               title="----------play------------"
               color="red"
             />
+              <Text style={styles.espacio}> {"\n"} {"\n"} {"\n"}</Text>
 
             <Button
               onPress={() => this.props.navigation.navigate('Estadistica')}
@@ -55,14 +56,12 @@ export default class HomeScreen extends React.Component {
               color="red"
             />
 
-            
+            <Text style={styles.espacio}> {"\n"} {"\n"} {"\n"}</Text>
 
-            <Text style={styles.espacio}> {"\n"} {"\n"} {"\n"} {"\n"}</Text>
             <Button
               onPress={this._handleLogout} style={styles.logout}
               title="Logout"
               color="#ff0000"
-
             />
           </View>
 

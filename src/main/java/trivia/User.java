@@ -69,7 +69,11 @@ public class User extends Model {
     }
     
     
-
+    public static User findUserByDni(String dni) {
+        List<User> user = User.where("dni = ?", dni);
+        return user.get(0);
+    }
+    
     public static List<Map> getAllUser() {
         List<User> r = new ArrayList<User>();
         r = User.findAll();
@@ -104,9 +108,4 @@ public class User extends Model {
             return ((Integer) l.get(0).getId());
         return -2; //No coincide el password.
     }
-
-
-    //userLogin
-    //registerUser
-    //userLogout
 }

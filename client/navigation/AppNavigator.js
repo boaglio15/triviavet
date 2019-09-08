@@ -12,8 +12,8 @@ import CompletArea from '../screens/CompletArea';
 import EmptyArea from '../screens/EmptyArea';
 import LostArea from '../screens/LostArea';
 import Stat from '../screens/Stat';
-import StatAreaComplet from '../screen/StatAreaComplet';
-import StatAreaInPlay from '../screen/StatAreaInPlay';
+import StatAreaComplet from '../screens/StatAreaComplet';
+import StatAreaInPlay from '../screens/StatAreaInPlay';
 
 //createStackNavigator: crea un componente que se coloca en la pila de navegacion que se usa para
 //recorrer distintas pantallas en la app

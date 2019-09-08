@@ -7,13 +7,13 @@ INSERT INTO areas (nomArea) VALUES
     
 INSERT INTO users (nom, ape, dni, pass, tipoUser) VALUES 
 	("Agustin","Boaglio","admin","admin",0),
-    ("Fernando", "Bentolila", "4592313", "tre457",1),
+    ("Fernando", "Bentolila", "45", "45",1),
     ("diego","maradona","4545","123",0)
     
-INSERT INTO games (userId,fecha) VALUES
-	(1,'2019-06-01'),
-    (2,'2019-01-01'),
-    (3,'2019-01-02')
+INSERT INTO games (userId) VALUES
+	(1),
+    (2),
+    (3)
     
 INSERT INTO questions (preg,areaId,userAdminId) VALUES
 	("¿Hola todo bien?",1,1),

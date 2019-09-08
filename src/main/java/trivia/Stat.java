@@ -41,13 +41,14 @@ public class Stat extends Model {
     
     //retorna las estadisticas por area jugada o no.
     public static Map getStatPlayArea(String areaId) {
-        List<UserArea> areas = UserArea.getAreasUser(areaId);
+        List<UserArea> areas = UserArea.getAreasUser(areaId);   //det completada, nivel para un user en un area dada
        Map m = new HashMap();  
         if (areas.isEmpty()) {
-            m.put("isPlayArea", 0);
+            m.put("isPlayArea", 0); //caso area no jugada
         } else {
-            List<Integer> pregHechas = Game.allQuestionArea(areaId);
-            String userId = String.valueOf(areas.get(0).getUserId());
+            List<Integer> pregHechas = Game.allQuestionArea(areaId);    //retorna el id de todas las preguntas en un area
+            String userId = String.valueOf(areas.get(0).getUserId());   //det el userId del jugador en el area dada
+            System.out.println("USER ID OBTENIDO EN STAT " + userId);
             int correct = Game.getCantQuestCorrecArea(userId, pregHechas);
             int incorrect = pregHechas.size() - correct;
             m.put("isPlayArea", 1);

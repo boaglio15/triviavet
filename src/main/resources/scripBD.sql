@@ -42,7 +42,6 @@ create table answers(
 create table games(
 		id int auto_increment,
 		userId int,
-		fecha date,
 		foreign key (userId) references users(id),
 		primary key (id)		 
 );
@@ -84,6 +83,6 @@ create table stats(
 		userId int,
 		cantCorrectas int,
 		cantIncorrectas int,
-		/*foreign key (userId) references users(id),*/
+		foreign key (userId) references users(id),
 		primary key (id)
 );
