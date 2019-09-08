@@ -184,7 +184,7 @@ public class App {
         
         get("/stat/:areaId", (req, res) -> {
             res.type("application/json");           
-            Map m = Stat.getStatPlayArea(req.params(":areaId")); 
+            Map m = Stat.getStatPlayArea(ide, req.params(":areaId")); 
             return new Gson().toJson(m);
         });
 

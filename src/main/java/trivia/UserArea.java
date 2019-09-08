@@ -62,6 +62,11 @@ public class UserArea extends Model {
         List<UserArea> datAreaUser = UserArea.where("areaId = ?", areaId);
         return datAreaUser;
     }
+    
+    public static List<UserArea> getAreasUser(String userId, String areaId){
+    	List<UserArea> datAreaUser = UserArea.where("userId = ? and areaId = ?", userId, areaId);
+    	return datAreaUser;
+    }
 
     public static void createAreaUser(int userId, int areaId, int completada, int nivel) {
         UserArea userArea = new UserArea(userId, areaId, completada, nivel);

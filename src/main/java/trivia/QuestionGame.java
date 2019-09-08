@@ -49,8 +49,7 @@ public class QuestionGame extends Model {
 
     //det el estado (correcto o incorrecto) de una preg en un juego dado
     public static QuestionGame getEstadosQuestGame(String pregId, String gameId) {
-        List<QuestionGame> q = QuestionGame.where("questionId = ? and gameId = ?", pregId, gameId);
-        System.out.println("questId game Id estado: " + q);
+    	List<QuestionGame> q = QuestionGame.where("questionId = ? and gameId = ?", pregId, gameId);
         return q.get(0);
     }
 

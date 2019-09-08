@@ -117,6 +117,7 @@ public class Game extends Model {
             return 0;
         }
         int cantRespCorrect = 0;
+        System.out.println(pregHechasEnArea.toString());
         for (Integer pregId : pregHechasEnArea) {
             QuestionGame qg = QuestionGame.getEstadosQuestGame(Integer.toString(pregId), userId);
             if ((Integer) qg.getEstado() == 1) {
