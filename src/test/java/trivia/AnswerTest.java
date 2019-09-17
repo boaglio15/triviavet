@@ -13,7 +13,7 @@ public class AnswerTest {
 	
 	@Before
 	public void before(){
-    	Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://127.0.0.1/trivia_test?nullNamePatternMatchesAll=true", "root", "root");
+    	Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/trivia_test", "admin", "password");
     	System.out.println("AnswerTest setup");
     	Base.openTransaction();
   	}

@@ -23,6 +23,7 @@ public class Question extends Model {
         set("areaId", areaId);
         set("userAdminId", userAdminId);
     }
+    
 
     public String getPreg() {
         return this.getString("preg");
