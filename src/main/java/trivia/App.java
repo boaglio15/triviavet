@@ -181,7 +181,7 @@ public class App {
             System.out.println("CANT PREG CORRECT " + cantPregCorrect);
             return new Gson().toJson(true);
         });
-        
+             
         get("/stat/:areaId", (req, res) -> {
             res.type("application/json");           
             Map m = Stat.getStatPlayArea(ide, req.params(":areaId")); 

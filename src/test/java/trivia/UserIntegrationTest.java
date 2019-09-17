@@ -61,7 +61,7 @@ public class UserIntegrationTest {
         Spark.awaitInitialization();
 
         // Create an admin user to log into system using Basic Auth before run the test
-        Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/trivia_test", "admin", "root");
+        Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/trivia_test", "admin", "password");
         User u = new User();
         u.set("nom", "Agustin");
         u.set("ape", "Boaglio");
@@ -87,7 +87,7 @@ public class UserIntegrationTest {
       parameters.put("pass", password);
       parameters.put("tipoUser", tipo);
       
-      UrlResponse response = doRequest("POST", "/users", parameters);
+      UrlResponse response = doRequest("POST", "/user", parameters);
       Map<String, Object> jsonResponse = new Gson().fromJson(response.body, Map.class);
 
       assertNotNull(response);

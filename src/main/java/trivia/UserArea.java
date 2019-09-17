@@ -76,7 +76,6 @@ public class UserArea extends Model {
 
     //carga los datos de completada y nivel en caso que el usuario no este cargado o los modifica en caso que ya haya jugado
     public static void updateAreaUser(Integer userId, Integer areaId, Integer completada, Integer nivel) {
-        System.out.println("HGGFFFFFGHG");
         List<UserArea> ua = UserArea.where("userId = ? and areaId = ?", userId, areaId);
         if (ua.isEmpty()) {
             createAreaUser(userId, areaId, completada, nivel);

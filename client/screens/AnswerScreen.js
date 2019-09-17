@@ -25,8 +25,6 @@ export default class AnswerScreen extends React.Component {
     return (
         <View style={styles.container}>
           
-          <View>{this.perdio()}</View>
-
           <View>{this.correctaOIncorrecta()}</View>
 
           <View style={styles.button}>
@@ -34,12 +32,36 @@ export default class AnswerScreen extends React.Component {
           </View>
 
           <View style={styles.button}>
-          	<Button onPress={this.exitGame} title="SALIR" />
+          	<Button onPress={this.salvarPartida} title="SALVAR" />
           </View>
 
           
         </View>
       );
+  }
+
+  salvarPartida = async () => {
+    const { navigation } = this.props;
+    const area = navigation.getParam('areaId', 'NO-ID');
+    const areaComplet = navigation.getParam('areaComplet', 'NO-ID');
+    const nivel = navigation.getParam('nivel', 'NO-ID');
+	
+	console.log(nivel);
+    console.log(areaComplet);
+    axios.post(API_HOST + "exit", {
+      areaId: area,
+      completada: areaComplet,
+      nivel: nivel,
+    },
+      {
+        headers: { 'Authorization': await AsyncStorage.getItem('userToken') }
+      }
+    )
+      .then(response => JSON.parse(JSON.stringify(response)))
+      .then(response => {
+        AsyncStorage.setItem('userToken', response.config.headers.Authorization);
+      })
+    this.props.navigation.navigate('Home');
   }
 
   //pide un pregunta a la app y parametros de juego
@@ -153,33 +175,6 @@ correctaOIncorrecta = () => {
   }
 };
 
-  //permite volver al home y habilita a la app a salvar las preguntas hechas en la partida en la base de datos
-  exitGame = async () => {
-    const { navigation } = this.props;
-    const area = navigation.getParam('areaId', 'NO-ID');
-    const areaComplet = navigation.getParam('areaComplet', 'NO-ID');
-    const nivel = navigation.getParam('nivel', 'NO-ID');
-    //const nivel1 = JSON.stringify(nivel);
-    //const area1 = JSON.stringify(area);
-    //const comp = JSON.stringify(areaComplet) 
-    console.log(nivel);
-    console.log(areaComplet);
-    axios.post(API_HOST + "exit", {
-      areaId: area,
-      completada: areaComplet,
-      nivel: nivel,
-    },
-      {
-        headers: { 'Authorization': await AsyncStorage.getItem('userToken') }
-      }
-    )
-      .then(response => JSON.parse(JSON.stringify(response)))
-      .then(response => {
-        AsyncStorage.setItem('userToken', response.config.headers.Authorization);
-      })
-    await AsyncStorage.clear();
-    this.props.navigation.navigate('Auth');
-  }
 }
 
 
