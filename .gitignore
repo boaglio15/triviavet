@@ -2,3 +2,7 @@ target/
 nbactions.xml
 src/main/resources/database.properties
 client/.env
+.classpath
+.idea/
+.project
+.settings/
