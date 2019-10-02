@@ -12,7 +12,7 @@ import axios from 'axios';
 
 export default class SignInScreen extends React.Component {
   static navigationOptions = {
-    title: 'Página de ingreso',
+    header: null,
   };
 
   constructor(props) {
@@ -26,7 +26,7 @@ export default class SignInScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}> LOGIN! </Text>
+        <Text style={styles.welcome} > TriviaVet </Text>
 
         <View>
           <TextInput
@@ -44,11 +44,16 @@ export default class SignInScreen extends React.Component {
             value={this.state.password}
           />
 
-          <Button title="INGRESAR" onPress={this._signIn} />
-          <Text style={styles.espacio}> {"\n"}</Text>
+          <View style={styles.button}>
+            <Button title="INGRESAR" onPress={this._signIn} color="black"/>
+            <Text style={styles.espacio}> {"\n"}</Text>
+          </View>
 
-          <Button title="REGISTRATE" onPress={this.registrar} />
-          <Text style={styles.espacio}> {"\n"}</Text>
+          <View style={styles.button}>
+            <Button title="REGISTRATE" onPress={this.registrar} color="black"/>
+            <Text style={styles.espacio}> {"\n"}</Text>
+          </View>
+
         </View>
       </View>
     );
@@ -93,12 +98,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: '#F5FCFF',
+    alignItems:'center',
+    backgroundColor: '#30A9AC',
+    borderRadius: 500,    
   },
   welcome: {
     fontSize: 40,
+    fontFamily:'sans-serif-condensed', 
     textAlign: 'center',
-    margin: 10,
+    margin: 10,   
   },
   input: {
     margin: 15,
@@ -106,6 +114,11 @@ const styles = StyleSheet.create({
     padding: 5,
     fontSize: 16,
     borderBottomWidth: 3,
-    borderBottomColor: '#ff0000',
-  }
+    borderBottomColor: 'black',
+  },
+  button: {
+    marginTop:15,
+    paddingRight: 70,
+    paddingLeft: 70,
+  },
 })

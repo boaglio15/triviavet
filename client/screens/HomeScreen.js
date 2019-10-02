@@ -22,6 +22,15 @@ export default class HomeScreen extends React.Component {
     return (
       <View style={styles.container}>
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+
+          <View style={styles.getStartedContainer}>
+            <Text style={styles.texto}>¿Cuanto Sabes de Veterinaria?</Text>
+            <Text style={styles.espacio}> {"\n"}</Text>
+            <Text style={styles.getStartedText}>Pon en practica tus conocimientos</Text>
+            <View style={[styles.codeHighlightContainer, styles.homeScreenFilename]}>
+              <MonoText style={styles.codeHighlightText}></MonoText>
+            </View>
+
           <View style={styles.welcomeContainer}>
             <Image
               source={
@@ -33,36 +42,29 @@ export default class HomeScreen extends React.Component {
             />
           </View>
 
-          <View style={styles.getStartedContainer}>
-            <Text style={{ fontSize: 19 }}>¿Cuanto Sabes de Veterinaria?</Text>
-            <Text style={styles.espacio}> {"\n"}</Text>
-            <Text style={styles.getStartedText}>Demostra Tus Conocimientos</Text>
-            <View style={[styles.codeHighlightContainer, styles.homeScreenFilename]}>
-              <MonoText style={styles.codeHighlightText}></MonoText>
+            <View style={styles.button}>
+              <Button
+                onPress={() => this.props.navigation.navigate('Play')}
+                title="Play"
+                color="black"
+              />
             </View>
 
+            <View style={styles.button}>
+              <Button
+                onPress={() => this.props.navigation.navigate('Estadistica')}
+                title="Estadisticas"
+                color="black"
+              />
+            </View>
 
-            <Text style={styles.go}> GO! </Text>
-            <Button
-              onPress={() => this.props.navigation.navigate('Play')}
-              title="----------play------------"
-              color="red"
-            />
-              <Text style={styles.espacio}> {"\n"} {"\n"} {"\n"}</Text>
-
-            <Button
-              onPress={() => this.props.navigation.navigate('Estadistica')}
-              title="Estadisticas"
-              color="red"
-            />
-
-            <Text style={styles.espacio}> {"\n"} {"\n"} {"\n"}</Text>
-
-            <Button
-              onPress={this._handleLogout} style={styles.logout}
-              title="Logout"
-              color="#ff0000"
-            />
+            <View style={styles.button}>
+              <Button
+                onPress={this._handleLogout}
+                title="Logout"
+                color="black"
+              />
+            </View>
           </View>
 
           <View style={styles.helpContainer}>
@@ -72,16 +74,19 @@ export default class HomeScreen extends React.Component {
           </View>
         </ScrollView>
 
-        <View style={styles.tabBarInfoContainer}>
+      </View>
+    );
+  }
+
+  /*
+  <View style={styles.tabBarInfoContainer}>
           <Text style={styles.tabBarInfoText}></Text>
 
           <View style={[styles.codeHighlightContainer, styles.navigationFilename]}>
             <MonoText style={styles.codeHighlightText}></MonoText>
           </View>
         </View>
-      </View>
-    );
-  }
+  */
 
   onPressCategoryButton = (category) => {
     alert(category);
@@ -97,7 +102,7 @@ export default class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#30A9AC',
   },
 
   go: {
@@ -143,8 +148,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4,
   },
   getStartedText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
+    fontSize: 20,
+    color: 'white',
     lineHeight: 24,
     textAlign: 'center',
   },
@@ -191,5 +196,16 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#2e78b7',
     textAlign: 'center',
+  },
+  button: {
+    marginTop:15,
+    flex:1,
+    //paddingRight: 70,
+    //paddingLeft: 70,
+  },
+  texto: {
+    fontSize:40,
+    color:'black',
+    textAlign:'center',
   },
 });
