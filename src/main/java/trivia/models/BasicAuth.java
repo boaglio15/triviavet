@@ -1,19 +1,19 @@
-package trivia;
+package trivia.models;
 
 import java.io.*;
 import java.util.Base64;
 
-import trivia.User;
+//import trivia.User;
 
 public class BasicAuth {
 
-    static Boolean authorize(String headerAuth) { //headerAuth se le pasa el token recibido en trivia de la app
+    public static Boolean authorize(String headerAuth) { //headerAuth se le pasa el token recibido en trivia de la app
         final String[] creds = getCredentials(headerAuth);
 
         return User.findFirst("dni = ? AND pass = ?", creds[0], creds[1]) != null; //verifica que el user y pass esten en la bd
     }
 
-    static User getUser(String headerAuth) {
+    public static User getUser(String headerAuth) {
         final String[] creds = getCredentials(headerAuth);
 
         return User.findFirst("dni = ?", creds[0]); //retorna el user pasado desde la app

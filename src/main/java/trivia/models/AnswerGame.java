@@ -1,4 +1,4 @@
-package trivia;
+package trivia.models;
 
 import java.util.HashMap;
 import java.util.Map;

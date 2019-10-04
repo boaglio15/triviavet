@@ -1,6 +1,6 @@
 package trivia;
 
-import trivia.Answer;
+import trivia.models.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

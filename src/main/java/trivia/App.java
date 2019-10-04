@@ -5,23 +5,33 @@ import static spark.Spark.*;
 import com.google.gson.Gson;
 
 import java.util.*;
-import java.text.SimpleDateFormat;
 import org.javalite.activejdbc.Base;
-import trivia.BasicAuth;
+import trivia.models.*;
+
+import spark.template.mustache.MustacheTemplateEngine;
+import spark.ModelAndView;
+import trivia.controllers.*;
 
 public class App {
 
+
     static User currentUser;
     static String ide;
-    static List<Integer> pregHechas = new ArrayList<Integer>(); //contiene las preguntas realizadas durante la partida y en partidas anteriores
-    static List<Integer> pregEnArea = new ArrayList<Integer>(); //contiene todas las preguntas posibles de realizar en un area
-    static List<Integer> respHechasCorIncor = new ArrayList<Integer>(); //contiene el resultado de la pregunta hecha al jugador
+    static List<Integer> pregHechas = new ArrayList<Integer>(); // contiene las preguntas realizadas durante la partida
+                                                                // y en partidas anteriores
+    static List<Integer> pregEnArea = new ArrayList<Integer>(); // contiene todas las preguntas posibles de realizar en
+                                                                // un area
+    static List<Integer> respHechasCorIncor = new ArrayList<Integer>(); // contiene el resultado de la pregunta hecha al
+                                                                        // jugador
     static int cantPregCorrect;
     static int cantPregIncorrect;
-    static int indexPregHechas; //indica cuantas preg tenia hechas el jugador en partidas anteriores
-    
-    public static void main(String[] args) {
+    static int indexPregHechas; // indica cuantas preg tenia hechas el jugador en partidas anteriores
 
+    public static void main(String[] args) {
+        
+        
+        
+        
         before((request, response) -> {
             if (Base.hasConnection()) {
                 Base.close();
@@ -50,6 +60,8 @@ public class App {
             response.header("Access-Control-Allow-Headers",
                     "Content-Type,Authorization,X-Requested-With,Content-Length,Accept,Origin,");
         });
+        
+        
 
         //------------------LOGIN-------------------------//
         post("/login", (req, res) -> {
@@ -181,18 +193,53 @@ public class App {
             System.out.println("CANT PREG CORRECT " + cantPregCorrect);
             return new Gson().toJson(true);
         });
-             
+            
         get("/stat/:areaId", (req, res) -> {
             res.type("application/json");           
             Map m = Stat.getStatPlayArea(ide, req.params(":areaId")); 
             return new Gson().toJson(m);
         });
+        
 
         //--------------------FIN GAME----------------------//
-        /*
+        
 
+
+        //---------------MUSTACHE--------------------//
+
+        //staticFiles.location("/public"); //permite indicar al cliente de donde puede sacar cosas si las necesita
+
+        /*
+        before((req, res) ->{
+			Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/trivia?nullNamePatternMatchesAll=true", "root", "root");
+		});
+
+		after((req,res) ->{
+			Base.close();
+        });
+        */
+
+        get("/hello", (req, res) -> "Hello World");
 
         
+        Map map = new HashMap();
+        map.put("nerror","");
+        //entra por browse con /loginWeb y pasa a la viste flogin.mustache
+        get("/loginWeb", (rq, rs) -> new ModelAndView(map, "./views/flogin.mustache"), new MustacheTemplateEngine());
+        
+        //entra por flogin.mustache y pasa a respuesta_login.mustache
+        get("/procesaLoginWeb", UserControllers::procesaLoginWeb, new MustacheTemplateEngine());
+
+        //entra por browse con /stat y pasa a la vista cargarArea.mustache
+        get("/stat", (rq, rs) -> new ModelAndView(map, "./views/cargar_area.mustache"), new MustacheTemplateEngine());
+
+        get("/procesaStatArea", StatControllers::procesaStatArea, new MustacheTemplateEngine());
+
+
+        //---------------FIN MUSTACHE-------------------------//
+        
+        
+        /*
         //Registration User
         post("/users", (req, res) -> {
             Map<String, Object> bodyParams = new Gson().fromJson(req.body(), Map.class); //req.body -> indica que un parámetro del método debe estar vinculado al CUERPO de la solicitud web.
