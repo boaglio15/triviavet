@@ -1,14 +1,6 @@
 import { API_HOST } from 'react-native-dotenv';
 import React from 'react';
-import {
-    AsyncStorage,
-    View,
-    Text,
-    TextInput,
-    Button,
-    StyleSheet,
-    ScrollView,
-    KeyboardAvoidingView,
+import { AsyncStorage, View, Text, TextInput, Button, StyleSheet, ScrollView, KeyboardAvoidingView
 } from 'react-native';
 import axios from 'axios';
 

@@ -1,17 +1,11 @@
 import { API_HOST } from 'react-native-dotenv';
 import React from 'react';
-import {
-    AsyncStorage,
-    View,
-    Text,
-    Button,
-    StyleSheet,
-} from 'react-native';
+import { AsyncStorage, View, Text, Button, StyleSheet } from 'react-native';
 import axios from 'axios';
 
 export default class CompletArea extends React.Component {
     static navigationOptions = {
-        title: 'Area completada',
+        header: null,
     };
 
     constructor(props) {
@@ -24,7 +18,7 @@ export default class CompletArea extends React.Component {
         return (
             <View>
                 <View>
-                    <Text style={styles.welcome}> Felicitaciones ¡¡¡</Text>
+                    <Text style={styles.welcome}> ¡¡¡Felicitaciones!!! </Text>
                 </View>
 
                 <Text style={styles.espacio}> {"\n"}</Text>
@@ -45,7 +39,7 @@ export default class CompletArea extends React.Component {
                     <Button
                         onPress={this.salvarArea} style={styles.logout}
                         title="--- ir a play ---"
-                        color="#ff0000"
+                        color="black"
                     />
                 </View>
             </View>
@@ -78,7 +72,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        backgroundColor: '#F5FCFF',
+        backgroundColor: '#30A9AC',
     },
     welcome: {
         fontSize: 35,
@@ -91,11 +85,11 @@ const styles = StyleSheet.create({
         padding: 5,
         fontSize: 16,
         borderBottomWidth: 1,
-        borderBottomColor: '#4218F8'
+        borderBottomColor: 'black'
     },
     logout: {
         fontSize: 14,
-        color: '#2e78b7',
+        color: 'black',
         textAlign: 'right',
     },
     getStartedContainer: {
