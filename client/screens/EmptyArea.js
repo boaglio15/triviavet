@@ -1,14 +1,9 @@
 import React from 'react';
-import {
-    View,
-    Text,
-    Button,
-    StyleSheet,
-} from 'react-native';
+import { View, Text, Button, StyleSheet, } from 'react-native';
 
 export default class EmptyArea extends React.Component {
     static navigationOptions = {
-        title: 'Area vacia',
+        header: null,
     };
 
     constructor(props) {
@@ -34,11 +29,9 @@ export default class EmptyArea extends React.Component {
                     <Button
                         onPress={() => this.props.navigation.navigate('Play')} style={styles.logout}
                         title="--- ir a play ---"
-                        color="#ff0000"
+                        color="black"
                     />
-                </View>
-
-                
+                </View>          
             </View>
         );
     }
@@ -49,7 +42,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        backgroundColor: '#F5FCFF',
+        backgroundColor: '#30A9AC',
     },
     welcome: {
         fontSize: 35,
@@ -62,11 +55,11 @@ const styles = StyleSheet.create({
         padding: 5,
         fontSize: 16,
         borderBottomWidth: 1,
-        borderBottomColor: '#4218F8'
+        borderBottomColor: 'black'
     },
     logout: {
         fontSize: 14,
-        color: '#2e78b7',
+        color: 'black',
         textAlign: 'right',
     },
     getStartedContainer: {

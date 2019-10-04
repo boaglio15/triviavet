@@ -5,7 +5,7 @@ import axios from "axios";
 
 export default class PlayScreen extends React.Component {
   static navigationOptions = {
-    title: "Play"
+    header: null,
   };
 
   constructor(props) {
@@ -20,30 +20,35 @@ export default class PlayScreen extends React.Component {
 
         <View style={styles.button}>
           <Button
-            title="Anatomia"
-            onPress={this.handleQuestionAnswer.bind(this, 1)}
+            onPress = {this.handleQuestionAnswer.bind(this, 1) }
+            title = "Anatomia"
+            color = "black"
           />
         </View>
 
         <View style={styles.button}>
           <Button
-            title="Genetica Basica"
-            onPress={this.handleQuestionAnswer.bind(this, 2)}
+            onPress={this.handleQuestionAnswer.bind(this, 2) }
+            title = "Genetica Basica"
+            color = "black"
           />
         </View>
 
         <View style={styles.button}>
           <Button
-            title="Inmunologia"
-            onPress={this.handleQuestionAnswer.bind(this, 3)}
+            onPress = {this.handleQuestionAnswer.bind(this, 3) }
+            title = "Inmunologia"
+            color = "black"
           />
         </View>
 
+        <Text style={styles.espacio}> {"\n\n\n"}</Text>
+        
         <View style={styles.button}>
           <Button
             onPress={() => this.props.navigation.goBack()}
-            title="volver"
-            color="#ff0000"
+            title = "volver"
+            color = "black"
           />
         </View>
       </View>
@@ -119,7 +124,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    backgroundColor: "#F5FCFF"
+    backgroundColor: "#30A9AC",
+    borderRadius: 500
   },
   welcome: {
     fontSize: 25,
@@ -132,7 +138,7 @@ const styles = StyleSheet.create({
     padding: 5,
     fontSize: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "#4218F8"
+    borderBottomColor: "black"
   },
   button: {
     marginTop: 20

@@ -5,7 +5,7 @@ import axios from "axios";
 
 export default class StatAreaInPlay extends React.Component {
   static navigationOptions = {
-    title: "Area en juego"
+    header: null,
   };
 
   constructor(props) {
@@ -26,11 +26,11 @@ export default class StatAreaInPlay extends React.Component {
         <Text> La cantidad de incorrectas {incorrectas} </Text>
         <Text> El nivel actual es {nivel} </Text>
 
-        <View style={styles.button}>
+        <View style = {styles.button}>
           <Button
-            onPress={() => this.props.navigation.goBack()}
-            title="volver"
-            color="#ff0000"
+            onPress = {() => this.props.navigation.goBack()}
+            title = "volver"
+            color = "black"
           />
         </View>
       </View>
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
       justifyContent: "center",
-      backgroundColor: "#F5FCFF"
+      backgroundColor: "#30A9AC"
     },
     welcome: {
       fontSize: 25,
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
       padding: 5,
       fontSize: 16,
       borderBottomWidth: 1,
-      borderBottomColor: "#4218F8"
+      borderBottomColor: "black"
     },
     button: {
       marginTop: 20

@@ -1,18 +1,11 @@
 import { API_HOST } from 'react-native-dotenv';
 import React from 'react';
-import {
-  AsyncStorage,
-  View,
-  Text,
-  Button,
-  StyleSheet,
-  Image,
-} from 'react-native';
+import { AsyncStorage, View, Text, Button, StyleSheet, Image, } from 'react-native';
 import axios from 'axios';
 
 export default class AnswerScreen extends React.Component {
   static navigationOptions = {
-    title: 'Respuesta:',
+    header: null,
   };
   constructor(props) {
     super(props);
@@ -23,7 +16,7 @@ export default class AnswerScreen extends React.Component {
     const { navigation } = this.props;
     const tipoAnsw = navigation.getParam('tipo', 'NO-ID');
     return (
-        <View style={styles.container}>
+        <View style = {styles.container}>
           
           <View>{this.correctaOIncorrecta()}</View>
 
@@ -34,8 +27,6 @@ export default class AnswerScreen extends React.Component {
           <View style={styles.button}>
           	<Button onPress={this.salvarPartida} title="SALVAR" />
           </View>
-
-          
         </View>
       );
   }
@@ -177,12 +168,12 @@ correctaOIncorrecta = () => {
 
 }
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#30A9AC',
+    borderRadius: 500
   },
   welcome: {
     fontSize: 35,
@@ -195,7 +186,7 @@ const styles = StyleSheet.create({
     padding: 5,
     fontSize: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#4218F8'
+    borderBottomColor: 'black'
   },
   button: {
     marginTop: 20,
@@ -216,7 +207,7 @@ const styles = StyleSheet.create({
 
   logout: {
     fontSize: 14,
-    color: '#2e78b7',
+    color: 'black',
     textAlign: 'right',
   },
 

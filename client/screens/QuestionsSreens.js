@@ -5,7 +5,7 @@ import axios from "axios";
 
 export default class QuestionsSreens extends React.Component {
   static navigationOptions = {
-    title: "Tu pregunta es:"
+    header: null,
   };
   constructor(props) {
     super(props);
@@ -50,28 +50,31 @@ export default class QuestionsSreens extends React.Component {
             title={respuesta1}
           />
         </View>
-        <Text style={styles.espacio}> {"\n"}</Text>
+        <Text style = {styles.espacio}> {"\n"}</Text>
 
-        <View style={styles.button}>
+        <View style = {styles.button}>
           <Button
-            onPress={this.handleAnswer.bind(this, tipoResp2)}
-            title={respuesta2}
+            onPress = {this.handleAnswer.bind(this, tipoResp2)}
+            title = {respuesta2}
+            color = "black"
           />
         </View>
-        <Text style={styles.espacio}> {"\n"}</Text>
+        <Text style = {styles.espacio}> {"\n"}</Text>
 
-        <View style={styles.button}>
+        <View style = {styles.button}>
           <Button
-            onPress={this.handleAnswer.bind(this, tipoResp3)}
-            title={respuesta3}
+            onPress = {this.handleAnswer.bind(this, tipoResp3)}
+            title = {respuesta3}
+            color = "black"
           />
         </View>
-        <Text style={styles.espacio}> {"\n"}</Text>
+        <Text style = {styles.espacio}> {"\n"}</Text>
 
-        <View style={styles.button}>
+        <View style = {styles.button}>
           <Button
-            onPress={this.handleAnswer.bind(this, tipoResp4)}
-            title={respuesta4}
+            onPress = {this.handleAnswer.bind(this, tipoResp4)}
+            title = {respuesta4}
+            color = "black"
           />
         </View>
 
@@ -131,7 +134,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    backgroundColor: "#F5FCFF"
+    backgroundColor: "#30A9AC",
+    borderRadius: 500
   },
   welcome: {
     fontSize: 20,
@@ -143,7 +147,7 @@ const styles = StyleSheet.create({
     fontSize: 40,
     textAlign: "right",
     margin: 15,
-    color: "#ff0000"
+    color: "black"
   },
 
   input: {
@@ -152,6 +156,6 @@ const styles = StyleSheet.create({
     padding: 5,
     fontSize: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "#4218F8"
+    borderBottomColor: "black"
   }
 });

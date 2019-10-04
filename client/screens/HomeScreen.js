@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   button: {
-    marginTop:15,
+    marginTop:20,
     flex:1,
     //paddingRight: 70,
     //paddingLeft: 70,
