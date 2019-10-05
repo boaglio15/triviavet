@@ -26,7 +26,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import trivia.User;
+import trivia.models.*;
 import spark.utils.IOUtils;
 
 import spark.Spark;

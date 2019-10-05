@@ -1,13 +1,6 @@
 import { API_HOST } from 'react-native-dotenv';
 import React from 'react';
-import {
-  AsyncStorage,
-  View,
-  Text,
-  TextInput,
-  Button,
-  StyleSheet,
-} from 'react-native';
+import { AsyncStorage, View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import axios from 'axios';
 
 export default class SignInScreen extends React.Component {

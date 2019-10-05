@@ -1,4 +1,4 @@
-package trivia;
+package trivia.models;
 
 import org.javalite.activejdbc.Model;
 import org.javalite.activejdbc.annotations.Table;
@@ -58,5 +58,5 @@ public class QuestionGame extends Model {
             QuestionGame.createQuestionGame(pregHechas.get(i), Integer.parseInt(userId), respHechasCorIncor.get(i - indicePregHechas));
         } //consid que las lista pregHechas y respHechasCorIncor son de dist long por eso se toman los indices asi 
     }
-
+     
 }

@@ -5,7 +5,7 @@ import axios from "axios";
 
 export default class StatAreaComplet extends React.Component {
   static navigationOptions = {
-    title: "Area completada"
+    header: null,
   };
 
   constructor(props) {
@@ -19,16 +19,16 @@ export default class StatAreaComplet extends React.Component {
         const incorrectas = navigation.getParam("cantIncorrectas", "NO-ID");
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}> Esta area esta completada </Text>
+        <Text style={styles.welcome}> Esta area está completa </Text>
 
         <Text> La cantidad de correctas {correctas} </Text>
         <Text> La cantidad de incorrectas {incorrectas} </Text>
 
-        <View style={styles.button}>
+        <View style = {styles.button}>
           <Button
-            onPress={() => this.props.navigation.goBack()}
-            title="volver"
-            color="#ff0000"
+            onPress = {() => this.props.navigation.goBack()}
+            title = "volver"
+            color = "black"
           />
         </View>
       </View>
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
       justifyContent: "center",
-      backgroundColor: "#F5FCFF"
+      backgroundColor: "#30A9AC"
     },
     welcome: {
       fontSize: 25,
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
       padding: 5,
       fontSize: 16,
       borderBottomWidth: 1,
-      borderBottomColor: "#4218F8"
+      borderBottomColor: "black"
     },
     button: {
       marginTop: 20

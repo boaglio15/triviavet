@@ -1,4 +1,4 @@
-package trivia;
+package trivia.models;
 
 import org.javalite.activejdbc.Model;
 import java.util.*;

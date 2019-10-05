@@ -1,4 +1,4 @@
-package trivia;
+package trivia.models;
 
 import org.javalite.activejdbc.Model;
 import java.lang.Math;
@@ -111,7 +111,7 @@ public class Game extends Model {
         return listQuestions;
     }
 
-    //determina la cantidad de preg contestadas correctamente en un area
+    //determina la cantidad de preg contestadas correctamente en un area por un user
     public static int getCantQuestCorrecArea(String userId, List<Integer> pregHechasEnArea) {
         if (pregHechasEnArea.isEmpty()) {
             return 0;
