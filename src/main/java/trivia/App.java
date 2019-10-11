@@ -235,6 +235,18 @@ public class App {
 			);
 
 			post("/procesaQuestion", QuestionController::procesaQuestion, new MustacheTemplateEngine());
+
+			get("/modQuestion", (req, res) -> {
+				return new ModelAndView(map, "./views/modifyQuestion.html");
+			}, new MustacheTemplateEngine()
+			);
+
+			get("/listQuestion", QuestionController::listQuestion, new MustacheTemplateEngine());
+
+			get("/putQuest", (req, res) -> {
+				return new ModelAndView(map, "./views/putQuest.html");
+			}, new MustacheTemplateEngine()
+			);
 	    });
 		
 	    //---------------FIN MUSTACHE-------------------------//

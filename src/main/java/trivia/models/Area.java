@@ -3,6 +3,8 @@ package trivia.models;
 import org.javalite.activejdbc.Model;
 import java.util.*;
 
+import com.fasterxml.jackson.databind.type.PlaceholderForType;
+
 public class Area extends Model {
 
     private int nomArea;
@@ -50,5 +52,19 @@ public class Area extends Model {
     public static void createArea(int nombreArea) {
         Area area = new Area(nombreArea);
         area.saveIt();
+    }
+
+    public static Map getQuestionArea(Integer areaId){
+        List<Question> questions = Question.findBySQL("SELECT * FROM questions WHERE areaId = ?", areaId);
+        List<Map> questMap = new ArrayList<Map>();
+        for(Question q : questions){
+            Map m = new HashMap();
+            m.put("idQuest", q.getInteger("id"));
+            m.put("preg", q.getString("preg"));
+            questMap.add(m);
+        }
+        Map res = new HashMap();
+        res.put("questList", questMap);
+        return res;
     }
 }
