@@ -24,4 +24,11 @@ public class QuestionController {
         map.put("msg" ,mensaje_usuario);
         return new ModelAndView(map, "./views/logged.html");
     }
+
+    public static ModelAndView listQuestion(Request req, Response res){
+        Map lista = new HashMap();
+        Integer areaId = Integer.parseInt(req.queryParams("area"));
+        //lista = Area.getQuestionArea(areaId);
+        return new ModelAndView(Area.getQuestionArea(areaId), "./views/modifyQuestion.html");
+    }
 }

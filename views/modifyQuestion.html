@@ -1,9 +1,31 @@
 <!DOCTYPE html>
 <html>
 <body>
-    <p> Modificar una pregunta </p>
-    <form id="formQuestion" action="/admin/procesaQuestion" method="POST">
-
+    <p> Eliga el area donde se encuentra le pregunta a modificar </p>
+    <form id="formModQuestion" action="/admin/listQuestion" method="GET">
+        <input type="radio" name="area" value= "1" checked> Area 1<br>
+        <input type="radio" name="area" value= "2" checked> Area 2<br>
+        <input type="radio" name="area" value= "3" checked> Area 3<br><br>
+        <button id="guardar" type="submit" >Buscar preguntas</button>
     </form>
+
+    <table>
+        <tr>
+            <th>id</th>
+            <th>pregunta</th>
+        </tr>
+        
+        {{#questList}}
+        <tr>
+            <td>
+                <a href="/admin/putQuest" role="button" type="button">
+                    {{idQuest}}
+                </a>
+            </td>
+            <td>{{preg}}</td>
+        </tr>
+        {{/questList}}
+    </table>
+
 </body>
 </html>
