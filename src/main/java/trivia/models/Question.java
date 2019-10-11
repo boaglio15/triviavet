@@ -71,6 +71,21 @@ public class Question extends Model {
         ques.saveIt();
     }
 
+    public static void newQuestionAdmin(String preg, String resp1, String resp2,
+    String resp3, String resp4, int areaId){
+        Question newQuestion = new Question();
+        newQuestion.set("preg", preg);
+        newQuestion.set("areaId", areaId);
+        //newQuestion.set("userAdminId", adminId);
+        newQuestion.saveIt();
+        int idQuestion = newQuestion.getInteger("id");
+        Answer.createAnswer(resp1, 1, idQuestion);
+        Answer.createAnswer(resp2, 0, idQuestion);
+        Answer.createAnswer(resp3, 0, idQuestion);
+        Answer.createAnswer(resp4, 0, idQuestion);
+    }
+
+
 
 
 }
