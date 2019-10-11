@@ -18,10 +18,12 @@ public class UserControllers {
         String mensaje_usuario;
         if (user.size()==1){
             mensaje_usuario= "El usuario con dni : "+dni+" se encuentra en la BD.";
+            map.put("msg", mensaje_usuario);
+            return new ModelAndView(map, "./views/logged.html");
         }else{
             mensaje_usuario= "El usuario con dni : "+dni+"  No se encuentra en la BD.";
+            map.put("msg", mensaje_usuario);
+            return new ModelAndView(map, "./views/flogin.mustache");
         }
-        map.put("msg" ,mensaje_usuario);
-        return new ModelAndView(map, "./views/respuesta_login.mustache");
     }
 }

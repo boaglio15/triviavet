@@ -227,7 +227,14 @@ public class App {
 	        //entra por browse con /stat y pasa a la vista cargarArea.mustache
 	        get("/stat", (rq, rs) -> new ModelAndView(map, "./views/cargar_area.mustache"), new MustacheTemplateEngine());
 	
-	        get("/procesaStatArea", StatControllers::procesaStatArea, new MustacheTemplateEngine());
+			get("/procesaStatArea", StatControllers::procesaStatArea, new MustacheTemplateEngine());
+			
+			get("/question", (req, res) -> {
+				return new ModelAndView(map, "./views/question.html");
+			}, new MustacheTemplateEngine()
+			);
+
+			post("/procesaQuestion", QuestionController::procesaQuestion, new MustacheTemplateEngine());
 	    });
 		
 	    //---------------FIN MUSTACHE-------------------------//
