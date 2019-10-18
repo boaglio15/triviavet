@@ -85,6 +85,33 @@ public class Question extends Model {
         Answer.createAnswer(resp4, 0, idQuestion);
     }
 
+    public static Map<String, Object> questComplete(Integer idQuestion){
+        Question quest = Question.findById(idQuestion);
+        Answer correct = Answer.findFirst("pregId = ? and tipoAnswer = ?", idQuestion, 1);
+        List<Answer> incorrects = Answer.findBySQL("SELECT * FROM answers WHERE pregId = ? and tipoAnswer = ?", idQuestion, 0);
+        Map<String, Object> res = new HashMap<String, Object>();
+        res.put("question", quest.get("preg"));
+        res.put("correcta", correct.get("resp"));
+        res.put("incorrecta1", incorrects.get(0).get("resp"));
+        res.put("incorrecta2", incorrects.get(1).get("resp"));
+        res.put("incorrecta3", incorrects.get(2).get("resp"));
+        return res;
+    }
+
+    public static void modificarQuestion(Integer idQuestion, String preg, String resp1, String resp2,
+    String resp3, String resp4){
+        Question quest = Question.findById(idQuestion);
+        Answer correct = Answer.findFirst("pregId = ? and tipoAnswer = ?", idQuestion, 1);
+        List<Answer> incorrect = Answer.where("pregId = ? and tipoAnswer = ?", idQuestion, 0);
+        quest.set("preg", preg);
+        correct.set("resp", resp1);
+        incorrect.get(0).set("resp", resp2).saveIt();
+        incorrect.get(1).set("resp", resp3).saveIt();
+        incorrect.get(2).set("resp", resp4).saveIt();
+        quest.saveIt();
+        correct.saveIt();
+    }
+
 
 
 
