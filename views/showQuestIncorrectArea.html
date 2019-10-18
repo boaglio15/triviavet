@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+    <body>
+
+        <div class="container">
+
+            <h4> PREGUNTAS INCORRECTAS HECHAS EN EL AREA SELCCIONADA </h4>
+
+            <div class="card card-container">
+
+                <table class="idTable">
+                    <tr>
+                        <th class="columna"> #</th>
+                        <th class="columna"> pregunta </th>
+                    </tr>
+
+                    {{#listMapQuestIncorrectArea}}
+                    <tr>          
+                        <td class="fila"> {{id}} </td>
+                        <td class="fila"> {{preg}} </td>
+                    </tr>
+                    {{/listMapQuestIncorrectArea}}
+
+                </table>
+            </div>
+
+        </div>
+
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    </body>
+</html>

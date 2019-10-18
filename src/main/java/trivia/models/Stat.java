@@ -71,77 +71,161 @@ public class Stat extends Model {
     //------------------END STAT USERS-------------------//
    
    
-    //----------------STAT ADMIN---------------------//
+    // ----------------STAT ADMIN---------------------//
     // retorna las preguntas hechas en un area (correctas o incorrectas)
     // considerando todas las preguntas hechas a todos los jugadores
     public static List<Question> questAskInArea(int areaId) {
-       if (areaId == 1) {
-        return Question.findBySQL("SELECT questions.id FROM questions INNER JOIN questions_games ON questions.id = questions_games.questionId WHERE questions.areaId = 1"); 
-       }
-
-       if (areaId == 2) {
-        return Question.findBySQL("SELECT questions.id FROM questions INNER JOIN questions_games ON questions.id = questions_games.questionId WHERE questions.areaId = 2"); 
-       }
-
-       if (areaId == 3) {
-        return Question.findBySQL("SELECT questions.id FROM questions INNER JOIN questions_games ON questions.id = questions_games.questionId WHERE questions.areaId = 3"); 
-       } else {
-           return null;
-       }       
+        
+        return Question.findBySQL( "SELECT questions.id FROM questions INNER JOIN questions_games ON questions.id = questions_games.questionId WHERE questions.areaId = ?", areaId);
+    
     }
+
+    // retorna las preguntas hechas en un area (correctas e incorrectas)
+    // considerando todas las preguntas (pero sin repetidas) hechas a todos los jugadores
+    /*
+    public static List<Question> questDistincAskInArea(int areaId) {
+        
+        return Question.findBySQL("SELECT DISTINCT questions.id, questions.preg FROM questions INNER JOIN questions_games ON questions.id = questions_games.questionId WHERE questions.areaId = ?", areaId);
+
+    }*/
+
+    //genera una lista de map con el id y la pregunta, de las preguntas (correctas, incorrectas y sin repetidas) hechas en un area
+    //se usa para listar por pantalla
+    public static Map showQuestAskInArea(int areaId) {
+        List<Question> pregTotalHechasArea = Stat.questAskInArea(areaId);
+        int pta = pregTotalHechasArea.size();
+        Map r = new HashMap();
+        if (pta == 0) {
+            r.put("error", "no hay preguntas hechas en el area");
+        } else {
+            r.put("pregTotArea", pta);
+            List<QuestionGame> pregCorrectHechasArea = Stat.questCorrectInArea(areaId);
+            //List<QuestionGame> pregIncorrectHechasArea = Stat.questIncorrectInArea(areaId);
+            int pca = pregCorrectHechasArea.size();
+            int pia = pta - pca;//pregIncorrectHechasArea.size();
+            r.put("pregCorrectArea", pca);
+            r.put("pregIncorrectArea", pia);
+            r.put("areaId", areaId);
+        }
+       return r;
+        /*
+        List<Map> listMap = new ArrayList<Map>();
+        List<Question> qa = questDistincAskInArea(areaId);
+        if (qa == null) {
+            System.out.println("LISTA NULL ");
+            Map r = new HashMap();
+            r.put("msg", "no hay preguntas hechas en el area");
+            return r;
+        } else {
+            System.out.println("LISTA  ");
+            for (Question q : qa) {
+                Map a = new HashMap();
+                String id = Integer.toString(q.getInteger("id"));
+                System.out.println("ID " + id);
+                System.out.println("PREG " +  q.getString("preg"));
+                a.put("id", q.getInteger("id"));
+                a.put("preg", q.getString("preg"));
+                listMap.add(a);
+            }
+            Map r = new HashMap();
+            r.put("listMapQuestArea", listMap);
+            r.put("areaId", areaId);
+            List<Question> pregTotalHechasArea = Stat.questAskInArea(areaId);
+            int pta = pregTotalHechasArea.size();
+            r.put("pregTotArea", pta);
+            System.out.println("MAPEO DE AREA " + r.get("areaId"));
+            return r;
+        }*/
+    }
+
+    // retorna el id de las preguntas que fueron contestadas en forma correcta en todos lo juegos en un area (hay repetidas)
+    public static List<QuestionGame> questCorrectInArea(int areaId) {
+        
+        return QuestionGame.findBySQL("SELECT questions_games.questionId FROM questions_games INNER JOIN questions ON questions.id = questions_games.questionId WHERE questions.areaId = ? and questions_games.estado = 1", areaId);
+
+    }
+
+    // retorna el id de las preguntas que fueron contestadas en forma correcta en todos lo juegos en un area (sin repetidas)
+    // se usa para listar por pantalla
+    public static List<QuestionGame> questCorrectDistinctInArea(int areaId) {
+
+        return QuestionGame.findBySQL("SELECT DISTINCT questions_games.questionId FROM questions_games INNER JOIN questions ON questions.id = questions_games.questionId WHERE questions.areaId = ? and questions_games.estado = 1", areaId);
+    }
+
+    //genera una lista de map con el id y la pregunta, de las preguntas hechas en forma correcta en un area
+    //se usa para listar por pantalla
+    public static Map showQuestCorrectArea(int areaId) {
+        List<Map> listMap = new ArrayList<Map>();
+        List<QuestionGame> qca = questCorrectDistinctInArea(areaId);
+       
+            for (QuestionGame q : qca) {
+                Map a = new HashMap();
+                Integer id = q.getInteger("questionId");
+                a.put("id", id);
+                List<Question> qq = Question.where("id =  ?", id);
+                String preg = qq.get(0).getString("preg");
+                a.put("preg", preg);
+                listMap.add(a);
+            }
+            Map r = new HashMap();
+            r.put("listMapQuestCorrectArea", listMap);
+            r.put("areaId", areaId);
+            return r;
+        
+    }
+
+     // retorna el id de las preguntas que fueron contestadas en forma incorrecta  en todos lo juegos en un area (hay repetidas)
+    public static List<QuestionGame> questIncorrectInArea(int areaId) {
+       
+        return QuestionGame.findBySQL("SELECT questions_games.questionId FROM questions_games INNER JOIN questions ON questions.id = questions_games.questionId WHERE questions.areaId = ? and questions_games.estado = 0", areaId);
+  
+    }
+
+    
+    public static List<QuestionGame> questIncorrectDisntinctArea(int areaId) {
+
+        return QuestionGame.findBySQL("SELECT DISTINCT questions_games.questionId FROM questions_games INNER JOIN questions ON questions.id = questions_games.questionId WHERE questions.areaId = ? and questions_games.estado = 0", areaId);
+
+    }
+
+    public static Map showQuestIncorrectArea(int areaId) {
+        List<Map> listMap = new ArrayList<Map>();
+        List<QuestionGame> qia = questIncorrectDisntinctArea(areaId);
+       
+            for (QuestionGame q : qia) {
+                Map a = new HashMap();
+                Integer id = q.getInteger("questionId");
+                a.put("id", id);
+                List<Question> qq = Question.where("id =  ?", id);
+                String preg = qq.get(0).getString("preg");
+                a.put("preg", preg);
+                listMap.add(a);
+            }
+            Map r = new HashMap();
+            r.put("listMapQuestIncorrectArea", listMap);
+            return r;
+        
+    }
+    
 
     // retorna la cantidad de veces que una pregunta se hizo en una area
     public static int numTimeQuestInArea(List<Question> pregTotalHechasArea, Integer pregId) {
-        int cant = 0;  
+        int cant = 0;
         for (Question q : pregTotalHechasArea) {
             if (pregId.equals((Integer) q.getId())) {
                 cant++;
             }
-        };
+        }
+        ;
         return cant;
     }
 
-    // retorna las preguntas que fueron contestadas en forma correcta en un area
-    public static List<QuestionGame> questCorrectInArea(int areaId) {
-        if (areaId == 1) {
-            return QuestionGame.findBySQL(
-            "SELECT questions_games.id FROM questions_games INNER JOIN questions ON questions.id = questions_games.questionId WHERE questions.areaId = 1 and questions_games.estado = 1");
-        }
+    
 
-        if (areaId == 2) {
-            return QuestionGame.findBySQL(
-            "SELECT questions_games.id FROM questions_games INNER JOIN questions ON questions.id = questions_games.questionId WHERE questions.areaId = 2 and questions_games.estado = 1");
-        }
+    
 
-        if (areaId == 3) {
-            return QuestionGame.findBySQL(
-            "SELECT questions_games.id FROM questions_games INNER JOIN questions ON questions.id = questions_games.questionId WHERE questions.areaId = 3 and questions_games.estado = 1");
-        } else {
-            return null;
-        } 
-    }   
-
-    // retorna las preguntas que fueron contestadas en forma incorrecta en un area
-    public static List<QuestionGame> questIncorrectInArea(int areaId) {
-        if (areaId == 1) {
-            return QuestionGame.findBySQL(
-            "SELECT questions_games.id FROM questions_games INNER JOIN questions ON questions.id = questions_games.questionId WHERE questions.areaId = 1 and questions_games.estado = 0");
-        }
-
-        if (areaId == 2) {
-            return QuestionGame.findBySQL(
-            "SELECT questions_games.id FROM questions_games INNER JOIN questions ON questions.id = questions_games.questionId WHERE questions.areaId = 2 and questions_games.estado = 0");
-        }
-
-        if (areaId == 3) {
-            return QuestionGame.findBySQL(
-            "SELECT questions_games.id FROM questions_games INNER JOIN questions ON questions.id = questions_games.questionId WHERE questions.areaId = 3 and questions_games.estado = 0");
-        } else {
-            return null;
-        } 
-    }
-
-    // retorna la cantidad de veces que una pregunta se contesto en forma correcta en un area
+    // retorna la cantidad de veces que una pregunta se contesto en forma correcta
+    // en un area
     public static int numTimeAnswCorretInAreaForQuest(List<QuestionGame> pregCorrectArea, Integer pregId) {
         int cant = 0;
         for (QuestionGame q : pregCorrectArea) {
@@ -152,8 +236,8 @@ public class Stat extends Model {
         return cant;
     }
 
-
-    // retorna la cantidad de veces que una pregunta se contesto en forma incorreta en un area
+    // retorna la cantidad de veces que una pregunta se contesto en forma incorreta
+    // en un area
     public static int numTimeAnswIncorretInAreaForQuest(List<QuestionGame> pregIncorrectArea, Integer pregId) {
         int cant = 0;
         for (QuestionGame q : pregIncorrectArea) {
@@ -164,5 +248,5 @@ public class Stat extends Model {
         return cant;
     }
 
-    //-------------------END  STAT ADMIN----------------------//
+    // -------------------END STAT ADMIN----------------------//
 }

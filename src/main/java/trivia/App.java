@@ -205,7 +205,7 @@ public class App {
 	    path("/admin", () -> {
 	        
 	    	before("/*", (req, res) ->{
-	        	Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/trivia?nullNamePatternMatchesAll=true", "admin", "password");
+	        	Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/trivia?nullNamePatternMatchesAll=true", "root", "root");
 	        	//Base.open();
 	        });
 	
@@ -225,9 +225,17 @@ public class App {
 	        get("/procesaLoginWeb", UserControllers::procesaLoginWeb, new MustacheTemplateEngine());
 	
 	        //entra por browse con /stat y pasa a la vista cargarArea.mustache
-	        get("/stat", (rq, rs) -> new ModelAndView(map, "./views/cargar_area.mustache"), new MustacheTemplateEngine());
+	        get("/stat", (rq, rs) -> new ModelAndView(map, "./views/cargar_area.html"), new MustacheTemplateEngine());
 	
-			get("/procesaStatArea", StatControllers::procesaStatArea, new MustacheTemplateEngine());
+			get("/procesaShowQuestInArea", StatControllers::procesaShowQuestInArea, new MustacheTemplateEngine());
+
+			get("/procesaShowQuestCorrectArea", StatControllers::procesaShowQuestCorrectArea, new MustacheTemplateEngine());
+			
+			get("/procesaShowQuestIncorrectArea", StatControllers::procesaShowQuestIncorrectArea, new MustacheTemplateEngine());
+
+			get("/procesaNvpca", StatControllers::procesaNvpca, new MustacheTemplateEngine());
+
+			//get("/procesaStatArea", StatControllers::procesaStatArea, new MustacheTemplateEngine());
 			
 			get("/question", (req, res) -> {
 				return new ModelAndView(map, "./views/question.html");

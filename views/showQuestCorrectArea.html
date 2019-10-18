@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+    <body>
+
+        <div class="container">
+
+            <h4> PREGUNTAS CORRECTAS HECHAS EN EL AREA SELCCIONADA </h4>
+
+            <div class="card card-container">
+
+
+
+                <table class="idTable">
+                    <tr>
+                        <th class="columna"> #</th>
+                        <th class="columna"> pregunta </th>
+                    </tr>
+
+                    {{#listMapQuestCorrectArea}}
+                    <tr>          
+                        <td class="fila"> 
+                            <a href="/admin/procesaNvpca?areaId={{areaId}}&pregId={{id}}" type="button" value={{id}}>
+                                {{id}}
+                            </a>
+                              </td>
+                        <td class="fila"> {{preg}} </td>
+                    </tr>
+                    {{/listMapQuestCorrectArea}}
+
+                </table>
+            </div>
+        </div>
+
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    </body>
+</html>

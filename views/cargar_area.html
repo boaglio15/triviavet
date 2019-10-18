@@ -9,28 +9,18 @@
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="css/Login.css">
   <link rel="stylesheet" type="text/css" href="css/nuevo.css">
-
-<title>cargar area</title>
-
-
-
 </head>
 
 <body>
-<div>
-   
-   Hoy es {{fecha_cte}}
-</div>
-
-<form id="formulario_registro" action="/admin/procesaStatArea" method="GET">
-  <label for="areaId">areaId</label> 
-  <input type="number" id = "areaId" name ="areaId" required/>
- 
- <label for="pregId">pregId</label>
-  <input type="number" id="pregId" name="pregId" required/>
-  <button id="enviar" type="submit" > Enviar areaId pregId</button>
-</form>
-
+<p> seleccione un area para ver sus estadisticas </p>
+    <form id="formModQuestion" action="/admin/procesaShowQuestInArea" method="GET">
+        <input type="radio" name="areaId" value= "1" checked> Area 1<br>
+        <input type="radio" name="areaId" value= "2" checked> Area 2<br>
+        <input type="radio" name="areaId" value= "3" checked> Area 3<br><br>
+        <button id="guardar" type="submit" >seleccionar</button>
+    </form>
 </body>
 
 </html>
+
+

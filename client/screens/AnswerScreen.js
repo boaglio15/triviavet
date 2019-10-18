@@ -127,10 +127,11 @@ export default class AnswerScreen extends React.Component {
     }
   }
 
-//det si la respuesta seleccionada es corecta o no y si pierde por respuestas incorrectas
+//det si la respuesta seleccionada es corecta o no y si pierde muestra la resp correcta
 correctaOIncorrecta = () => {
   const { navigation } = this.props;
   const tipoAnsw = navigation.getParam("tipo", "NO-ID");
+  const respCorrect = navigation.getParam("resp", "NO-ID");
   if (tipoAnsw == 1) {
     return (
       <View>
@@ -161,6 +162,7 @@ correctaOIncorrecta = () => {
           />
         </View>
         <Text style={styles.welcome}>Incorrecto !</Text>
+        <Text style = {styles.welcome}> la respuesta correcta es: {respCorrect}</Text>
       </View>
    );
   }
