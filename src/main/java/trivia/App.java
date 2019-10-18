@@ -237,25 +237,30 @@ public class App {
 
 			//get("/procesaStatArea", StatControllers::procesaStatArea, new MustacheTemplateEngine());
 			
+			//carga la vista question.html
 			get("/question", (req, res) -> {
 				return new ModelAndView(map, "./views/question.html");
 			}, new MustacheTemplateEngine()
 			);
 
+			//crear una nueva pregunta
 			post("/procesaQuestion", QuestionController::procesaQuestion, new MustacheTemplateEngine());
 
+			//carga la vista modifyQuestion.html
 			get("/modQuestion", (req, res) -> {
 				return new ModelAndView(map, "./views/modifyQuestion.html");
 			}, new MustacheTemplateEngine()
 			);
 
+			//lista las preguntas en un area
 			get("/listQuestion", QuestionController::listQuestion, new MustacheTemplateEngine());
 
-			get("/putQuest", (req, res) -> {
-				return new ModelAndView(map, "./views/putQuest.html");
-			}, new MustacheTemplateEngine()
-			);
-	    });
+			//carga la vista putQuestion.html
+			get("/putQuest", QuestionController::selectQuestion, new MustacheTemplateEngine());
+
+			post("/mod", QuestionController::modPregunta, new MustacheTemplateEngine());
+		
+		});
 		
 	    //---------------FIN MUSTACHE-------------------------//
 	        

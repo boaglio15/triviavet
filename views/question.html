@@ -8,16 +8,19 @@
         <input type="radio" name="area" value= "2" checked> Area 2<br>
         <input type="radio" name="area" value= "3" checked> Area 3<br>
         Pregunta: <br>
-        <input type="text" name="preg"> <br>
+        <input type="text" name="preg" required> <br>
         Respuesta Correcta: <br>
-        <input type="text" name="resp1"><br>
+        <input type="text" name="resp1" required><br>
         Respuesta Incorrecta: <br>
-        <input type="text" name="resp2"><br>
+        <input type="text" name="resp2" required><br>
         Respuesta Incorrecta: <br>
-        <input type="text" name="resp3"><br>
+        <input type="text" name="resp3" required><br>
         Respuesta Incorrecta: <br>
-        <input type="text" name="resp4"><br><br>
-        <button id="guardar" type="submit" > Guardar Pregunta</button>
+        <input type="text" name="resp4" required><br><br>
+        <p>
+            <input type="submit" value="Guardar Pregunta">
+            <input type="reset" value="Borrar">
+        </p>
     </form>
 </body>
 </html>
