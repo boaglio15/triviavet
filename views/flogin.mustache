@@ -1,5 +1,5 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -10,28 +10,43 @@
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="css/Login.css">
   <link rel="stylesheet" type="text/css" href="css/nuevo.css">
-
-<title>Login</title>
-
-
-
-</head>
-
-<body>
-<div>
-   
-   Hoy es {{fecha_cte}}
-</div>
-
-<form id="formulario_registro" action="/admin/procesaLoginWeb" method="GET">
+  
+  <form id="formulario_registro" action="/admin/procesaLoginWeb" method="GET">
   <label for="dni">DNI</label> 
   <input type="text" id = "dni" name ="dni" required/>
  
   <label for="pass">Contraseña</label>
   <input type="password" id="pass" name="pass" required/>
-  <button id="enviar" type="submit" > Enviar Datos</button>
-</form>
+  <button id="enviar" type="submit" > Enviar Datos</button> -->
 
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+  <link rel="stylesheet" type="text/css" href="/css/estilos.css">
+</head>
+<body>
+  <header>
+    <div>
+      <img src="/imagenes/logo.png" width="150" alt="Logotipo">
+    </div>
+  </header>
+  
+  <div class="main">
+    <form id="formulario_registro" action="/admin/procesaLoginWeb" method="GET">
+      <label for="nombre">DNI:</label>
+      <input type="text" placeholder="Escribe tu DNI" name="dni" id="nombre">
+      <br/>
+      <label for="contraseña">Password:</label>
+      <input type="password" name="pass" placeholder="Escribe tu contraseña">
+      <br/>
+      <br/>
+      <button type="submit">Ingresar</button>
+    </form>
+  </div>
+
+  <footer>
+    <p>Trivia Vet - Creado por Boaglio Agustín, Mercau Gaston y Sáenz Luciano - 2019</p>
+  </footer>
 </body>
-
 </html>

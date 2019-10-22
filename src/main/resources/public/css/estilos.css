@@ -1,0 +1,41 @@
+body {
+	color: white;
+	background: url(../imagenes/sfondi-background-watercolor-arte-mediajob.eu-annuncisubito.eu-12.jpg);
+	background-repeat: no-repeat;
+	background-position: center;
+}
+.main {
+	height: 370px;
+}
+
+form {
+	width: 25%;
+	border: 1px solid #ccc;
+	margin: auto;
+	padding: 10px;
+}
+
+input {
+	margin-bottom: 20px;
+	width: 100%;
+	padding: 5px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+input[type = "button"]:hover {
+	background: #a36dca;
+	cursor: pointer;
+}
+
+footer {
+	background: black;
+	width: 85%;
+	margin: auto;
+}
+
+form div {
+	background: black;
+	padding-top: .1px;
+}
