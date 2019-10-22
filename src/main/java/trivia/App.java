@@ -28,7 +28,7 @@ public class App {
     static int indexPregHechas; // indica cuantas preg tenia hechas el jugador en partidas anteriores
 
     public static void main(String[] args) {
-    	
+    	staticFiles.location("/public");
     	path("/player", () -> {
 	        	        
 	        before("/*" ,(request, response) -> {
@@ -212,6 +212,8 @@ public class App {
 	        after("/*", (req,res) ->{
 	        	Base.close();
 	        });
+	        
+	        //staticFiles.location("/public");
 	
 	        Map map = new HashMap();
 	        map.put("nerror","");
