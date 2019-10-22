@@ -5,7 +5,7 @@
 
         <div class="container">
 
-            <h4> PREGUNTAS INCORRECTAS HECHAS EN EL AREA SELCCIONADA </h4>
+            <h4> PREGUNTAS INCORRECTAS HECHAS EN EL AREA SELECCIONADA </h4>
 
             <div class="card card-container">
 
@@ -13,16 +13,23 @@
                     <tr>
                         <th class="columna"> #</th>
                         <th class="columna"> pregunta </th>
+                        <th class = "columna"> veces que fue contestada en forma incorrecta </th>
                     </tr>
 
                     {{#listMapQuestIncorrectArea}}
                     <tr>          
-                        <td class="fila"> {{id}} </td>
+                        <td class="fila"> 
+                            <a href="/admin/procesaNvpia?areaId={{areaId}}&pregId={{id}}" type="button" value={{id}}>
+                                {{id}}
+                            </a>
+                              </td>
                         <td class="fila"> {{preg}} </td>
+                        <td class = "fila"> {{nvpia}} </td>
                     </tr>
                     {{/listMapQuestIncorrectArea}}
 
                 </table>
+                
             </div>
 
         </div>

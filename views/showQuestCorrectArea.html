@@ -5,16 +5,15 @@
 
         <div class="container">
 
-            <h4> PREGUNTAS CORRECTAS HECHAS EN EL AREA SELCCIONADA </h4>
+            <h4> PREGUNTAS CORRECTAS HECHAS EN EL AREA SELECCIONADA </h4>
 
             <div class="card card-container">
-
-
 
                 <table class="idTable">
                     <tr>
                         <th class="columna"> #</th>
                         <th class="columna"> pregunta </th>
+                        <th class = "columna"> veces que fue contestada en forma correcta </th>
                     </tr>
 
                     {{#listMapQuestCorrectArea}}
@@ -25,11 +24,14 @@
                             </a>
                               </td>
                         <td class="fila"> {{preg}} </td>
+                        <td class = "fila"> {{nvpca}} </td>
                     </tr>
                     {{/listMapQuestCorrectArea}}
 
                 </table>
+                
             </div>
+            
         </div>
 
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>

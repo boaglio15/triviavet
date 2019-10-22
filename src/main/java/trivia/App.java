@@ -213,9 +213,6 @@ public class App {
 	        	Base.close();
 	        });
 	
-	        get("/hello", (req, res) -> "Hello World");
-	
-	        
 	        Map map = new HashMap();
 	        map.put("nerror","");
 	        //entra por browse con /loginWeb y pasa a la viste flogin.mustache
@@ -230,12 +227,12 @@ public class App {
 			get("/procesaShowQuestInArea", StatControllers::procesaShowQuestInArea, new MustacheTemplateEngine());
 
 			get("/procesaShowQuestCorrectArea", StatControllers::procesaShowQuestCorrectArea, new MustacheTemplateEngine());
+            
+            //get("/procesaNvpca", StatControllers::procesaNvpca, new MustacheTemplateEngine());
 			
 			get("/procesaShowQuestIncorrectArea", StatControllers::procesaShowQuestIncorrectArea, new MustacheTemplateEngine());
 
-			get("/procesaNvpca", StatControllers::procesaNvpca, new MustacheTemplateEngine());
-
-			//get("/procesaStatArea", StatControllers::procesaStatArea, new MustacheTemplateEngine());
+           // get("/procesaNvpia", StatControllers::procesaNvpia, new MustacheTemplateEngine());
 			
 			//carga la vista question.html
 			get("/question", (req, res) -> {

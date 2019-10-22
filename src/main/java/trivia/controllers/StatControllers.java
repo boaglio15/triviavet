@@ -10,6 +10,7 @@ import java.util.*;
 
 public class StatControllers {
 
+    /*
     public static ModelAndView procesaStatArea(Request req, Response res) {
 
         Integer areaId = Integer.parseInt(req.queryParams("areaId"));
@@ -36,6 +37,7 @@ public class StatControllers {
         map.put("nvpia", nvpia); // cantidad de veces que una pregunta se contesto en forma incorrecta
         return new ModelAndView(map, "./views/respuesta_stat.mustache");
     }
+*/
 
     public static ModelAndView procesaShowQuestInArea(Request req, Response res) {
         Integer areaId = Integer.parseInt(req.queryParams("areaId"));
@@ -57,6 +59,7 @@ public class StatControllers {
 
     }
 
+    /*
     public static ModelAndView procesaNvpca(Request req, Response res) {
         Integer areaId = Integer.parseInt(req.queryParams("areaId"));
         Integer pregId = Integer.parseInt(req.queryParams("pregId"));
@@ -68,6 +71,19 @@ public class StatControllers {
         r.put("nvpca", nvpca);
         return new ModelAndView(r, "./views/showQuestCorrectArea.html");
     }
+    
+    public static ModelAndView procesaNvpia(Request req, Response res) {
+        Integer areaId = Integer.parseInt(req.queryParams("areaId"));
+        Integer pregId = Integer.parseInt(req.queryParams("pregId"));
+        System.out.println("AREA ID DENTRO DE PROCESA NVPIA" + areaId);
+        System.out.println("PREG ID DENTRO DE PRECESA NVPIA" + pregId);
+        List<QuestionGame> pregIncorrectHechasArea = Stat.questIncorrectInArea(areaId);
+        int nvpia = Stat.numTimeAnswIncorretInAreaForQuest(pregIncorrectHechasArea, pregId);
+        Map r = new HashMap<>();
+        r.put("nvpia", nvpia);
+        return new ModelAndView(r, "./views/showQuestIncorrectArea.html");
+    }
+*/
 
 }
 
