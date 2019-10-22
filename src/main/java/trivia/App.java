@@ -201,7 +201,7 @@ public class App {
 	        	        
     	//---------------MUSTACHE--------------------//	        
 	
-	    //staticFiles.location("/public"); //permite indicar al cliente de donde puede sacar cosas si las necesita
+	    
 	    path("/admin", () -> {
 	        
 	    	before("/*", (req, res) ->{
@@ -212,8 +212,7 @@ public class App {
 	        after("/*", (req,res) ->{
 	        	Base.close();
 	        });
-	        
-	        //staticFiles.location("/public");
+	       
 	
 	        Map map = new HashMap();
 	        map.put("nerror","");
