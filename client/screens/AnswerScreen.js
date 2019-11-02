@@ -1,6 +1,7 @@
 import { API_HOST } from 'react-native-dotenv';
 import React from 'react';
-import { AsyncStorage, View, Text, Button, StyleSheet, Image, } from 'react-native';
+import { AsyncStorage, View, Text, StyleSheet, Image, } from 'react-native';
+import {Button} from 'react-native-elements';
 import axios from 'axios';
 
 export default class AnswerScreen extends React.Component {
@@ -20,12 +21,22 @@ export default class AnswerScreen extends React.Component {
           
           <View>{this.correctaOIncorrecta()}</View>
 
-          <View style={styles.button}>
-            <Button onPress={this.nextQuestions} title="Siguiente pregunta" />
+          <View>
+            <Button 
+              onPress={this.nextQuestions} 
+              title="Siguiente pregunta"
+              buttonStyle={{backgroundColor: "black", width:200, alignSelf:'center'}} 
+            />
           </View>
 
-          <View style={styles.button}>
-          	<Button onPress={this.salvarPartida} title="SALVAR" />
+          <Text>{"\n"}</Text>
+
+          <View>
+            <Button 
+              onPress={this.salvarPartida}
+              title="SALVAR"
+              buttonStyle={{backgroundColor: "black", width:100, alignSelf:'center'}}
+            />
           </View>
         </View>
       );
@@ -145,7 +156,8 @@ correctaOIncorrecta = () => {
             style={styles.welcomeImage}
           />
         </View>
-        <Text style={styles.welcome}> Correcto !</Text>
+        <Text style = {styles.welcome}>¡Felicidades!</Text>
+        <Text style = {styles.welcome}>Respuesta Correcta</Text>
       </View>
     );
   } else {
@@ -162,7 +174,8 @@ correctaOIncorrecta = () => {
           />
         </View>
         <Text style={styles.welcome}>Incorrecto !</Text>
-        <Text style = {styles.welcome}> la respuesta correcta es: {respCorrect}</Text>
+        <Text style = {styles.welcome}> La correcta es:</Text>
+        <Text style = {styles.welcome}>{respCorrect}</Text>
       </View>
    );
   }
@@ -179,6 +192,7 @@ const styles = StyleSheet.create({
   },
   welcome: {
     fontSize: 35,
+    fontFamily:'sans-serif-condensed',
     textAlign: 'center',
     margin: 10,
   },

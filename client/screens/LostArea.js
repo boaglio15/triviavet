@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
+import {Button} from 'react-native-elements';
 
 export default class LostArea extends React.Component {
     static navigationOptions = {
@@ -12,28 +13,18 @@ export default class LostArea extends React.Component {
 
     render() {
         return (
-            <View>
-                <View>
-                    <Text style={styles.welcome}> Perdiste </Text>
-                </View>
+            <View style={styles.container}>
+                <Text style={styles.welcome}> ¡PERDISTE! </Text>
+                <Text style={styles.welcome}> Mejor vuelve a intentarlo</Text>
+                <Text style={styles.welcome}>Volvé y elegí otra área o la misma para seguir jugando</Text>
 
-                <Text style={styles.espacio}> {"\n"}</Text>
+                <Text>{"\n"}</Text>
 
-                <View>
-                    <Text style={styles.welcome}> Elegí otra area para jugar o volve a jugar esta</Text>
-                </View>
-
-                <Text style={styles.espacio}> {"\n"}</Text>
-
-                <View style={styles.getStartedContainer}>
-                    <Button
-                        onPress = {() => this.props.navigation.navigate('Play')} style={styles.logout}
-                        title = "--- ir a play ---"
-                        color = "black"
-                    />
-                </View>
-
-                
+                <Button
+                    onPress = {() => this.props.navigation.navigate('Play')} style={styles.logout}
+                    title = "VOLVER"
+                    buttonStyle = {{backgroundColor:'black', width:20, alignSelf:'center'}}
+                />                
             </View>
         );
     }
@@ -44,10 +35,12 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         backgroundColor: '#30A9AC',
+        borderRadius:500,
     },
     welcome: {
         fontSize: 35,
         textAlign: 'center',
+        fontFamily: 'sans-serif-condensed',
         margin: 10,
     },
     input: {

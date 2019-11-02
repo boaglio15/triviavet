@@ -1,6 +1,8 @@
 import { API_HOST } from "react-native-dotenv";
 import React from "react";
-import { AsyncStorage, View, Text, Button, StyleSheet } from "react-native";
+import { AsyncStorage, View, Text, StyleSheet } from "react-native";
+import {Button} from "react-native-elements";
+import Icon from 'react-native-vector-icons/FontAwesome';
 import axios from "axios";
 
 export default class QuestionsSreens extends React.Component {
@@ -12,7 +14,6 @@ export default class QuestionsSreens extends React.Component {
     this.state = {};
   }
   render() {
-    //recibir cant preg hacer
     const { navigation } = this.props;
     const question = navigation.getParam("quest", "NO-ID");
     const respuesta1 = navigation.getParam("answ1", "NO-ID");
@@ -26,57 +27,77 @@ export default class QuestionsSreens extends React.Component {
     const nivel = navigation.getParam("nivel", "NO-ID");
     const cantQuestIncorrect = navigation.getParam("cantQuestIncorrect","NO-ID");
 
+    var nivelString = "Nivel:";
+    const nivelComplet = nivelString.concat(" ", nivel);
+    var incorString = "Incorrectas:";
+    const incorComplet = incorString.concat(" ", cantQuestIncorrect);
+
     return (
-      <View>
-        <Text style={styles.espacio}> {"\n\n\n\n"}</Text>
+      <View style={styles.container}>
+        <Text> {"\n"}{"\n"}</Text>
 
         <View>
-          <Text style={styles.welcome}> {question}</Text>
+          <Button
+            title = {question}
+            titleStyle = {{color:'black', fontFamily:'sans-serif-condensed', fontSize:25}}
+            type = 'outline'
+            buttonStyle = {styles.buttonQuestion}
+          />
         </View>
 
-        <View style={styles.button}>
+        <Text>{"\n"}</Text>
+
+        <View>
           <Button
             onPress={() => this.handleAnswer(tipoResp1)}  
             title={respuesta1}
+            buttonStyle={styles.buttonOptions}
           />
         </View>
         <Text style = {styles.espacio}> {"\n"}</Text>
 
-        <View style = {styles.button}>
+        <View>
           <Button
             onPress = {() => this.handleAnswer(tipoResp2)}
             title = {respuesta2}
-            color = "black"
+            buttonStyle={styles.buttonOptions}
           />
         </View>
         <Text style = {styles.espacio}> {"\n"}</Text>
 
-        <View style = {styles.button}>
+        <View>
           <Button
             onPress = {() => this.handleAnswer(tipoResp3)}
             title = {respuesta3}
-            color = "black"
+            buttonStyle={styles.buttonOptions}
           />
         </View>
         <Text style = {styles.espacio}> {"\n"}</Text>
 
-        <View style = {styles.button}>
+        <View>
           <Button
             onPress = {() => this.handleAnswer(tipoResp4)}
             title = {respuesta4}
-            color = "black"
+            buttonStyle={styles.buttonOptions}
           />
         </View>
 
         <Text style={styles.espacio}> {"\n\n"}</Text>
 
-        <View>
-          <Text style={styles.nivel}> Nivel {nivel}</Text>
-        </View>
-
-        <View>
-          <Text style={styles.nivel}> respuestas incorrectas {cantQuestIncorrect}</Text>
-        </View>
+        <Button
+          title = {nivelComplet}
+          type = 'outline'
+          titleStyle = {{color:'black', fontFamily:'sans-serif-condensed', fontSize:25}}
+          buttonStyle = {{borderColor:'white', borderWidth:2, width:200, alignSelf:'center'}}
+        />
+        <Text>{"\n"}</Text>
+        
+        <Button
+          title = {incorComplet}
+          type = 'outline'
+          titleStyle = {{color:'black', fontFamily:'sans-serif-condensed', fontSize:25}}
+          buttonStyle = {{borderColor:'white', borderWidth:2, width:200, alignSelf:'center'}}
+        />
 
       </View>
     );
@@ -160,24 +181,28 @@ const styles = StyleSheet.create({
     borderRadius: 500
   },
   welcome: {
-    fontSize: 20,
+    fontSize: 25,
     textAlign: "center",
+    fontFamily:'sans-serif-condensed',
     margin: 10
   },
-
   nivel: {
     fontSize: 40,
     textAlign: "right",
+    fontFamily:'sans-serif-condensed',
     margin: 15,
     color: "black"
   },
-
-  input: {
-    margin: 15,
-    height: 40,
-    padding: 5,
-    fontSize: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: "black"
-  }
+  buttonQuestion: {
+    borderColor:'#445D56',
+    backgroundColor:'#C7E3DB',
+    borderWidth:2, 
+    alignSelf:'center',
+  },
+  buttonOptions: {
+    backgroundColor:'black',
+    alignSelf:'center',
+    borderWidth:2,
+    borderColor:'#C7E3DB',
+  },
 });

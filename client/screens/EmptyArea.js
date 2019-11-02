@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet, } from 'react-native';
+import { View, Text, StyleSheet, } from 'react-native';
+import {Button} from 'react-native-elements'; 
 
 export default class EmptyArea extends React.Component {
     static navigationOptions = {
@@ -12,24 +13,24 @@ export default class EmptyArea extends React.Component {
 
     render() {
         return (
-            <View>
+            <View style={styles.container}>
                 <View>
-                    <Text style={styles.welcome}> El area seleccionada no contiene mas preguntas para responder </Text>
+                    <Text style={styles.welcome}> No hay mas preguntas en el area </Text>
                 </View>
 
                 <Text style={styles.espacio}> {"\n"}</Text>
 
                 <View>
-                    <Text style={styles.welcome}> Elegí otra area para jugar</Text>
+                    <Text style={styles.welcome}> Cambia de area para seguir jugando </Text>
                 </View>
 
-                <Text style={styles.espacio}> {"\n"}</Text>
+                <Text>{"\n"}</Text>
 
-                <View style={styles.getStartedContainer}>
+                <View>
                     <Button
-                        onPress={() => this.props.navigation.navigate('Play')} style={styles.logout}
-                        title="--- ir a play ---"
-                        color="black"
+                        onPress={() => this.props.navigation.navigate('Play')}
+                        title="VOLVER"
+                        buttonStyle = {{backgroundColor:'black'}}
                     />
                 </View>          
             </View>
@@ -43,9 +44,10 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         backgroundColor: '#30A9AC',
+        borderRadius: 500,
     },
     welcome: {
-        fontSize: 35,
+        fontSize: 30,
         textAlign: 'center',
         margin: 10,
     },
@@ -56,11 +58,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
         borderBottomWidth: 1,
         borderBottomColor: 'black'
-    },
-    logout: {
-        fontSize: 14,
-        color: 'black',
-        textAlign: 'right',
     },
     getStartedContainer: {
         alignItems: 'center',

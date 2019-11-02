@@ -1,6 +1,7 @@
 import { API_HOST } from 'react-native-dotenv';
 import React from 'react';
-import { AsyncStorage, View, Text, Button, StyleSheet } from 'react-native';
+import { AsyncStorage, View, Text, StyleSheet, Image } from 'react-native';
+import {Button} from 'react-native-elements';
 import axios from 'axios';
 
 export default class CompletArea extends React.Component {
@@ -15,31 +16,42 @@ export default class CompletArea extends React.Component {
     render() {
         const { navigation } = this.props;
         const area = navigation.getParam('areaId', 'NO-ID');
+        const feli = "¡¡Felicitaciones!!";
         return (
-            <View>
+            <View style = {styles.container}>
                 <View>
-                    <Text style={styles.welcome}> ¡¡¡Felicitaciones!!! </Text>
-                </View>
-
-                <Text style={styles.espacio}> {"\n"}</Text>
-
-                <View>
-                    <Text style={styles.welcome}> Area {area} Desbloqueada¡¡¡</Text>
-                </View>
-
-                <Text style={styles.espacio}> {"\n"}</Text>
-
-                <View>
-                    <Text style={styles.welcome}> Elegí otra para jugar</Text>
-                </View>
-
-                <Text style={styles.espacio}> {"\n"}</Text>
-
-                <View style={styles.getStartedContainer}>
                     <Button
-                        onPress={this.salvarArea} style={styles.logout}
-                        title="--- ir a play ---"
-                        color="black"
+                        title = {feli}
+                        type = 'outline'
+                        titleStyle = {{color:'black', fontSize:35, fontFamily:'sans-serif-condensed'}}
+                        buttonStyle = {{borderColor:'#445D56', backgroundColor:'#C7E3DB', borderWidth:2, alignSelf:'center'}}
+                    />
+                </View>
+
+                <Text style={styles.welcome}> Has completado esta área del juego</Text>
+
+                <Text style={styles.welcome}> Elegí otra para seguir jugando</Text>
+
+                <View>
+                    <View style={styles.welcomeContainer}>
+                        <Image
+                            source={
+                                __DEV__
+                                ? require("../assets/images/vaca.jpg")
+                                : require("../assets/images/robot-prod.png")
+                            }
+                            style={styles.welcomeImage}
+                        />
+                    </View>
+                </View>
+
+                <Text style={styles.espacio}> {"\n"}</Text>
+
+                <View>
+                    <Button
+                        onPress={this.salvarArea}
+                        title="VOLVER"
+                        buttonStyle = {{backgroundColor:'black', width:150, alignSelf:'center'}}
                     />
                 </View>
             </View>
@@ -73,11 +85,25 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         backgroundColor: '#30A9AC',
+        borderRadius: 500,
     },
     welcome: {
         fontSize: 35,
         textAlign: 'center',
+        fontFamily: 'sans-serif-condensed',
         margin: 10,
+    },
+    welcomeImage: {
+        width: 150,
+        height: 150,
+        resizeMode: 'contain',
+        marginTop: 3,
+        marginLeft: -10,
+    },
+    welcomeContainer: {
+        alignItems: 'center',
+        marginTop: 20,
+        marginBottom: 20,
     },
     input: {
         margin: 15,

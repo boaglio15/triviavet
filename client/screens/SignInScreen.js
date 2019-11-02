@@ -1,6 +1,7 @@
 import { API_HOST } from 'react-native-dotenv';
 import React from 'react';
-import { AsyncStorage, View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { AsyncStorage, View, Text, TextInput, StyleSheet } from 'react-native';
+import {Button} from 'react-native-elements';
 import axios from 'axios';
 
 export default class SignInScreen extends React.Component {
@@ -38,12 +39,12 @@ export default class SignInScreen extends React.Component {
           />
 
           <View style={styles.button}>
-            <Button title="INGRESAR" onPress={this._signIn} color="black"/>
+            <Button title="INGRESAR" onPress={this._signIn} buttonStyle = {{backgroundColor:'black'}}/>
             <Text style={styles.espacio}> {"\n"}</Text>
           </View>
 
           <View style={styles.button}>
-            <Button title="REGISTRATE" onPress={this.registrar} color="black"/>
+            <Button title="REGISTRATE" onPress={this.registrar} buttonStyle = {{backgroundColor:'black'}}/>
             <Text style={styles.espacio}> {"\n"}</Text>
           </View>
 

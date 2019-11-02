@@ -1,6 +1,7 @@
 import { API_HOST } from "react-native-dotenv";
 import React from "react";
-import { AsyncStorage, View, Text, Button, StyleSheet } from "react-native";
+import { AsyncStorage, View, Text, StyleSheet } from "react-native";
+import {Button} from 'react-native-elements';
 import axios from "axios";
 
 export default class StatAreaComplet extends React.Component {
@@ -16,19 +17,37 @@ export default class StatAreaComplet extends React.Component {
   render() {
         const { navigation } = this.props;
         const correctas = navigation.getParam("cantCorrectas", "NO-ID");
+        var correctasString = "Correctas =";
+        const cantCorrec = correctasString.concat(" ", correctas);
         const incorrectas = navigation.getParam("cantIncorrectas", "NO-ID");
+        var incorString = "Incorrectas =";
+        const cantIncorr = incorString.concat(" ", incorrectas);
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}> Esta area está completa </Text>
+        <Text style={styles.felicitaciones}>¡FELICITACIONES!</Text>
+        <Text style={styles.welcome}> ÁREA COMPLETADA </Text>
+        <Text style={styles.welcome}>Estos son tus resultados:</Text>
 
-        <Text> La cantidad de correctas {correctas} </Text>
-        <Text> La cantidad de incorrectas {incorrectas} </Text>
+        <Button
+          title = {cantCorrec}
+          titleStyle = {{color:'black', fontSize:20}}
+          type = 'outline'
+          buttonStyle = {{borderColor:'green', borderWidth:2, width:200, alignSelf:'center'}}
+        />
+        <Text>{"\n"}</Text>
+        
+        <Button
+          title = {cantIncorr}
+          titleStyle = {{color:'black', fontSize:20}}
+          type = 'outline'
+          buttonStyle = {{borderColor:'red', borderWidth:2, width:200, alignSelf:'center'}}
+        />
 
         <View style = {styles.button}>
           <Button
             onPress = {() => this.props.navigation.goBack()}
-            title = "volver"
-            color = "black"
+            title = "VOLVER"
+            buttonStyle = {{backgroundColor:'black', width:100, alignSelf:'center'}}
           />
         </View>
       </View>
@@ -40,12 +59,20 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
       justifyContent: "center",
-      backgroundColor: "#30A9AC"
+      backgroundColor: "#30A9AC",
+      borderRadius:500,
     },
     welcome: {
       fontSize: 25,
+      fontFamily: 'sans-serif-condensed',
       textAlign: "center",
       margin: 30
+    },
+    felicitaciones: {
+      fontSize: 35,
+      fontFamily: 'sans-serif-condensed',
+      textAlign: "center",
+      margin: 30,      
     },
     input: {
       margin: 15,
