@@ -1,12 +1,25 @@
 <!DOCTYPE html>
 <html>
+<head>
+    <title>Crear Pregunta</title>
+    <link rel = "stylesheet" type = "text/css" href = "/css/estilos.css">
+</head>
 <body>
-    <p> Cargar una nueva pregunta </p>
+    <header>
+        <div>
+            <img src = "/imagenes/loogo.png" width = "150" alt = "Logotipo">
+        </div>
+    </header>
+
     <form id="formQuestion" action="/admin/procesaQuestion" method="POST">
-        Seleccione el area en donde ira la pregunta:<br>
-        <input type="radio" name="area" value= "1" checked> Area 1<br>
-        <input type="radio" name="area" value= "2" checked> Area 2<br>
-        <input type="radio" name="area" value= "3" checked> Area 3<br>
+        <h2>Seleccione el area en donde irá la pregunta:</h2>
+        <br>
+        <input type="radio" name="area" value= "1" checked>Examen Clínico<br>
+        <input type="radio" name="area" value= "2" checked>Farmacología y Terapéutica<br>
+        <input type="radio" name="area" value= "3" checked>Enferm. Infecciosas y Parasitarias<br>
+        <input type="radio" name="area" value= "4" checked>Clínica Médica<br>
+        <input type="radio" name="area" value= "5" checked>Clínica Quirúrgica<br>
+        <input type="radio" name="area" value= "6" checked>Manejo Poblacional<br>
         Pregunta: <br>
         <input type="text" name="preg" required> <br>
         Respuesta Correcta: <br>

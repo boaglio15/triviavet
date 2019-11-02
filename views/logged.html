@@ -1,12 +1,31 @@
 <!DOCTYPE html>
 <html>
+<head>
+	<title>Pagina Pricipal</title>
+	<link rel = "stylesheet" type = "text/css" href = "/css/estilos.css">
+</head>
 <body>
-    <h4>Bienvenido a la web de TriviVet </h4>
-    <h4>{{msg}}</h4>
-    <a href="/admin/question" role ="button" type="button" class ="btn btn-primary">Cargar pregunta</a><br>
-    <a href="/admin/modQuestion" role="button" type="button"> Modificar Pregunta</a><br>
-    <a href="/admin/stat"><input class="btn btn-primary" type="button" value="ESTADISTICA"></a>
+	<header>
+		<div>
+			<img src = "/imagenes/loogo.png" width = "150" alt = "Logotipo">
+		</div>
+	</header>
 
+	<div class = "main">
+		<form>
+			<br/>
+			<input type="button" onclick=" location.href='/admin/question' " value="Cargar Preguntas" name="boton" class="btn btn-primary" />
+			<br/>
+			<br/>
+			<input type="button" onclick=" location.href='/admin/modQuestion' " value="Modificar Preguntas" name="boton" />
+			<br/>
+			<br/>
+			<input type="button" onclick=" location.href='/admin/stat' " value="Estadistica" name="boton" class="btn btn-primary" />
+			<br/>
+			<br/>
+			<input type="button" onclick=" location.href='/admin/loginWeb' " value="Salir" name="boton" />
+		</form>
+	</div>
 
 </body>
 </html>

@@ -1,23 +1,55 @@
 body {
-	color: white;
-	background: url(../imagenes/sfondi-background-watercolor-arte-mediajob.eu-annuncisubito.eu-12.jpg);
-	background-repeat: no-repeat;
+	color: black;
+	background: url(../imagenes/pngtree-solid-color-matte-background-blue-gradient-wind-background-color-mattesolid-backgroundblue-image_84871.jpg);
+	background-size: 100% 100%;
 	background-position: center;
 }
+
+.formQuestion {
+	width: 40%;
+	border: 3px solid #000000;
+	margin: auto;
+	text-align: center;
+}
+
 .main {
-	height: 370px;
+	width: 40%;
+	margin: auto;
+	text-align: center;
+}
+
+.p {
+	width: 25%;
+	border: 3px solid #000000;
+	margin: auto;
+	text-align: center;
+}
+
+.main2 {
+	width: 25%;
+	margin: auto;
+	padding: 10px;
+	text-align: center;
+}
+
+.container {
+	width: 30%;
+	margin: auto;
+	text-align: center;
+	border: 3px solid #000000;
 }
 
 form {
-	width: 25%;
-	border: 1px solid #ccc;
+	width: 60%;
 	margin: auto;
 	padding: 10px;
+	border: 3px solid #000000;
+	text-align: center;
+	font-family: sans-serif;
 }
 
 input {
 	margin-bottom: 20px;
-	width: 100%;
 	padding: 5px;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
@@ -25,17 +57,12 @@ input {
 }
 
 input[type = "button"]:hover {
-	background: #a36dca;
+	background: #c7e3db;
 	cursor: pointer;
 }
 
-footer {
-	background: black;
-	width: 85%;
-	margin: auto;
-}
-
 form div {
-	background: black;
 	padding-top: .1px;
+	text-align: center;
+	font-family: sans-serif;
 }

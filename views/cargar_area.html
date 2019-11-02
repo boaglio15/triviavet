@@ -1,26 +1,30 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
- <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-  <link rel="stylesheet" href="css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="css/Login.css">
-  <link rel="stylesheet" type="text/css" href="css/nuevo.css">
+  <title>Estadistica</title>
+  <link rel = "stylesheet" type = "text/css" href = "/css/estilos.css">
 </head>
-
 <body>
-<p> seleccione un area para ver sus estadisticas </p>
+  <header>
+    <div>
+      <img src = "/imagenes/loogo.png" width = "150" alt = "Logotipo">
+    </div>
+  </header>
+
+  <div class="main">
     <form id="formModQuestion" action="/admin/procesaShowQuestInArea" method="GET">
-        <input type="radio" name="areaId" value= "1" checked> Area 1<br>
-        <input type="radio" name="areaId" value= "2" checked> Area 2<br>
-        <input type="radio" name="areaId" value= "3" checked> Area 3<br><br>
-        <button id="guardar" type="submit" >seleccionar</button>
+      <h2>Seleccione el area</h2>
+      <br/>
+      <input type="radio" name="area" value= "1" checked>Examen Clínico<br>
+      <input type="radio" name="area" value= "2" checked>Farmacología y Terapéutica<br>
+      <input type="radio" name="area" value= "3" checked>Enferm. Infecciosas y Parasitarias<br>
+      <input type="radio" name="area" value= "4" checked>Clínica Médica<br>
+      <input type="radio" name="area" value= "5" checked>Clínica Quirúrgica<br>
+      <input type="radio" name="area" value= "6" checked>Manejo Poblacional<br>
+      <br>
+      <br/>
+      <button id="guardar" type="submit">Seleccionar</button>
     </form>
+  </div>
 </body>
-
 </html>
-
-

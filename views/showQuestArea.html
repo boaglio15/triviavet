@@ -1,55 +1,45 @@
 <!DOCTYPE html>
 <html>
-	<head>
-
+<head>
+    <title>Estadisticas</title>
+    <link rel = "stylesheet" type = "text/css" href = "/css/estilos.css">
+</head>
 <body>
-
+    <header>
+        <div>
+            <img src = "/imagenes/loogo.png" width = "150" alt = "Logotipo">
+        </div>
+    </header>
+    <form>
 	<div class="container">
-
-		
 		{{#areaId}}
-		<h4> PREGUNTAS HECHAS EN EL AREA {{areaId}} </h4>
+		<h3> PREGUNTAS HECHAS EN EL AREA {{areaId}} </h3>
 		{{/areaId}}
 		<div class="card card-container">
-			
 			{{#pregTotArea}}
-                        
                             <h4> cantidad total de preguntas realizadas: {{pregTotArea}} </h4>
-
 			{{/pregTotArea}}
 
 			{{#pregCorrectArea}}
-                        
                             <h4> cant de preg correctas: {{pregCorrectArea}} </h4>
-			
                         {{/pregCorrectArea}}
 
 			{{#pregIncorrectArea}}
-                        
                             <h4> cant de preg incorrect: {{pregIncorrectArea}}</h4>
-			
                         {{/pregIncorrectArea}}
 
 			{{^error}}
-				
                             <h4>{{error}}</h4>
-				
 			{{/error}}
 	
 			<form class="form-play" method="get">
 				
 				{{#areaId}}
-                                    <a href="/admin/procesaShowQuestCorrectArea?areaId={{areaId}}"><input class="btn btn-primary" type="button" value="listar preguntas correctas"></a>
-                                    <a href="/admin/procesaShowQuestIncorrectArea?areaId={{areaId}}"><input class="btn btn-primary" type="button" value="listar preguntas incorrectas"></a>
+                                    <a href="/admin/procesaShowQuestCorrectArea?areaId={{areaId}}" style="color:#ffffff;"><input class="btn btn-primary" type="button" value="listar preguntas correctas"></a>
+                                    <a href="/admin/procesaShowQuestIncorrectArea?areaId={{areaId}}" style="color:#ffffff;"><input class="btn btn-primary" type="button" value="listar preguntas incorrectas"></a>
 				{{/areaId}}
-				
 			</form>
-
-		
-
 	</div>
-
-	<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
+	</form>
 </body>
 </html>

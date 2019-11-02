@@ -1,40 +1,41 @@
 <!DOCTYPE html>
 <html>
-
-    <body>
+<head>
+    <title>Estadisticas</title>
+    <link rel = "stylesheet" type = "text/css" href = "/css/estilos.css">
+</head>
+<body>
+    <header>
+        <div>
+            <img src = "/imagenes/loogo.png" width = "150" alt = "Logotipo">
+        </div>
+    </header>
 
         <div class="container">
-
-            <h4> PREGUNTAS INCORRECTAS HECHAS EN EL AREA SELECCIONADA </h4>
-
+            <h3> PREGUNTAS CONTESTADAS INCORRECTAMENTE </h3>
             <div class="card card-container">
-
                 <table class="idTable">
                     <tr>
                         <th class="columna"> #</th>
-                        <th class="columna"> pregunta </th>
-                        <th class = "columna"> veces que fue contestada en forma incorrecta </th>
+                        <th class="columna"> Pregunta </th>
+                        <th class = "columna"> Cantidad </th>
                     </tr>
 
                     {{#listMapQuestIncorrectArea}}
                     <tr>          
                         <td class="fila"> 
-                            <a href="/admin/procesaNvpia?areaId={{areaId}}&pregId={{id}}" type="button" value={{id}}>
+                            <a style="color:black;" value={{id}}>
                                 {{id}}
                             </a>
-                              </td>
+                        </td>
                         <td class="fila"> {{preg}} </td>
                         <td class = "fila"> {{nvpia}} </td>
                     </tr>
                     {{/listMapQuestIncorrectArea}}
 
-                </table>
-                
+                </table>   
             </div>
-
         </div>
-
-        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
+        </script>
     </body>
 </html>
