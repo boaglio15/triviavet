@@ -1,6 +1,6 @@
 import {API_HOST} from 'react-native-dotenv';
 import React from 'react';
-import {AsyncStorage, View, Text, StyleSheet } from 'react-native';
+import {AsyncStorage, View, Text, StyleSheet, Image } from 'react-native';
 import {Button} from 'react-native-elements';
 import axios from 'axios';
 
@@ -14,11 +14,28 @@ export default class LostArea extends React.Component {
     }
 
     render() {
+        const perdi = "¡PERDISTE!"
         return (
             <View style={styles.container}>
-                <Text style={styles.welcome}> ¡PERDISTE! </Text>
+                <View>
+                    <Button
+                        title = {perdi}
+                        type = 'outline'
+                        titleStyle = {{color:'black', fontSize:35, fontFamily:'sans-serif-condensed'}}
+                        buttonStyle = {{borderColor:'#445D56', backgroundColor:'#C7E3DB', borderWidth:2, alignSelf:'center'}}
+                    />
+                </View>
                 <Text style={styles.welcome}> Mejor vuelve a intentarlo</Text>
-                <Text style={styles.welcome}>Volvé y elegí otra área o la misma para seguir jugando</Text>
+                <View style={styles.welcomeContainer}>
+                    <Image
+                        source={
+                            __DEV__
+                            ? require('../assets/images/cavallo.png')
+                            : require('../assets/images/robot-prod.png')
+                        }
+                        style={styles.welcomeImage}
+                    />
+                </View>
 
                 <Text>{"\n"}</Text>
 
@@ -57,6 +74,18 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontFamily: 'sans-serif-condensed',
         margin: 10,
+    },
+    welcomeContainer: {
+        alignItems: 'center',
+        marginTop: 10,
+        marginBottom: 10,
+    },
+    welcomeImage: {
+        width: 200,
+        height: 200,
+        resizeMode: 'contain',
+        marginTop: 3,
+        marginLeft: -10,
     },
     input: {
         margin: 15,
