@@ -102,7 +102,7 @@ export default class Registration extends React.Component {
                     alert("error");
                     return;
                 }
-                alert("Networking Error");
+                //alert("Networking Error");
             });
             this.props.navigation.navigate('Auth');
     };

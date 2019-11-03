@@ -150,8 +150,7 @@ correctaOIncorrecta = () => {
             style={styles.welcomeImage}
           />
         </View>
-        <Text style = {styles.welcome}>¡Felicidades!</Text>
-        <Text style = {styles.welcome}>Respuesta Correcta</Text>
+        <Text style = {styles.welcome}>¡Correcto!</Text>
       </View>
     );
   } else {
@@ -167,7 +166,7 @@ correctaOIncorrecta = () => {
             style={styles.welcomeImage}
           />
         </View>
-        <Text style={styles.welcome}>Incorrecto !</Text>
+        <Text style={styles.welcome}>¡Incorrecto!</Text>
         <Text style = {styles.welcome}> La correcta es:</Text>
         <Text style = {styles.welcome}>{respCorrect}</Text>
       </View>
@@ -204,12 +203,12 @@ const styles = StyleSheet.create({
 
   welcomeContainer: {
     alignItems: 'center',
-    marginTop: 20,
-    marginBottom: 20,
+    marginTop: 5,
+    marginBottom: 5,
   },
   welcomeImage: {
-    width: 150,
-    height: 150,
+    width: 250,
+    height: 250,
     resizeMode: 'contain',
     marginTop: 3,
     marginLeft: -10,
