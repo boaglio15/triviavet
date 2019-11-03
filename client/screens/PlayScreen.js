@@ -99,8 +99,11 @@ export default class PlayScreen extends React.Component {
         } else {
           if (areaComplet == 1) {
             //caso area jugada y completada
+            console.log("AREA COMPLETADA " + areaComplet);
+
             return this.props.navigation.navigate("AreaCompletada", {
-              areaId: area
+              areaId: area,
+              areaComplet: areaComplet
             });
           } else {
             //caso area en juego

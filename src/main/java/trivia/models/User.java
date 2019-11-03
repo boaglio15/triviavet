@@ -108,4 +108,17 @@ public class User extends Model {
             return ((Integer) l.get(0).getId());
         return -2; //No coincide el password.
     }
+    
+ 
+    public static boolean validUser(String dni, String password){
+    List<User> user = User.where("dni = ? and pass = ? ", dni, password);
+    return user.size()==1;
+  }
+    
+  
+  public boolean isAdmin(){
+    return (this.getTipoUser() == 1);
+  }
+
+    
 }

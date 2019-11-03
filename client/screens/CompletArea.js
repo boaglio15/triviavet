@@ -37,7 +37,7 @@ export default class CompletArea extends React.Component {
                         <Image
                             source={
                                 __DEV__
-                                ? require("../assets/images/vaca.jpg")
+                                ? require("../assets/images/vaca.png")
                                 : require("../assets/images/robot-prod.png")
                             }
                             style={styles.welcomeImage}
@@ -62,11 +62,13 @@ export default class CompletArea extends React.Component {
         const { navigation } = this.props;
         const area = navigation.getParam('areaId', 'NO-ID');
         const areaComplet = navigation.getParam('areaComplet', 'NO-ID');
-           
+        
+        console.log("AREA COMPLETADA " + areaComplet);
+
         axios.post(API_HOST + "exit", {
             areaId: area,
             completada: areaComplet,
-            nivel: 3,                                       //si completo el area el nivel es 3
+            nivel: 3,               //si completo el area esta en el nivel es 3
         },
             {
                 headers: { 'Authorization': await AsyncStorage.getItem('userToken') }

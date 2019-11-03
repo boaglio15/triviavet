@@ -8,12 +8,14 @@ import java.util.*;
 import org.javalite.activejdbc.Base;
 import trivia.models.*;
 
+
+
 import spark.template.mustache.MustacheTemplateEngine;
 import spark.ModelAndView;
 import trivia.controllers.*;
 
 public class App {
-
+    private static final String sessionName = "xxx";
 
     static User currentUser;
     static String ide;
@@ -26,6 +28,8 @@ public class App {
     static int cantPregCorrect;
     static int cantPregIncorrect;
     static int indexPregHechas; // indica cuantas preg tenia hechas el jugador en partidas anteriores
+    
+    
 
     public static void main(String[] args) {
     	staticFiles.location("/public");
@@ -195,47 +199,64 @@ public class App {
 	            res.type("application/json");           
 	            Map m = Stat.getStatPlayArea(ide, req.params(":areaId")); 
 	            return new Gson().toJson(m);
-	        });	        	        	       	       
+	        });	  
+
+            put("/reset", (req, res) -> {
+                res.type("application/json");  
+                Map<String, Object> bodyParams = new Gson().fromJson(req.body(), Map.class);
+                pregEnArea.clear();//reset de todas las listas y variables
+	            pregHechas.clear();
+	            respHechasCorIncor.clear();
+	            cantPregCorrect = 0;
+	            cantPregIncorrect = 0;
+	            indexPregHechas = 0;
+                
+                System.out.println("PREG EN AREA " + pregEnArea);
+	            System.out.println("PREG HECHAS " + pregHechas);
+	            System.out.println("TIPO RESP HECHAS " + respHechasCorIncor);
+	            System.out.println("CANT PREG CORRECT " + cantPregCorrect);
+                return new Gson().toJson(true);
+            });
     	});
     	//--------------------FIN GAME----------------------//    
 	        	        
-    	//---------------MUSTACHE--------------------//	        
-	
-	    
+    	//---------------MUSTACHE--------------------//	  
+        
+        
+        get("/", (req, res) -> new ModelAndView(new HashMap(), "./views/home.html"), new MustacheTemplateEngine());
+        
+        get("/login", (req, res) -> UserControllers.login(req, res, sessionName), new MustacheTemplateEngine());
+        
+                
 	    path("/admin", () -> {
 	        
-	    	before("/*", (req, res) ->{
-	        	Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/trivia?nullNamePatternMatchesAll=true", "root", "root");
-	        	//Base.open();
-	        });
-	
-	        after("/*", (req,res) ->{
-	        	Base.close();
-	        });
-	       
-	
-	        Map map = new HashMap();
-	        map.put("nerror","");
-	        //entra por browse con /loginWeb y pasa a la viste flogin.mustache
-	        get("/loginWeb", (rq, rs) -> new ModelAndView(map, "./views/flogin.mustache"), new MustacheTemplateEngine());
-	        
-	        //entra por flogin.mustache y pasa a respuesta_login.mustache
-	        get("/procesaLoginWeb", UserControllers::procesaLoginWeb, new MustacheTemplateEngine());
-	
-	        //entra por browse con /stat y pasa a la vista cargarArea.mustache
+	        before("/*", (req, res) -> {
+                Base.open();
+            });
+
+            after("/*", (req, res) -> {
+                Base.close();
+            });
+            
+            Map map = new HashMap();
+            map.put("error", "");
+                     
+            get("/procesaLoginWeb", (req, res) -> UserControllers.procesaLoginWeb(req, res, sessionName), new MustacheTemplateEngine());
+            
+            get("/logout", (req, res) -> UserControllers.logout(req, res, sessionName));
+            
+            
+            
 	        get("/stat", (rq, rs) -> new ModelAndView(map, "./views/cargar_area.html"), new MustacheTemplateEngine());
 	
 			get("/procesaShowQuestInArea", StatControllers::procesaShowQuestInArea, new MustacheTemplateEngine());
 
 			get("/procesaShowQuestCorrectArea", StatControllers::procesaShowQuestCorrectArea, new MustacheTemplateEngine());
-            
-            //get("/procesaNvpca", StatControllers::procesaNvpca, new MustacheTemplateEngine());
-			
+            		
 			get("/procesaShowQuestIncorrectArea", StatControllers::procesaShowQuestIncorrectArea, new MustacheTemplateEngine());
 
-           // get("/procesaNvpia", StatControllers::procesaNvpia, new MustacheTemplateEngine());
 			
-			//carga la vista question.html
+            //carga la vista question.html
 			get("/question", (req, res) -> {
 				return new ModelAndView(map, "./views/question.html");
 			}, new MustacheTemplateEngine()

@@ -1,6 +1,8 @@
+import {API_HOST} from 'react-native-dotenv';
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import {AsyncStorage, View, Text, StyleSheet } from 'react-native';
 import {Button} from 'react-native-elements';
+import axios from 'axios';
 
 export default class LostArea extends React.Component {
     static navigationOptions = {
@@ -21,12 +23,25 @@ export default class LostArea extends React.Component {
                 <Text>{"\n"}</Text>
 
                 <Button
-                    onPress = {() => this.props.navigation.navigate('Play')} style={styles.logout}
+                    onPress = {this.resetArea}
                     title = "VOLVER"
-                    buttonStyle = {{backgroundColor:'black', width:20, alignSelf:'center'}}
+                    buttonStyle = {{backgroundColor:'black', width:150, alignSelf:'center'}}
                 />                
             </View>
         );
+    }
+
+    resetArea = async () => {
+        axios.put(API_HOST + "reset",{},
+        {
+            headers:  { 'Authorization': await AsyncStorage.getItem('userToken') }
+        }
+        )   
+        .then(response => JSON.parse(JSON.stringify(response)))
+        .then(response => {
+            AsyncStorage.setItem('userToken', response.config.headers.Authorization);
+        })
+    this.props.navigation.navigate('Play');
     }
 }
 

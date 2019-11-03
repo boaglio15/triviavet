@@ -158,7 +158,12 @@ export default class QuestionsSreens extends React.Component {
     const areaSinPreg = navigation.getParam("areaSinPreg", "No-ID");
     const cantQuestIncorrect = navigation.getParam("cantQuestIncorrect","NO-ID");
 
-    //envia datos al componente AnswersSreens (navigation machea Answer con AnswersSreens)
+    console.log("preguntas incorrectas " + cantQuestIncorrect);
+
+    if (cantQuestIncorrect == 4) { //puede setearse la cant de preg incorrectas para perder
+      this.props.navigation.navigate("AreaPerdida"); //cantQuestIncorrect se inicializa en 0
+    } else {
+      //envia datos al componente AnswersSreens (navigation machea Answer con AnswersSreens)
     this.props.navigation.navigate("Answer", {
       areaId: area,
       tipo: tipo,
@@ -167,7 +172,8 @@ export default class QuestionsSreens extends React.Component {
       areaComplet: areaComplet,
       areaSinPreg: areaSinPreg,
       cantQuestIncorrect: cantQuestIncorrect
-    }); //envia parametros a la sig vista  }
+    }); 
+    }
   };
 
 }

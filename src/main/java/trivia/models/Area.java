@@ -3,8 +3,6 @@ package trivia.models;
 import org.javalite.activejdbc.Model;
 import java.util.*;
 
-import com.fasterxml.jackson.databind.type.PlaceholderForType;
-
 public class Area extends Model {
 
     private int nomArea;

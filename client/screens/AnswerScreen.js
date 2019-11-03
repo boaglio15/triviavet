@@ -77,17 +77,18 @@ export default class AnswerScreen extends React.Component {
       .then(response => {
         const areaComplet = response.data.areaComplet;
         const areaSinPreg = response.data.areaSinPreg;
+        
         if (areaSinPreg == 1) {
           //caso area sin preguntas para hacer
           this.props.navigation.navigate("AreaSinPreguntas");
         } else {
           if (areaComplet == 1) {
             //caso area jugada y completada
-            return this.props.navigation.navigate("AreaCompletada", {
+             this.props.navigation.navigate("AreaCompletada", {
               areaId: area,
               areaComplet: areaComplet
             });
-          } else { //caso area en juego
+          } else { //caso area en juego 
           const questId = response.data.id;
           const quest = response.data.preg;
           const answ1 = response.data.resp1;
@@ -130,13 +131,6 @@ export default class AnswerScreen extends React.Component {
       })
   }
 
-  perdio = () => {
-    const {navigation} = this.props;
-    const cantQuestIncorrect = navigation.getParam("cantQuestIncorrect", "NO-ID");
-    if (cantQuestIncorrect >= 1) {
-        return this.props.navigation.navigate("AreaPerdida");
-    }
-  }
 
 //det si la respuesta seleccionada es corecta o no y si pierde muestra la resp correcta
 correctaOIncorrecta = () => {
