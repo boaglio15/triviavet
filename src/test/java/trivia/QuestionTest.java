@@ -13,7 +13,7 @@ public class QuestionTest {
 	
 	@Before
 	public void before(){
-    	Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/trivia_test", "admin", "password");
+    	Base.open("com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/trivia_test", "root", "root");
     	System.out.println("QuestionTest setup");
     	Base.openTransaction();
   	}

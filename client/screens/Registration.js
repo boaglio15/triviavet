@@ -1,7 +1,8 @@
 import { API_HOST } from 'react-native-dotenv';
 import React from 'react';
-import { AsyncStorage, View, Text, TextInput, Button, StyleSheet, ScrollView, KeyboardAvoidingView
+import { AsyncStorage, View, Text, TextInput, StyleSheet, ScrollView, KeyboardAvoidingView
 } from 'react-native';
+import {Button} from 'react-native-elements';
 import axios from 'axios';
 
 export default class Registration extends React.Component {
@@ -55,11 +56,16 @@ export default class Registration extends React.Component {
                         value={this.state.pass}
                     />
                     <View style={styles.button}>
-                        <Button title="registrar!" onPress={this.registration} color="black"/>
+                        <Button title="Registrar!" 
+                            onPress={this.registration} 
+                            buttonStyle = {{backgroundColor:'black', width:100}}
+                        />
                     </View>
 
                     <View style={styles.button}>
-                        <Button title="Volver" onPress={this.backLogin} color="black"/>
+                        <Button title="VOLVER" 
+                        onPress={this.backLogin} 
+                        buttonStyle = {{backgroundColor:'black', width:100}}/>
                     </View>
                 </View>
         );
@@ -96,7 +102,7 @@ export default class Registration extends React.Component {
                     alert("error");
                     return;
                 }
-                alert("Networking Error");
+                //alert("Networking Error");
             });
             this.props.navigation.navigate('Auth');
     };

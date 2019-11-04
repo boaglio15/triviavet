@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Modificar Pregunta</title>
+    <link rel="stylesheet" type="text/css" href="/css/estilos.css">
+</head>
+<body>
+    <header>
+        <div>
+            <img src="/imagenes/loogo.png" width="150" alt="Logotipo">
+        </div>
+    </header>
+    
+    <div id="p">
+        <h3>Se modificara la siguiente pregunta: </h3>
+        <p>{{question}}</p>
+        <h3>Respuesta correcta:</h3>
+        <p>{{correcta}}</p>
+        <h3>Respuestas incorrectas:</h3>
+        <p>{{incorrecta1}}</p>
+        <p>{{incorrecta2}}</p>
+        <p>{{incorrecta3}}<p>
+    </div>
+    
+    <div align="center">
+        <form id="formQuestion" action="/admin/mod?idQuest={{idQuest}}" method="POST">
+            Pregunta: <br>
+            <input type="text" name="preg" required> <br>
+            Respuesta Correcta: <br>
+            <input type="text" name="resp1" required><br>
+            Respuesta Incorrecta: <br>
+            <input type="text" name="resp2" required><br>
+            Respuesta Incorrecta: <br>
+            <input type="text" name="resp3" required><br>
+            Respuesta Incorrecta: <br>
+            <input type="text" name="resp4" required><br><br>
+            <p>
+                <input type="submit" value="Guardar Pregunta">
+                <input type="reset" value="Borrar">
+                <input type="button" onclick=" location.href='/admin/volver' " value="Volver a inicio" name="boton" />
+            </p>
+        </form>
+    </div>
+</body>
+</html>

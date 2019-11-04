@@ -1,6 +1,8 @@
 import { API_HOST } from "react-native-dotenv";
 import React from "react";
-import { AsyncStorage, View, Text, Button, StyleSheet } from "react-native";
+import { AsyncStorage, View, Text, StyleSheet } from "react-native";
+import {Button} from 'react-native-elements';
+import Icon from 'react-native-vector-icons/AntDesign';
 import axios from "axios";
 
 export default class StatAreaInPlay extends React.Component {
@@ -15,22 +17,63 @@ export default class StatAreaInPlay extends React.Component {
 
   render() {
         const { navigation } = this.props;
-        const correctas = navigation.getParam("cantCorrectas", "NO-ID");
-        const incorrectas = navigation.getParam("cantIncorrectas", "NO-ID");
-        const nivel = navigation.getParam("nivel", "NO-ID");
+        const correctas = navigation.getParam("cantCorrectas", "NO-ID").toString();
+        const incorrectas = navigation.getParam("cantIncorrectas", "NO-ID").toString();
+        const nivel = navigation.getParam("nivel", "NO-ID").toString();
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}> Estas en juego en esta area </Text>
 
-        <Text> La cantidad de correctas {correctas} </Text>
-        <Text> La cantidad de incorrectas {incorrectas} </Text>
-        <Text> El nivel actual es {nivel} </Text>
+        <Text style={styles.textStat}> Correctas</Text>
+        <Button
+          icon = {
+            <Icon
+              name = "checkcircleo"
+              color = "green"
+              size = {20}
+            />
+          }
+          title = {correctas}
+          titleStyle = {{color:'black', fontSize:20}}
+          type = 'outline'
+          buttonStyle = {{borderColor:'white', borderWidth:3, width:100, alignSelf:'center'}}
+        />
+        
+        <Text>{"\n"}</Text>
+        
+        <Text style={styles.textStat}> Incorrectas</Text>
+        <Button 
+          icon = {
+            <Icon
+              name = "closecircleo"
+              color = "red"
+              size = {20}
+              
+            />
+          }
+          title = {incorrectas}
+          titleStyle = {{color:'black', fontSize:20}}
+          type = "outline"
+          buttonStyle = {{borderColor:'white', borderWidth:3, width:100, alignSelf:'center'}}
+        />
 
-        <View style = {styles.button}>
+        <Text>{"\n"}</Text>
+
+        <Text style={styles.textStat}> Tu nivel actual </Text>
+        <Button
+          title = {nivel}
+          titleStyle = {{color:'black', fontSize:20}}
+          type = "outline"
+          buttonStyle = {{borderColor:'white', borderWidth:3, width:100, alignSelf:'center'}}
+        />
+
+
+        <Text>{"\n"}{"\n"}{"\n"}</Text>      
+        <View>
           <Button
             onPress = {() => this.props.navigation.goBack()}
-            title = "volver"
-            color = "black"
+            title = "VOLVER"
+            buttonStyle = {{backgroundColor:'black', width:150, alignSelf:'center'}}
           />
         </View>
       </View>
@@ -41,13 +84,19 @@ export default class StatAreaInPlay extends React.Component {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      justifyContent: "center",
-      backgroundColor: "#30A9AC"
+      backgroundColor: "#30A9AC",
+      borderRadius:500,
     },
     welcome: {
-      fontSize: 25,
+      fontSize: 35,
+      fontFamily: 'sans-serif-condensed',
       textAlign: "center",
       margin: 30
+    },
+    textStat: {
+      fontSize: 30,
+      fontFamily: 'sans-serif-condensed',
+      textAlign:'center',
     },
     input: {
       margin: 15,

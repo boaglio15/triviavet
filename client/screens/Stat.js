@@ -1,6 +1,7 @@
 import { API_HOST } from "react-native-dotenv";
 import React from "react";
-import { AsyncStorage, View, Text, Button, StyleSheet } from "react-native";
+import { AsyncStorage, View, Text, StyleSheet } from "react-native";
+import {Button} from 'react-native-elements';
 import axios from "axios";
 
 export default class Stat extends React.Component {
@@ -16,39 +17,74 @@ export default class Stat extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}> ESTADISTICAS POR AREA </Text>
+        <Text>{"\n"}</Text>
+        <Text style={styles.welcome}> Selecciona el area para ver tus estadisticas </Text>
 
-        <View style={styles.button}>
+        <View>
           <Button
             onPress={this.handleStatArea.bind(this, 1)}
-            title="Anatomia"
-            color="black"
+            title="Examen Clínico"
+            buttonStyle = {styles.buttonAreaStat}
           />
         </View>
 
-        <View style={styles.button}>
+        <Text>{"\n"}</Text>
+
+        <View>
           <Button
             onPress={this.handleStatArea.bind(this, 2)}
-            title="Genetica Basica"
-            color="black"
+            title="Farmacología y Terapéutica"
+            buttonStyle = {styles.buttonAreaStat}
           />
         </View>
 
-        <View style={styles.button}>
+        <Text>{"\n"}</Text>
+
+        <View>
           <Button
             onPress={this.handleStatArea.bind(this, 3)}
-            title="Inmunologia"
-            color="black"
+            title="Enferm. Infecciosas y Parasitarias"
+            buttonStyle = {styles.buttonAreaStat}
           />
         </View>
-        
-        <Text style={styles.espacio}> {"\n\n\n"}</Text>
 
-        <View style={styles.button}>
+        <Text>{"\n"}</Text>
+
+        <View>
+          <Button
+            onPress={this.handleStatArea.bind(this, 4)}
+            title="Clínica Médica"
+            buttonStyle = {styles.buttonAreaStat}
+          />
+        </View>
+
+        <Text>{"\n"}</Text>
+
+        <View>
+          <Button
+            onPress={this.handleStatArea.bind(this, 5)}
+            title="Clínica Quirúrgica"
+            buttonStyle = {styles.buttonAreaStat}
+          />
+        </View>
+
+        <Text>{"\n"}</Text>
+
+        <View>
+          <Button
+            onPress={this.handleStatArea.bind(this, 6)}
+            title="Manejo Poblacional"
+            buttonStyle = {styles.buttonAreaStat}
+          />
+        </View>
+
+        <Text>{"\n"}</Text>
+        
+        <View>
           <Button
             onPress = {() => this.props.navigation.goBack()}
-            title = "volver"
-            color = "black"
+            title = "VOLVER"
+            buttonStyle = {{backgroundColor:'black'}}
           />
         </View>
       </View>
@@ -100,22 +136,21 @@ export default class Stat extends React.Component {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      justifyContent: "center",
+      alignItems: "center",
       backgroundColor: "#30A9AC",
       borderRadius: 500
     },
     welcome: {
       fontSize: 25,
+      fontFamily: 'sans-serif-condensed',
       textAlign: "center",
       margin: 30
     },
-    input: {
-      margin: 15,
-      height: 40,
-      padding: 5,
-      fontSize: 16,
-      borderBottomWidth: 1,
-      borderBottomColor: "black"
+    buttonAreaStat: {
+      backgroundColor:'black',
+      width:270,
+      borderWidth:2,
+      borderColor:'#C7E3DB',
     },
     button: {
       marginTop: 20

@@ -1,6 +1,7 @@
 import { API_HOST } from 'react-native-dotenv';
 import React from 'react';
-import { AsyncStorage, View, Text, Button, StyleSheet, Image, } from 'react-native';
+import { AsyncStorage, View, Text, StyleSheet, Image, } from 'react-native';
+import {Button} from 'react-native-elements';
 import axios from 'axios';
 
 export default class AnswerScreen extends React.Component {
@@ -20,12 +21,22 @@ export default class AnswerScreen extends React.Component {
           
           <View>{this.correctaOIncorrecta()}</View>
 
-          <View style={styles.button}>
-            <Button onPress={this.nextQuestions} title="Siguiente pregunta" />
+          <View>
+            <Button 
+              onPress={this.nextQuestions} 
+              title="Siguiente pregunta"
+              buttonStyle={{backgroundColor: "black", width:200, alignSelf:'center'}} 
+            />
           </View>
 
-          <View style={styles.button}>
-          	<Button onPress={this.salvarPartida} title="SALVAR" />
+          <Text>{"\n"}</Text>
+
+          <View>
+            <Button 
+              onPress={this.salvarPartida}
+              title="SALVAR"
+              buttonStyle={{backgroundColor: "black", width:100, alignSelf:'center'}}
+            />
           </View>
         </View>
       );
@@ -66,17 +77,18 @@ export default class AnswerScreen extends React.Component {
       .then(response => {
         const areaComplet = response.data.areaComplet;
         const areaSinPreg = response.data.areaSinPreg;
+        
         if (areaSinPreg == 1) {
           //caso area sin preguntas para hacer
           this.props.navigation.navigate("AreaSinPreguntas");
         } else {
           if (areaComplet == 1) {
             //caso area jugada y completada
-            return this.props.navigation.navigate("AreaCompletada", {
+             this.props.navigation.navigate("AreaCompletada", {
               areaId: area,
               areaComplet: areaComplet
             });
-          } else { //caso area en juego
+          } else { //caso area en juego 
           const questId = response.data.id;
           const quest = response.data.preg;
           const answ1 = response.data.resp1;
@@ -119,18 +131,12 @@ export default class AnswerScreen extends React.Component {
       })
   }
 
-  perdio = () => {
-    const {navigation} = this.props;
-    const cantQuestIncorrect = navigation.getParam("cantQuestIncorrect", "NO-ID");
-    if (cantQuestIncorrect >= 1) {
-        return this.props.navigation.navigate("AreaPerdida");
-    }
-  }
 
-//det si la respuesta seleccionada es corecta o no y si pierde por respuestas incorrectas
+//det si la respuesta seleccionada es corecta o no y si pierde muestra la resp correcta
 correctaOIncorrecta = () => {
   const { navigation } = this.props;
   const tipoAnsw = navigation.getParam("tipo", "NO-ID");
+  const respCorrect = navigation.getParam("resp", "NO-ID");
   if (tipoAnsw == 1) {
     return (
       <View>
@@ -144,7 +150,7 @@ correctaOIncorrecta = () => {
             style={styles.welcomeImage}
           />
         </View>
-        <Text style={styles.welcome}> Correcto !</Text>
+        <Text style = {styles.welcome}>¡Correcto!</Text>
       </View>
     );
   } else {
@@ -160,7 +166,9 @@ correctaOIncorrecta = () => {
             style={styles.welcomeImage}
           />
         </View>
-        <Text style={styles.welcome}>Incorrecto !</Text>
+        <Text style={styles.welcome}>¡Incorrecto!</Text>
+        <Text style = {styles.welcome}> La correcta es:</Text>
+        <Text style = {styles.welcome}>{respCorrect}</Text>
       </View>
    );
   }
@@ -177,6 +185,7 @@ const styles = StyleSheet.create({
   },
   welcome: {
     fontSize: 35,
+    fontFamily:'sans-serif-condensed',
     textAlign: 'center',
     margin: 10,
   },
@@ -194,12 +203,12 @@ const styles = StyleSheet.create({
 
   welcomeContainer: {
     alignItems: 'center',
-    marginTop: 20,
-    marginBottom: 20,
+    marginTop: 5,
+    marginBottom: 5,
   },
   welcomeImage: {
-    width: 150,
-    height: 150,
+    width: 250,
+    height: 250,
     resizeMode: 'contain',
     marginTop: 3,
     marginLeft: -10,

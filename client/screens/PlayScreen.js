@@ -1,6 +1,7 @@
 import { API_HOST } from "react-native-dotenv";
 import React from "react";
-import { AsyncStorage, View, Text, Button, StyleSheet } from "react-native";
+import { AsyncStorage, View, Text, StyleSheet } from "react-native";
+import {Button} from 'react-native-elements';
 import axios from "axios";
 
 export default class PlayScreen extends React.Component {
@@ -16,39 +17,66 @@ export default class PlayScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}> SELECCIONA UN AREA PARA JUGAR </Text>
 
-        <View style={styles.button}>
-          <Button
-            onPress = {this.handleQuestionAnswer.bind(this, 1) }
-            title = "Anatomia"
-            color = "black"
-          />
-        </View>
+        <Text>{"\n"}</Text>
+        
+        <Text style={styles.welcome}> Selecciona un area para jugar: </Text>
 
-        <View style={styles.button}>
-          <Button
-            onPress={this.handleQuestionAnswer.bind(this, 2) }
-            title = "Genetica Basica"
-            color = "black"
-          />
-        </View>
+        <Text>{"\n"}</Text>
+        
+        <Button
+          onPress = {this.handleQuestionAnswer.bind(this, 1) }
+          title = "Examen Clínico"
+          buttonStyle = {styles.buttonArea}
+        />
 
-        <View style={styles.button}>
-          <Button
-            onPress = {this.handleQuestionAnswer.bind(this, 3) }
-            title = "Inmunologia"
-            color = "black"
-          />
-        </View>
+        <Text>{"\n"}</Text>
 
-        <Text style={styles.espacio}> {"\n\n\n"}</Text>
+        <Button
+          onPress={this.handleQuestionAnswer.bind(this, 2) }
+          title = "Farmacología y Terapéutica"
+          buttonStyle = {styles.buttonArea}
+        />
+
+        <Text>{"\n"}</Text>
+
+        <Button
+          onPress = {this.handleQuestionAnswer.bind(this, 3) }
+          title = "Enferm. Infecciosas y Parasitarias"
+          buttonStyle = {styles.buttonArea}
+        />
+
+        <Text>{"\n"}</Text>
+
+        <Button
+          onPress = {this.handleQuestionAnswer.bind(this, 4) }
+          title = "Clínica Médica"
+          buttonStyle = {styles.buttonArea}
+        />
+
+        <Text>{"\n"}</Text>
+
+        <Button
+          onPress = {this.handleQuestionAnswer.bind(this, 5) }
+          title = "Clínica Quirúrgica"
+          buttonStyle = {styles.buttonArea}
+        />
+
+        <Text>{"\n"}</Text>
+
+        <Button
+          onPress = {this.handleQuestionAnswer.bind(this, 6) }
+          title = "Manejo Poblacional"
+          buttonStyle = {styles.buttonArea}
+        />
+
+        <Text>{"\n"}{"\n"}</Text>
         
         <View style={styles.button}>
           <Button
             onPress={() => this.props.navigation.goBack()}
-            title = "volver"
-            color = "black"
+            title = "VOLVER"
+            buttonStyle = {{backgroundColor:'black'}}
           />
         </View>
       </View>
@@ -71,8 +99,11 @@ export default class PlayScreen extends React.Component {
         } else {
           if (areaComplet == 1) {
             //caso area jugada y completada
+            console.log("AREA COMPLETADA " + areaComplet);
+
             return this.props.navigation.navigate("AreaCompletada", {
-              areaId: area
+              areaId: area,
+              areaComplet: areaComplet
             });
           } else {
             //caso area en juego
@@ -123,24 +154,24 @@ export default class PlayScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    alignItems:"center",
     backgroundColor: "#30A9AC",
-    borderRadius: 500
+    borderRadius: 500,
   },
   welcome: {
-    fontSize: 25,
-    textAlign: "center",
-    margin: 30
+    fontSize: 40,
+    fontFamily:'sans-serif-condensed', 
+    textAlign: 'center',
+    margin: 10, 
   },
-  input: {
-    margin: 15,
-    height: 40,
-    padding: 5,
-    fontSize: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: "black"
+  buttonArea: {
+    backgroundColor:'black',
+    borderWidth:2,
+    borderColor:'#C7E3DB',
   },
   button: {
-    marginTop: 20
+    flex:1,
+    width:200,
+    marginEnd:1,
   }
 });

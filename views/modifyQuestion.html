@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Modificar Pregunta</title>
+    <link rel = "stylesheet" type = "text/css" href = "/css/estilos.css">
+</head>
+<body>
+    <header>
+        <div>
+            <img src = "/imagenes/loogo.png" width = "150" alt = "Logotipo">
+        </div>
+    </header>
+
+    <form id="formModQuestion" action="/admin/listQuestion" method="GET">
+        <h2>Elija el area donde se encuentra la pregunta a modificar</h2>
+        <h2>Luego seleccione la pregunta</h2>
+        <input type="radio" name="area" value= "1" checked>Examen Clínico<br>
+        <input type="radio" name="area" value= "2" checked>Farmacología y Terapéutica<br>
+        <input type="radio" name="area" value= "3" checked>Enferm. Infecciosas y Parasitarias<br>
+        <input type="radio" name="area" value= "4" checked>Clínica Médica<br>
+        <input type="radio" name="area" value= "5" checked>Clínica Quirúrgica<br>
+        <input type="radio" name="area" value= "6" checked>Manejo Poblacional<br>
+        <br>
+        <button id="guardar" type="submit">Buscar Pregunta</button>
+        <br><br>
+        <input type="button" onclick=" location.href='/admin/volver' " value="Volver a inicio" name="boton" />
+    <table align="center">
+        <tr>
+            <th>id</th>
+            <th>pregunta</th>
+        </tr>
+        
+        {{#questList}}
+        <tr>
+            <td>
+                <a href="/admin/putQuest?idQuest={{idQuest}}" style="color:#ffffff;" role="button" type="button">
+                    {{idQuest}}
+                </a>
+            </td>
+            <td>{{preg}}</td>
+        </tr>
+        {{/questList}}
+    </table>
+    </form>
+</body>
+</html>

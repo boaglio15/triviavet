@@ -1,6 +1,7 @@
 import { API_HOST } from 'react-native-dotenv';
 import React from 'react';
-import { AsyncStorage, View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { AsyncStorage, View, Text, TextInput, StyleSheet, Image } from 'react-native';
+import {Button} from 'react-native-elements';
 import axios from 'axios';
 
 export default class SignInScreen extends React.Component {
@@ -21,6 +22,17 @@ export default class SignInScreen extends React.Component {
       <View style={styles.container}>
         <Text style={styles.welcome} > TriviaVet </Text>
 
+        <View style={styles.welcomeContainer}>
+            <Image
+              source={
+                __DEV__
+                  ? require('../assets/images/loogo.png')
+                  : require('../assets/images/robot-prod.png')
+              }
+              style={styles.welcomeImage}
+            />
+        </View>
+
         <View>
           <TextInput
             placeholder="Dni"
@@ -38,12 +50,12 @@ export default class SignInScreen extends React.Component {
           />
 
           <View style={styles.button}>
-            <Button title="INGRESAR" onPress={this._signIn} color="black"/>
+            <Button title="INGRESAR" onPress={this._signIn} buttonStyle = {{backgroundColor:'black'}}/>
             <Text style={styles.espacio}> {"\n"}</Text>
           </View>
 
           <View style={styles.button}>
-            <Button title="REGISTRATE" onPress={this.registrar} color="black"/>
+            <Button title="REGISTRATE" onPress={this.registrar} buttonStyle = {{backgroundColor:'black'}}/>
             <Text style={styles.espacio}> {"\n"}</Text>
           </View>
 
@@ -95,11 +107,23 @@ const styles = StyleSheet.create({
     backgroundColor: '#30A9AC',
     borderRadius: 500,    
   },
+  welcomeContainer: {
+    alignItems: 'center',
+    marginTop: 10,
+    marginBottom: 10,
+  },
   welcome: {
     fontSize: 40,
     fontFamily:'sans-serif-condensed', 
     textAlign: 'center',
     margin: 10,   
+  },
+  welcomeImage: {
+    width: 200,
+    height: 200,
+    resizeMode: 'contain',
+    marginTop: 3,
+    marginLeft: -10,
   },
   input: {
     margin: 15,

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Pagina Pricipal</title>
+	<link rel = "stylesheet" type = "text/css" href = "/css/estilos.css">
+</head>
+<body>
+	<header>
+		<div>
+			<img src = "/imagenes/loogo.png" width = "150" alt = "Logotipo">
+		</div>
+	</header>
+
+	<h1 class="titleTrivia" align="center">TriviaVet Web</h1>
+	<div class = "main">
+		<form>
+			<br/>
+			<input type="button" onclick=" location.href='/admin/question' " value="Cargar Preguntas" name="boton" class="btn btn-primary" />
+			<br/>
+			<br/>
+			<input type="button" onclick=" location.href='/admin/modQuestion' " value="Modificar Preguntas" name="boton" />
+			<br/>
+			<br/>
+			<input type="button" onclick=" location.href='/admin/stat' " value="Estadistica" name="boton" class="btn btn-primary" />
+			<br/>
+			<br/>
+			<input type="button" onclick=" location.href='/admin/logout' " value="Salir" name="boton" />
+		</form>
+	</div>
+
+</body>
+</html>

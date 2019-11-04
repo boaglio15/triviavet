@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Crear Pregunta</title>
+    <link rel = "stylesheet" type = "text/css" href = "/css/estilos.css">
+</head>
+<body>
+    <header>
+        <div>
+            <img src = "/imagenes/loogo.png" width = "150" alt = "Logotipo">
+        </div>
+    </header>
+
+    <form id="formQuestion" action="/admin/procesaQuestion" method="POST">
+        <h2>Seleccione el area en donde irá la pregunta:</h2>
+        <br>
+        <input type="radio" name="area" value= "1" checked>Examen Clínico<br>
+        <input type="radio" name="area" value= "2" checked>Farmacología y Terapéutica<br>
+        <input type="radio" name="area" value= "3" checked>Enferm. Infecciosas y Parasitarias<br>
+        <input type="radio" name="area" value= "4" checked>Clínica Médica<br>
+        <input type="radio" name="area" value= "5" checked>Clínica Quirúrgica<br>
+        <input type="radio" name="area" value= "6" checked>Manejo Poblacional<br>
+        Pregunta: <br>
+        <input type="text" name="preg" required> <br>
+        Respuesta Correcta: <br>
+        <input type="text" name="resp1" required><br>
+        Respuesta Incorrecta: <br>
+        <input type="text" name="resp2" required><br>
+        Respuesta Incorrecta: <br>
+        <input type="text" name="resp3" required><br>
+        Respuesta Incorrecta: <br>
+        <input type="text" name="resp4" required><br><br>
+        <p>
+            <input type="submit" value="Guardar Pregunta">
+            <input type="reset" value="Borrar">
+        </p>
+    </form>
+</body>
+</html>

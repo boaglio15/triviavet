@@ -9,8 +9,8 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Button,
 } from 'react-native';
+import {Button} from 'react-native-elements';
 import { MonoText } from '../components/StyledText';
 
 export default class HomeScreen extends React.Component {
@@ -45,8 +45,8 @@ export default class HomeScreen extends React.Component {
             <View style={styles.button}>
               <Button
                 onPress={() => this.props.navigation.navigate('Play')}
-                title="Play"
-                color="black"
+                title="Jugar"
+                buttonStyle = {{backgroundColor:'black', width:150, alignSelf:'center'}}
               />
             </View>
 
@@ -54,7 +54,7 @@ export default class HomeScreen extends React.Component {
               <Button
                 onPress={() => this.props.navigation.navigate('Estadistica')}
                 title="Estadisticas"
-                color="black"
+                buttonStyle = {{backgroundColor:'black', width:150, alignSelf:'center'}}
               />
             </View>
 
@@ -62,7 +62,7 @@ export default class HomeScreen extends React.Component {
               <Button
                 onPress={this._handleLogout}
                 title="Logout"
-                color="black"
+                buttonStyle = {{backgroundColor:'black', width:100, alignSelf:'center'}}
               />
             </View>
           </View>
@@ -77,16 +77,6 @@ export default class HomeScreen extends React.Component {
       </View>
     );
   }
-
-  /*
-  <View style={styles.tabBarInfoContainer}>
-          <Text style={styles.tabBarInfoText}></Text>
-
-          <View style={[styles.codeHighlightContainer, styles.navigationFilename]}>
-            <MonoText style={styles.codeHighlightText}></MonoText>
-          </View>
-        </View>
-  */
 
   onPressCategoryButton = (category) => {
     alert(category);
@@ -103,6 +93,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#30A9AC',
+    borderRadius: 500,
   },
 
   go: {
@@ -126,8 +117,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   welcomeImage: {
-    width: 100,
-    height: 100,
+    width: 150,
+    height: 150,
     resizeMode: 'contain',
     marginTop: 3,
     marginLeft: -10,
@@ -200,8 +191,7 @@ const styles = StyleSheet.create({
   button: {
     marginTop:20,
     flex:1,
-    //paddingRight: 70,
-    //paddingLeft: 70,
+    width:200,
   },
   texto: {
     fontSize:40,
