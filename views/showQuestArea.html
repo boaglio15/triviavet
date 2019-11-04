@@ -13,19 +13,19 @@
     <form>
 	<div class="container">
 		{{#areaId}}
-		<h3> PREGUNTAS HECHAS EN EL AREA {{areaId}} </h3>
+		<h3> PREGUNTAS HECHAS EN EL AREA </h3>
 		{{/areaId}}
 		<div class="card card-container">
 			{{#pregTotArea}}
-                            <h4> cantidad total de preguntas realizadas: {{pregTotArea}} </h4>
+                            <h4> Total de preguntas: {{pregTotArea}} </h4>
 			{{/pregTotArea}}
 
 			{{#pregCorrectArea}}
-                            <h4> cant de preg correctas: {{pregCorrectArea}} </h4>
+                            <h4> Correctas: {{pregCorrectArea}} </h4>
                         {{/pregCorrectArea}}
 
 			{{#pregIncorrectArea}}
-                            <h4> cant de preg incorrect: {{pregIncorrectArea}}</h4>
+                            <h4> Incorrectas: {{pregIncorrectArea}}</h4>
                         {{/pregIncorrectArea}}
 
 			{{^error}}
@@ -35,11 +35,12 @@
 			<form class="form-play" method="get">
 				
 				{{#areaId}}
-                                    <a href="/admin/procesaShowQuestCorrectArea?areaId={{areaId}}" style="color:#ffffff;"><input class="btn btn-primary" type="button" value="listar preguntas correctas"></a>
-                                    <a href="/admin/procesaShowQuestIncorrectArea?areaId={{areaId}}" style="color:#ffffff;"><input class="btn btn-primary" type="button" value="listar preguntas incorrectas"></a>
+                    <a href="/admin/procesaShowQuestCorrectArea?areaId={{areaId}}" style="color:#ffffff;"><input class="btn btn-primary" type="button" value="Listar correctas"></a>
+                    <a href="/admin/procesaShowQuestIncorrectArea?areaId={{areaId}}" style="color:#ffffff;"><input class="btn btn-primary" type="button" value="Listar incorrectas"></a>
 				{{/areaId}}
 			</form>
 	</div>
+	<input type="button" onclick=" location.href='/admin/volver' " value="Volver a inicio" name="boton" />
 	</form>
 </body>
 </html>

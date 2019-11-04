@@ -271,6 +271,11 @@ public class App {
 			}, new MustacheTemplateEngine()
 			);
 
+			get("/volver", (req, res) -> {
+				return new ModelAndView(map, "./views/logged.html");
+			}, new MustacheTemplateEngine()
+			);
+
 			//lista las preguntas en un area
 			get("/listQuestion", QuestionController::listQuestion, new MustacheTemplateEngine());
 

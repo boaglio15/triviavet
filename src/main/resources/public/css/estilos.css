@@ -32,6 +32,11 @@ body {
 	text-align: center;
 }
 
+.titleTrivia {
+	font-family: 'Times New Roman', Times, serif;
+	font-size: 60px
+}
+
 .container {
 	width: 30%;
 	margin: auto;

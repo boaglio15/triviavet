@@ -12,7 +12,8 @@
     </header>
 
     <form id="formModQuestion" action="/admin/listQuestion" method="GET">
-        <h2>Eliga el area donde se encuentra la pregunta a modificar</h2>
+        <h2>Elija el area donde se encuentra la pregunta a modificar</h2>
+        <h2>Luego seleccione la pregunta</h2>
         <input type="radio" name="area" value= "1" checked>Examen Clínico<br>
         <input type="radio" name="area" value= "2" checked>Farmacología y Terapéutica<br>
         <input type="radio" name="area" value= "3" checked>Enferm. Infecciosas y Parasitarias<br>
@@ -21,7 +22,9 @@
         <input type="radio" name="area" value= "6" checked>Manejo Poblacional<br>
         <br>
         <button id="guardar" type="submit">Buscar Pregunta</button>
-    <table>
+        <br><br>
+        <input type="button" onclick=" location.href='/admin/volver' " value="Volver a inicio" name="boton" />
+    <table align="center">
         <tr>
             <th>id</th>
             <th>pregunta</th>

@@ -160,7 +160,7 @@ export default class QuestionsSreens extends React.Component {
 
     console.log("preguntas incorrectas " + cantQuestIncorrect);
 
-    if (cantQuestIncorrect == 4) { //puede setearse la cant de preg incorrectas para perder
+    if (cantQuestIncorrect == 2) { //puede setearse la cant de preg incorrectas para perder
       this.props.navigation.navigate("AreaPerdida"); //cantQuestIncorrect se inicializa en 0
     } else {
       //envia datos al componente AnswersSreens (navigation machea Answer con AnswersSreens)
